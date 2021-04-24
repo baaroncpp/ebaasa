@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.accountmgt.jpa.models;
+package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
 import org.hibernate.annotations.NaturalId;
 

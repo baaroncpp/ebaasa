@@ -1,6 +1,6 @@
-package com.bkbwongo.core.ebaasa.accountmgt.jpa.models;
+package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.accountmgt.jpa.models.enums.GenderEnum;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.enums.GenderEnum;
 import com.bkbwongo.core.ebaasa.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
 
@@ -20,8 +20,7 @@ public class TUserMeta extends AuditedEntity {
     private String firstName;
     private String lastName;
     private String middleName;
-    private Long userId;
-    private Long agentId;
+    private String userId;
     private String phoneNumber;
     private String phoneNumber2;
     private String imagePath;
@@ -64,21 +63,12 @@ public class TUserMeta extends AuditedEntity {
     }
 
     @Column(name = "user_id")
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    @Column(name = "agent_id")
-    public Long getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
     }
 
     @Column(name = "phone_number")

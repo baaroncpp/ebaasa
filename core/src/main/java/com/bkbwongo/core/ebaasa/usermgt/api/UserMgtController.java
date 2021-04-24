@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.accountmgt.api;
+package com.bkbwongo.core.ebaasa.usermgt.api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("management/api/v1/user")
-public class AccountMgtController {
+public class UserMgtController {
 }

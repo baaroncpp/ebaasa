@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.jpa.models;
 
-import com.bkbwongo.core.ebaasa.accountmgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;

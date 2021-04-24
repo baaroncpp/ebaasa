@@ -6,13 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
+//@SpringBootTest
 class EbaasaApplicationTests {
 
-	@Test
+	/*@Test
 	@Disabled
 	void contextLoads() {
 		assertThat(true).isTrue();
-	}
+	}*/
 
 }
