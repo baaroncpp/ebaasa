@@ -1,6 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
+import com.bkbwongo.core.ebaasa.enums.UserTypeEnum;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +25,8 @@ public class TUser extends BaseEntity implements Serializable {
     private TUserAuthority userAuthority;
     private transient TUserMeta userMeta;
     private Boolean isDeleted;
-    private Long approvedBy;
+    private String approvedBy;
+    private UserTypeEnum userType;
 
     @Column(name = "username")
     public String getUsername() {
@@ -110,11 +112,11 @@ public class TUser extends BaseEntity implements Serializable {
     }
 
     @Column(name = "approved_by")
-    public Long getApprovedBy() {
+    public String getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(Long approvedBy) {
+    public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
 
@@ -125,5 +127,15 @@ public class TUser extends BaseEntity implements Serializable {
 
     public void setInitialPasswordReset(boolean initialPasswordReset) {
         this.initialPasswordReset = initialPasswordReset;
+    }
+
+    @Column(name = "user_type")
+    @Enumerated(value = EnumType.STRING)
+    public UserTypeEnum getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserTypeEnum userType) {
+        this.userType = userType;
     }
 }

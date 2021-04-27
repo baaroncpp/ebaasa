@@ -20,28 +20,28 @@ public class ExceptionsHandler {
     @ExceptionHandler(value = {ApiRequestException.class})
     public ResponseEntity<Object> handleApiRequestException(ApiRequestException apiRequestException){
 
-        HttpStatus httpStatus = HttpStatus.NOT_ACCEPTABLE;
+        var httpStatus = HttpStatus.NOT_ACCEPTABLE;
 
-        ExceptionPayLoad exceptionPayLoad = new ExceptionPayLoad(
+        var exceptionPayLoad = new ExceptionPayLoad(
                 apiRequestException.getMessage(),
                 httpStatus,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        return  new ResponseEntity<>(exceptionPayLoad, httpStatus);
+        return new ResponseEntity<>(exceptionPayLoad, httpStatus);
     }
 
     @ExceptionHandler(value = {BadRequestException.class})
     public ResponseEntity<Object> handleBadRequestException(BadRequestException badRequestException){
 
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        var httpStatus = HttpStatus.BAD_REQUEST;
 
-        ExceptionPayLoad exceptionPayLoad = new ExceptionPayLoad(
+        var exceptionPayLoad = new ExceptionPayLoad(
                 badRequestException.getMessage(),
                 httpStatus,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        return  new ResponseEntity<>(exceptionPayLoad, httpStatus);
+        return new ResponseEntity<>(exceptionPayLoad, httpStatus);
     }
 }

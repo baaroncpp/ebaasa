@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.enums.GenderEnum;
+import com.bkbwongo.core.ebaasa.enums.GenderEnum;
 import com.bkbwongo.core.ebaasa.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
 

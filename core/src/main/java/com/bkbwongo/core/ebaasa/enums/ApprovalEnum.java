@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.usermgt.jpa.models.enums;
+package com.bkbwongo.core.ebaasa.enums;
 
 /**
  * @author bkaaron
