@@ -35,6 +35,13 @@ dependencies {
 
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.4.RELEASE'
+
+	compile 'org.springframework.boot:spring-boot-starter-webflux'
+	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '5.4.1'
+
+
 	implementation project(':commons')
 
 }

@@ -3,12 +3,12 @@ package com.bkbwongo.core.ebaasa.auth;
 import com.bkbwongo.common.exceptions.ErrorMessageConstants;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.enums.UserTypeEnum;
+import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.bkbwongo.core.ebaasa.usermgt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

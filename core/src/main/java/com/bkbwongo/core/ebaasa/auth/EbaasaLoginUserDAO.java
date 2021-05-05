@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.auth;
 
+import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
+
 import java.util.Optional;
 
 /**

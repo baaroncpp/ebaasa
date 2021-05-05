@@ -27,7 +27,7 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public EbaasaSecurityConfig(@Qualifier("p") EbaasaUserDetailsService ebaasaUserDetailsService,
+    public EbaasaSecurityConfig(EbaasaUserDetailsService ebaasaUserDetailsService,
                                 PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
         this.ebaasaUserDetailsService = ebaasaUserDetailsService;
@@ -40,7 +40,7 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();// TODO switch jwt then OAUTH
+                .httpBasic();// TODO switch jwt then OAUTH2
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.auth;
+package com.bkbwongo.core.ebaasa.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.util.List;
 public class EbaasaLoginUser implements UserDetails {
 
     @Getter
-    private String id;
+    private Long id;
 
     private String username;
     private String password;

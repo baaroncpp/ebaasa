@@ -1,5 +1,5 @@
 create table t_user(
-    id SERIAL PRIMARY KEY,
+    id varchar PRIMARY KEY,
     username VARCHAR(20) UNIQUE,
     password TEXT,
     account_locked BOOLEAN NOT NULL DEFAULT FALSE,

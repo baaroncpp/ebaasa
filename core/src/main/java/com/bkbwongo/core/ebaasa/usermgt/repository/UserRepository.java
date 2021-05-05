@@ -12,6 +12,6 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 @Repository
-public interface UserRepository extends JpaRepository<String, TUser> {
+public interface UserRepository extends JpaRepository<TUser, String> {
     Optional<TUser> findByUsername(String username);
 }

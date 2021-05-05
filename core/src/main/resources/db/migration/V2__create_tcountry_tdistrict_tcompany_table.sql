@@ -9,7 +9,7 @@ create table t_country (
 );
 
 create table t_district (
-	id SERIAL primary key,
+	id VARCHAR primary key,
 	country_id SERIAL references t_country(id),
 	name VARCHAR(50),
 	region VARCHAR(50),
@@ -18,7 +18,7 @@ create table t_district (
 );
 
 create table t_company(
-    id BIGSERIAL primary key,
+    id VARCHAR primary key,
 	business_name VARCHAR(200) not NULL,
 	nature_of_business VARCHAR(100),
 	physical_address text not NULL,

@@ -1,0 +1,24 @@
+server:
+  port: 8092
+  error:
+    include-message: always
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bk_db
+    username: aaron
+    password: aaron
+  jpa:
+    hibernate:
+      dll-auto: update
+      show: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+flyway:
+  user: aaron
+  password: aaron
+  schemas: core
+  url: jdbc:postgresql://localhost:5432/bk_db
+  locations: classpath:db/migrations
+
