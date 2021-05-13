@@ -1,5 +1,6 @@
-package com.bkbwongo.core.ebaasa.auth;
+package com.bkbwongo.core.ebaasa.security.service;
 
+import com.bkbwongo.core.ebaasa.auth.EbaasaLoginUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;

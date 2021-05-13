@@ -2,6 +2,7 @@ server:
   port: 8092
   error:
     include-message: always
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bk_db
@@ -15,10 +16,21 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-flyway:
-  user: aaron
-  password: aaron
-  schemas: core
-  url: jdbc:postgresql://localhost:5432/bk_db
-  locations: classpath:db/migrations
 
+  flyway:
+    user: aaron
+    password: aaron
+    schemas: core
+    url: jdbc:postgresql://localhost:5432/bk_db
+    locations: classpath:db/migrations
+
+app:
+  security:
+    jwt:
+      keystore-location: keys/ebaasakeystore.jks
+      keystore-pasword: Oliviatyra256aaron
+      key-alias: ebaasajwtsigning
+      private-key-passphrase: Oliviatyra256aaron
+      secret-key: allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest
+      token-prefix: Bearer
+      token-expiration-after-days:

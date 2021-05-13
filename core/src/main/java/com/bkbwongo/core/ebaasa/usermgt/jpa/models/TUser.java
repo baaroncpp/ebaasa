@@ -22,7 +22,7 @@ public class TUser extends BaseEntity implements Serializable {
     private boolean credentialExpired;
     private boolean approved;
     private boolean initialPasswordReset;
-    private TUserAuthority userAuthority;
+    private TUserGroup userGroup;
     private transient TUserMeta userMeta;
     private Boolean isDeleted;
     private String approvedBy;
@@ -73,14 +73,14 @@ public class TUser extends BaseEntity implements Serializable {
         this.credentialExpired = credentialExpired;
     }
 
-    @JoinColumn(name = "username",referencedColumnName = "username",insertable = false,updatable = false)
+    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
-    public TUserAuthority getUserAuthority() {
-        return userAuthority;
+    public TUserGroup getUserGroup() {
+        return userGroup;
     }
 
-    public void setUserAuthority(TUserAuthority userAuthority) {
-        this.userAuthority = userAuthority;
+    public void setUserGroup(TUserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     @JoinColumn(name = "id",referencedColumnName = "user_id",insertable = false,updatable = false)

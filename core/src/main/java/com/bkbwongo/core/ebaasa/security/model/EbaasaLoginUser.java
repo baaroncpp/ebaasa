@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author bkaaron
@@ -21,7 +22,7 @@ public class EbaasaLoginUser implements UserDetails {
 
     private String username;
     private String password;
-    private List<? extends GrantedAuthority> grantedAuthorities;
+    private Set<? extends GrantedAuthority> grantedAuthorities;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

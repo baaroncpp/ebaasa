@@ -4,13 +4,19 @@ import com.bkbwongo.common.exceptions.ErrorMessageConstants;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.enums.UserTypeEnum;
 import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
+import com.bkbwongo.core.ebaasa.usermgt.repository.TGroupAuthorityRepository;
 import com.bkbwongo.core.ebaasa.usermgt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author bkaaron
@@ -20,8 +26,15 @@ import java.util.Optional;
 @Repository("postgres-user")
 public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
 
-    @Autowired
     private UserRepository userRepository;
+    private TGroupAuthorityRepository groupAuthorityRepository;
+
+    @Autowired
+    public EbaasaLoginUserDAOService(UserRepository userRepository,
+                                     TGroupAuthorityRepository groupAuthorityRepository) {
+        this.userRepository = userRepository;
+        this.groupAuthorityRepository = groupAuthorityRepository;
+    }
 
     @Override
     public Optional<EbaasaLoginUser> selectLoginUserByUsername(String username) {
@@ -33,6 +46,18 @@ public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
     }
 
     private Optional<EbaasaLoginUser> mapUserDetails(TUser user){
+
+        TUserGroup userGroup = user.getUserGroup();
+        Validate.notNull(userGroup, "User group is NULL");
+
+        List<TGroupAuthority> groupAuthorities = groupAuthorityRepository.findByUserGroup(userGroup);
+        Validate.notNull(groupAuthorities, String.format("user %s has no permissions, service access denied", user.getUsername()));
+
+        Set<SimpleGrantedAuthority> permissions = groupAuthorities
+                .stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission().getName()))
+                .collect(Collectors.toSet());
+
         var logInUser = new EbaasaLoginUser();
 
         logInUser.setUsername(user.getUsername());
@@ -42,7 +67,7 @@ public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
         logInUser.setEnabled(user.isApproved());
         logInUser.setCredentialsNonExpired(user.isCredentialExpired());
         logInUser.setId(user.getId());
-        logInUser.setGrantedAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(user.getUserAuthority().getAuthority()));// TODO when roles and permissions are specified
+        logInUser.setGrantedAuthorities(permissions);
 
         if(user.getUserType().equals(UserTypeEnum.COMPANY)){
             logInUser.setCompanyUser(Boolean.TRUE);
