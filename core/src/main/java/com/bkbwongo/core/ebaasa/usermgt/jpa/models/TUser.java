@@ -83,7 +83,7 @@ public class TUser extends BaseEntity implements Serializable {
         this.userGroup = userGroup;
     }
 
-    @JoinColumn(name = "id",referencedColumnName = "user_id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_meta_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TUserMeta getUserMeta() {
         return userMeta;

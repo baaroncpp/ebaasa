@@ -1,5 +1,5 @@
 create table t_country (
-	id SERIAL primary key,
+	id BIGSERIAL primary key,
 	name VARCHAR(50) not null,
 	iso_alpha_2 CHARACTER(2) unique not null,
 	iso_alpha_3 CHARACTER(3) unique not null,
@@ -9,7 +9,7 @@ create table t_country (
 );
 
 create table t_district (
-	id VARCHAR primary key,
+	id BIGSERIAL primary key,
 	country_id SERIAL references t_country(id),
 	name VARCHAR(50),
 	region VARCHAR(50),
@@ -18,14 +18,14 @@ create table t_district (
 );
 
 create table t_company(
-    id VARCHAR primary key,
+    id BIGSERIAL primary key,
 	business_name VARCHAR(200) not NULL,
 	nature_of_business VARCHAR(100),
 	physical_address text not NULL,
 	phone_number VARCHAR(25) not null,
 	district varchar references t_district(id),
 	tin_number varchar(50) unique not null,
-	registration_country INTEGER references t_country(id),
+	registration_country BIGSERIAL references t_country(id),
 	contact_person varchar(100),
 	contact_identification VARCHAR(20) not null,
 	contact_identification_number varchar(50) not null,
