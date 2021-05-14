@@ -32,6 +32,6 @@ app:
       keystore-pasword: Oliviatyra256aaron
       key-alias: ebaasajwtsigning
       private-key-passphrase: Oliviatyra256aaron
-      secret-key: allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest
-      token-prefix: Bearer
-      token-expiration-after-days:
+      secretKey: allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest
+      tokenPrefix: Bearer
+      tokenExpirationAfterMinutes:

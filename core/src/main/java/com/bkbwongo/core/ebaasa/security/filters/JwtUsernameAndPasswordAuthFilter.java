@@ -1,10 +1,12 @@
 package com.bkbwongo.core.ebaasa.security.filters;
 
+import com.bkbwongo.core.ebaasa.security.JwtConfig;
 import com.bkbwongo.core.ebaasa.security.model.UsernameAndPasswordAuthenticationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,9 @@ import java.util.Date;
 public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtConfig jwtConfig;
 
     //@Value("${app.security.jwt.secret-key}")
     private String secretKey = "allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest";
@@ -66,6 +71,7 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                //.signWith(jwtConfig.getSecretKeyForSigning())
                 .compact();
 
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer "+token);// add token in response header
