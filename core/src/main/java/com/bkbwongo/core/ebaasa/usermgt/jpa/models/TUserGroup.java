@@ -17,7 +17,7 @@ public class TUserGroup extends BaseEntity {
     private String name;
     private String note;
 
-    @Column(name = "user_group_name", nullable = false)
+    @Column(name = "user_group_name", nullable = false, unique = true)
     public String getName() {
         return name;
     }

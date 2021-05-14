@@ -12,6 +12,7 @@ import com.bkbwongo.core.ebaasa.usermgt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  * @created on 26/04/2021
  * @project ebaasa-sms
  */
-@Repository("postgres-user")
+@Service
 public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
 
     private UserRepository userRepository;

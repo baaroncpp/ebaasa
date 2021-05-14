@@ -9,7 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+/*import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
@@ -17,7 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;*/
 
 /**
  * @author bkaaron
@@ -27,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 //@Configuration
 //@EnableAuthorizationServer
-public class OAuthAuthorizationServer extends AuthorizationServerConfigurerAdapter {
+public class OAuthAuthorizationServer /*extends AuthorizationServerConfigurerAdapter*/ {
 
     @Value("${jwt.certificate.password}")
     private String password;
@@ -44,7 +44,7 @@ public class OAuthAuthorizationServer extends AuthorizationServerConfigurerAdapt
 
     @Autowired
     public UserDetailsService userDetailsService;
-
+/*
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
@@ -73,7 +73,7 @@ public class OAuthAuthorizationServer extends AuthorizationServerConfigurerAdapt
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        /*var converter = new CustomAccessTokenConverter();
+        *//*var converter = new CustomAccessTokenConverter();
 
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
                         new ClassPathResource(privateKey),
@@ -81,7 +81,7 @@ public class OAuthAuthorizationServer extends AuthorizationServerConfigurerAdapt
                 );
 
         converter.setKeyPair(
-                keyStoreKeyFactory.getKeyPair(alias));*/
+                keyStoreKeyFactory.getKeyPair(alias));*//*
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
                 new ClassPathResource(privateKey),
@@ -92,5 +92,5 @@ public class OAuthAuthorizationServer extends AuthorizationServerConfigurerAdapt
                 keyStoreKeyFactory.getKeyPair(alias));
 
         return converter;
-    }
+    }*/
 }

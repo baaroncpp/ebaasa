@@ -17,7 +17,7 @@ public class TRole extends BaseEntity {
     private String name;
     private String note;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     public String getName() {
         return name;
     }

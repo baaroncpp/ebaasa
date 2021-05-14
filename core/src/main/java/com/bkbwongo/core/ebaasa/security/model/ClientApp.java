@@ -2,7 +2,7 @@ package com.bkbwongo.core.ebaasa.security.model;
 
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.provider.ClientDetails;
+//import org.springframework.security.oauth2.provider.ClientDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Set;
  * @project ebaasa-sms
  */
 @Setter
-public class ClientApp implements ClientDetails {
+public class ClientApp /*implements ClientDetails*/ {
 
     private String name;
     private Boolean isSecretRequired;
@@ -34,67 +34,67 @@ public class ClientApp implements ClientDetails {
         this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     }
 
-    @Override
+    //@Override
     public String getClientId() {
         return name;
     }
 
-    @Override
+    //@Override
     public Set<String> getResourceIds() {
         return null;
     }
 
-    @Override
+    //@Override
     public boolean isSecretRequired() {
         return isSecretRequired;
     }
 
-    @Override
+    //@Override
     public String getClientSecret() {
         return secret;
     }
 
-    @Override
+    //@Override
     public boolean isScoped() {
         return isScoped;
     }
 
-    @Override
+    //@Override
     public Set<String> getScope() {
         return scopes;
     }
 
-    @Override
+    //@Override
     public Set<String> getAuthorizedGrantTypes() {
         return authorizedGrantTypes;
     }
 
-    @Override
+    //@Override
     public Set<String> getRegisteredRedirectUri() {
         return registeredRedirectUri;
     }
 
-    @Override
+    //@Override
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    @Override
+    //@Override
     public Integer getAccessTokenValiditySeconds() {
         return accessTokenValiditySeconds;
     }
 
-    @Override
+    //@Override
     public Integer getRefreshTokenValiditySeconds() {
         return refreshTokenValiditySeconds;
     }
 
-    @Override
+    //@Override
     public boolean isAutoApprove(String scope) {
         return isAutoApprove;
     }
 
-    @Override
+    //@Override
     public Map<String, Object> getAdditionalInformation() {
         return additionalInformation;
     }

@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
  */
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
-    @Value("${app.jwt.security.secret-key}")
-    private String secretKey;
+    //@Value("${app.security.jwt.secret-key}")
+    private String secretKey = "allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

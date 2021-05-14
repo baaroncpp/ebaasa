@@ -19,7 +19,7 @@ public class EbaasaUserDetailsService implements UserDetailsService {
     private EbaasaLoginUserDAO ebaasaLoginUserDAO;
 
     @Autowired
-    public EbaasaUserDetailsService(@Qualifier("postgres-user") EbaasaLoginUserDAO ebaasaLoginUserDAO) {
+    public EbaasaUserDetailsService(EbaasaLoginUserDAO ebaasaLoginUserDAO) {
         this.ebaasaLoginUserDAO = ebaasaLoginUserDAO;
     }
 

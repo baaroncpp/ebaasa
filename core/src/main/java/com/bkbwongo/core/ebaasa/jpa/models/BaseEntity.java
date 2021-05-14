@@ -1,7 +1,7 @@
 package com.bkbwongo.core.ebaasa.jpa.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +10,7 @@ import java.util.Date;
  * @project ebaasa-sms
  */
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;

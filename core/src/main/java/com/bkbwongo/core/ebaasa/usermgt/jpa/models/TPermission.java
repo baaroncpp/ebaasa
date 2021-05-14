@@ -15,7 +15,7 @@ public class TPermission extends BaseEntity {
     private TRole role;
     private String name;
 
-    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "role_name", referencedColumnName = "name", insertable = false, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TRole getRole() {
         return role;
@@ -25,7 +25,7 @@ public class TPermission extends BaseEntity {
         this.role = role;
     }
 
-    @Column(name = "permission_name")
+    @Column(name = "permission_name", unique = true)
     public String getName() {
         return name;
     }

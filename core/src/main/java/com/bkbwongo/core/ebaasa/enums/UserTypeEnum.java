@@ -6,5 +6,5 @@ package com.bkbwongo.core.ebaasa.enums;
  * @project ebaasa-sms
  */
 public enum UserTypeEnum {
-    CUSTOMER, EBAASA, COMPANY
+    CUSTOMER, EBAASA, COMPANY, ADMIN
 }

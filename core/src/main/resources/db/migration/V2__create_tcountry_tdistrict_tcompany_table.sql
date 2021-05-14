@@ -23,7 +23,7 @@ create table t_company(
 	nature_of_business VARCHAR(100),
 	physical_address text not NULL,
 	phone_number VARCHAR(25) not null,
-	district varchar references t_district(id),
+	district SERIAL references t_district(id),
 	tin_number varchar(50) unique not null,
 	registration_country BIGSERIAL references t_country(id),
 	contact_person varchar(100),
@@ -34,7 +34,7 @@ create table t_company(
 	email varchar(100),
 	note text,
 	created_on timestamp not null default now(),
-	created_by varchar not null references t_user(id),
+	created_by SERIAL not null references t_user(id),
 	modified_on timestamp,
-	modified_by varchar references t_user(id)
+	modified_by SERIAL references t_user(id)
 );

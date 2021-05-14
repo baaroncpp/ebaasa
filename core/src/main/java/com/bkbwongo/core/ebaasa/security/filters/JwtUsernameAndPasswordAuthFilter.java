@@ -29,8 +29,8 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
 
     private final AuthenticationManager authenticationManager;
 
-    @Value("${app.jwt.security.secret-key}")
-    private String secretKey;
+    //@Value("${app.security.jwt.secret-key}")
+    private String secretKey = "allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest";
 
     public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;

@@ -23,7 +23,7 @@ public class TUser extends BaseEntity implements Serializable {
     private boolean approved;
     private boolean initialPasswordReset;
     private TUserGroup userGroup;
-    private transient TUserMeta userMeta;
+    //private transient TUserMeta userMeta;
     private Boolean isDeleted;
     private String approvedBy;
     private UserTypeEnum userType;
@@ -73,7 +73,7 @@ public class TUser extends BaseEntity implements Serializable {
         this.credentialExpired = credentialExpired;
     }
 
-    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_group_name", referencedColumnName = "user_group_name", insertable = false, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TUserGroup getUserGroup() {
         return userGroup;
@@ -83,7 +83,7 @@ public class TUser extends BaseEntity implements Serializable {
         this.userGroup = userGroup;
     }
 
-    @JoinColumn(name = "user_meta_id", referencedColumnName = "id", insertable = false, updatable = false)
+    /*@JoinColumn(name = "user_meta_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TUserMeta getUserMeta() {
         return userMeta;
@@ -91,7 +91,7 @@ public class TUser extends BaseEntity implements Serializable {
 
     public void setUserMeta(TUserMeta userMeta) {
         this.userMeta = userMeta;
-    }
+    }*/
 
     @Column(name = "approved")
     public boolean isApproved() {

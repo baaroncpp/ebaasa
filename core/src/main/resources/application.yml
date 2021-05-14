@@ -9,8 +9,9 @@ spring:
     username: aaron
     password: aaron
   jpa:
+    show-sql: true
     hibernate:
-      dll-auto: update
+      dll-auto: none
       show: true
     properties:
       hibernate:
@@ -22,7 +23,7 @@ spring:
     password: aaron
     schemas: core
     url: jdbc:postgresql://localhost:5432/bk_db
-    locations: classpath:db/migrations
+    locations: classpath:db/migration
 
 app:
   security:

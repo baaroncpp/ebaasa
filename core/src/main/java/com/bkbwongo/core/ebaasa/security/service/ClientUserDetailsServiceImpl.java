@@ -2,9 +2,9 @@ package com.bkbwongo.core.ebaasa.security.service;
 
 import com.bkbwongo.core.ebaasa.repository.TAppClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.ClientRegistrationException;
+//import org.springframework.security.oauth2.provider.ClientDetails;
+//import org.springframework.security.oauth2.provider.ClientDetailsService;
+//import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
  * @project ebaasa-sms
  */
 @Service
-public class ClientUserDetailsServiceImpl implements ClientDetailsService {
+public class ClientUserDetailsServiceImpl /*implements ClientDetailsService*/ {
 
-    @Autowired
+    /*@Autowired
     private TAppClientRepository tAppClientRepository;
 
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         return null;
-    }
+    }*/
 }
