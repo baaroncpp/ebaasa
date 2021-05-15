@@ -47,6 +47,11 @@ dependencies {
 
 	implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
 
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.3'
+	compile group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.5.3'
+
 	implementation project(':commons')
 
 }

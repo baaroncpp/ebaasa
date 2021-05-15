@@ -3,6 +3,9 @@ package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TPermission;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TRole;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,7 +47,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     }
 
     @Override
-    public Optional<TRole> createUserRole(TRole role) {
+    public Optional<TRole> createUserRole(RoleDto role) {
 
         Validate.notNull(role, "NULL role object");
         Validate.notEmpty(role.getName(), "Role name is not defined");
@@ -55,7 +59,12 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
             throw new BadRequestException(String.format("Role % already exists", role.getName()));
         }
 
-        return Optional.of(roleRepository.save(role));
+        TRole tr = TRole.builder()
+                .name(role.getName())
+                .note(role.getNote())
+                .build();
+
+        return Optional.of(roleRepository.save(tr));
     }
 
     @Override
@@ -72,20 +81,30 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     }
 
     @Override
-    public Optional<TPermission> addNewPermission(TPermission permission) {
+    public List<TRole> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public Optional<TPermission> addNewPermission(PermissionDto permission) {
 
         Validate.notNull(permission, "NULL permission object");
-        Validate.notNull(permission.getRole(), "User role is NULL");
-        Validate.notEmpty(permission.getName(), "permission name is not defined");
+        Validate.notNull(permission.getRoleId(), "User role ID is NULL");
+        Validate.notEmpty(permission.getPermissionName(), "permission name is not defined");
 
-        roleRepository.findById(permission.getRole().getId())
-                .orElseThrow(() -> new BadRequestException("Invalid user role"));
+        TRole tRole = roleRepository.findById(permission.getRoleId())
+                .orElseThrow(() -> new BadRequestException("User role not found"));
 
-        Optional<TPermission> tPermission = permissionRepository.findByName(permission.getName());
+        Optional<TPermission> tPermission = permissionRepository.findByName(permission.getPermissionName());
         if(tPermission.isPresent()){
-            throw new BadRequestException(String.format("Permission %s already exists", permission.getName()));
+            throw new BadRequestException(String.format("Permission %s already exists", permission.getPermissionName()));
         }
-        return Optional.of(permissionRepository.save(permission));
+
+        TPermission tp = new TPermission();
+        tp.setRole(tRole);
+        tp.setName(permission.getPermissionName());
+
+        return Optional.of(permissionRepository.save(tp));
     }
 
     @Override
@@ -102,7 +121,12 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     }
 
     @Override
-    public Optional<TUserGroup> createUserGroup(TUserGroup userGroup) {
+    public List<TPermission> getAllPermissions() {
+        return permissionRepository.findAll();
+    }
+
+    @Override
+    public Optional<TUserGroup> createUserGroup(UserGroupDto userGroup) {
 
         Validate.notNull(userGroup, "NULL user group object");
         Validate.notEmpty(userGroup.getName(), "User group name is not defined");
@@ -113,7 +137,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
             throw new BadRequestException(String.format("UserGroup %s already exists", userGroup.getName()));
         }
 
-        return Optional.of(userGroupRepository.save(userGroup));
+        var tup = new TUserGroup();
+        tup.setName(userGroup.getName());
+        tup.setNote(userGroup.getNote());
+
+        return Optional.of(userGroupRepository.save(tup));
     }
 
     @Override
@@ -127,6 +155,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                         String.format("UserGroup with ID: %s does not exist", userGroup.getId()))
                 );
         return Optional.of(userGroupRepository.save(userGroup));
+    }
+
+    @Override
+    public List<TUserGroup> getAllUserGroups() {
+        return userGroupRepository.findAll();
     }
 
     @Override
@@ -170,5 +203,17 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                 );
         groupAuthorityRepository.delete(tGroupAuthority);
         return Optional.of(tGroupAuthority);
+    }
+
+    @Override
+    public List<TGroupAuthority> getGroupAuthorities(Long groupId) {
+
+        Validate.notNull(groupId, "Group ID is not defined");
+
+        TUserGroup userGroup = userGroupRepository.findById(groupId)
+                .orElseThrow(
+                        () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupId))
+                );
+        return groupAuthorityRepository.findByUserGroup(userGroup);
     }
 }
