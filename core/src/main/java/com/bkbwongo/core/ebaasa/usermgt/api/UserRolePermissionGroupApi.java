@@ -5,9 +5,7 @@ import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TPermission;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TRole;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
+import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserRolePermissionGroupService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,9 @@ public class UserRolePermissionGroupApi {
     @Autowired
     private UserRolePermissionGroupService userRolePermissionGroupService;
 
+    @Autowired
+    private UserManagementDTOMapperService userManagementDTOMapperService;
+
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/role", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<?> addUserRole(@RequestBody RoleDto role){
@@ -37,7 +38,7 @@ public class UserRolePermissionGroupApi {
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/role", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updateUserRole(@RequestBody TRole role){
+    public ResponseEntity<?> updateUserRole(@RequestBody RoleDto role){
         return ResponseEntity.ok(userRolePermissionGroupService.updateUserRole(role));
     }
 
@@ -55,7 +56,7 @@ public class UserRolePermissionGroupApi {
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/permission", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updatePermission(@RequestBody TPermission permission){
+    public ResponseEntity<?> updatePermission(@RequestBody PermissionDto permission){
         return ResponseEntity.ok(userRolePermissionGroupService.updatePermission(permission));
     }
 
@@ -73,7 +74,7 @@ public class UserRolePermissionGroupApi {
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updateUserGroup(@RequestBody TUserGroup userGroup){
+    public ResponseEntity<?> updateUserGroup(@RequestBody UserGroupDto userGroup){
         return ResponseEntity.ok(userRolePermissionGroupService.updateUserGroup(userGroup));
     }
 

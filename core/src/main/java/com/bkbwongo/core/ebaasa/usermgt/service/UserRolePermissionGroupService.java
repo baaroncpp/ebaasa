@@ -19,15 +19,15 @@ import java.util.Optional;
  */
 public interface UserRolePermissionGroupService {
     Optional<TRole> createUserRole(RoleDto role);
-    Optional<TRole> updateUserRole(TRole role);
+    Optional<TRole> updateUserRole(RoleDto role);
     List<TRole> getAllRoles();
 
     Optional<TPermission> addNewPermission(PermissionDto permission);
-    Optional<TPermission> updatePermission(TPermission permission);
+    Optional<TPermission> updatePermission(PermissionDto permission);
     List<TPermission> getAllPermissions();
 
     Optional<TUserGroup> createUserGroup(UserGroupDto userGroup);
-    Optional<TUserGroup> updateUserGroup(TUserGroup userGroup);
+    Optional<TUserGroup> updateUserGroup(UserGroupDto userGroup);
     List<TUserGroup> getAllUserGroups();
 
     Optional<TGroupAuthority> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto);

@@ -2,6 +2,8 @@ package com.bkbwongo.core.ebaasa.usermgt.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author bkaaron
  * @created on 15/05/2021
@@ -9,6 +11,9 @@ import lombok.Data;
  */
 @Data
 public class PermissionDto {
-    private Long roleId;
-    private String permissionName;
+    private Long id;
+    private Date createdOn;
+    private Date modifiedOn;
+    private RoleDto roleDto;
+    private String name;
 }

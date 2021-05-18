@@ -6,6 +6,7 @@ import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TPermission;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TRole;
@@ -34,16 +35,19 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     private TUserGroupRepository userGroupRepository;
     private TPermissionRepository permissionRepository;
     private TGroupAuthorityRepository groupAuthorityRepository;
+    private UserManagementDTOMapperService userManagementDTOMapperService;
 
     @Autowired
     public UserRolePermissionGroupServiceImp(TRoleRepository roleRepository,
                                              TUserGroupRepository userGroupRepository,
                                              TPermissionRepository permissionRepository,
-                                             TGroupAuthorityRepository groupAuthorityRepository) {
+                                             TGroupAuthorityRepository groupAuthorityRepository,
+                                             UserManagementDTOMapperService userManagementDTOMapperService) {
         this.roleRepository = roleRepository;
         this.userGroupRepository = userGroupRepository;
         this.permissionRepository = permissionRepository;
         this.groupAuthorityRepository = groupAuthorityRepository;
+        this.userManagementDTOMapperService = userManagementDTOMapperService;
     }
 
     @Override
@@ -59,16 +63,13 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
             throw new BadRequestException(String.format("Role % already exists", role.getName()));
         }
 
-        TRole tr = TRole.builder()
-                .name(role.getName())
-                .note(role.getNote())
-                .build();
+        TRole tr = userManagementDTOMapperService.convertDTOToTRole(role);
 
         return Optional.of(roleRepository.save(tr));
     }
 
     @Override
-    public Optional<TRole> updateUserRole(TRole role) {
+    public Optional<TRole> updateUserRole(RoleDto role) {
 
         Validate.notNull(role, "NULL role object");
         Validate.notEmpty(role.getName(), "Role name is not defined");
@@ -77,7 +78,8 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                 .orElseThrow(() -> new BadRequestException(
                         String.format("User role with ID: %s does not exist", role.getId())));
 
-        return Optional.of(roleRepository.save(role));
+        return Optional.of(roleRepository.save(
+                userManagementDTOMapperService.convertDTOToTRole(role)));
     }
 
     @Override
@@ -89,26 +91,24 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     public Optional<TPermission> addNewPermission(PermissionDto permission) {
 
         Validate.notNull(permission, "NULL permission object");
-        Validate.notNull(permission.getRoleId(), "User role ID is NULL");
-        Validate.notEmpty(permission.getPermissionName(), "permission name is not defined");
+        Validate.notNull(permission.getId(), "User role ID is NULL");
+        Validate.notEmpty(permission.getName(), "permission name is not defined");
 
-        TRole tRole = roleRepository.findById(permission.getRoleId())
+        TRole tRole = roleRepository.findById(permission.getId())
                 .orElseThrow(() -> new BadRequestException("User role not found"));
 
-        Optional<TPermission> tPermission = permissionRepository.findByName(permission.getPermissionName());
+        Optional<TPermission> tPermission = permissionRepository.findByName(permission.getName());
         if(tPermission.isPresent()){
-            throw new BadRequestException(String.format("Permission %s already exists", permission.getPermissionName()));
+            throw new BadRequestException(String.format("Permission %s already exists", permission.getName()));
         }
 
-        TPermission tp = new TPermission();
-        tp.setRole(tRole);
-        tp.setName(permission.getPermissionName());
+        TPermission tp = userManagementDTOMapperService.convertDTOToTPermission(permission);
 
         return Optional.of(permissionRepository.save(tp));
     }
 
     @Override
-    public Optional<TPermission> updatePermission(TPermission permission) {
+    public Optional<TPermission> updatePermission(PermissionDto permission) {
 
         Validate.notNull(permission, "NULL permission object");
         Validate.notEmpty(permission.getName(), "Permission name is not defined");
@@ -117,7 +117,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                 .orElseThrow(() -> new BadRequestException(
                         String.format("User permission with ID: %s does not exist", permission.getId()))
                 );
-        return Optional.of(permissionRepository.save(permission));
+        return Optional.of(permissionRepository.save(userManagementDTOMapperService.convertDTOToTPermission(permission)));
     }
 
     @Override
@@ -145,7 +145,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     }
 
     @Override
-    public Optional<TUserGroup> updateUserGroup(TUserGroup userGroup) {
+    public Optional<TUserGroup> updateUserGroup(UserGroupDto userGroup) {
 
         Validate.notNull(userGroup, "NULL userGroup object");
         Validate.notEmpty(userGroup.getName(), "UserGroup name is not defined");
@@ -154,7 +154,8 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                 .orElseThrow(() -> new BadRequestException(
                         String.format("UserGroup with ID: %s does not exist", userGroup.getId()))
                 );
-        return Optional.of(userGroupRepository.save(userGroup));
+        return Optional.of(userGroupRepository.save(
+                userManagementDTOMapperService.convertDTOToTUserGroup(userGroup)));
     }
 
     @Override
@@ -166,17 +167,17 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     public Optional<TGroupAuthority> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto) {
 
         Validate.notNull(groupAuthorityDto, "NULL GroupAuthority object");
-        Validate.notNull(groupAuthorityDto.getUserGroupId(), "UserGroup ID not defined");
-        Validate.notNull(groupAuthorityDto.getPermissionId(), "Permission ID not defined");
+        Validate.notNull(groupAuthorityDto.getUserGroupDto().getId(), "UserGroup ID not defined");
+        Validate.notNull(groupAuthorityDto.getPermissionDto().getId(), "Permission ID not defined");
 
-        var tUserGroup = userGroupRepository.findById(groupAuthorityDto.getUserGroupId())
+        var tUserGroup = userGroupRepository.findById(groupAuthorityDto.getUserGroupDto().getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupAuthorityDto.getUserGroupId()))
+                        () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupAuthorityDto.getUserGroupDto().getId()))
                 );
 
-        var tPermission = permissionRepository.findById(groupAuthorityDto.getPermissionId())
+        var tPermission = permissionRepository.findById(groupAuthorityDto.getPermissionDto().getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Permission with ID %s does not exist", groupAuthorityDto.getPermissionId()))
+                        () -> new BadRequestException(String.format("Permission with ID %s does not exist", groupAuthorityDto.getPermissionDto().getId()))
                 );
 
         Optional<TGroupAuthority> tGroupAuthority = groupAuthorityRepository.findByUserGroupAndPermission(tUserGroup, tPermission);
@@ -184,10 +185,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
             throw new BadRequestException(String.format("UserGroup %s already has %s permission", tUserGroup.getName(), tPermission.getName()));
         }
 
-        var tga = new TGroupAuthority();
-        tga.setPermission(tPermission);
-        tga.setUserGroup(tUserGroup);
-        tga.setCreatedOn(new Date());
+        var tga = userManagementDTOMapperService.convertDTOToTGroupAuthority(groupAuthorityDto);
 
         return Optional.of(tga);
     }
