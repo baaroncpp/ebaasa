@@ -7,14 +7,11 @@ package com.bkbwongo.common.exceptions;
  */
 public class BadRequestException extends RuntimeException{
 
-    final String message;
+    public BadRequestException(String message, Object ... messageConstants){
+        super(String.format(message, messageConstants));
+    }
 
     public BadRequestException(String message) {
-        this.message = message;
+        super(message);
     }
-
-    public BadRequestException(String message, Object ... messageConstants){
-        this.message = String.format(message, messageConstants);
-    }
-
 }

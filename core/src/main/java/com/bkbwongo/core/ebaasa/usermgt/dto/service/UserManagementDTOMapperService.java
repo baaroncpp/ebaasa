@@ -1,13 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto.service;
 
-import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TPermission;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TRole;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
+import com.bkbwongo.core.ebaasa.usermgt.dto.*;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +57,46 @@ public class UserManagementDTOMapperService {
         groupAuthorityDto.setUserGroupDto(convertTUserGroupToDTO(tGroupAuthority.getUserGroup()));
         groupAuthorityDto.setPermissionDto(convertTPermissionToDTO(tGroupAuthority.getPermission()));
         return groupAuthorityDto;
+    }
+
+    public TUser convertDTOToTUser(UserDto userDto){
+        var tUser = modelMapper.map(userDto, TUser.class);
+        tUser.setUserGroup(convertDTOToTUserGroup(userDto.getUserGroupDto()));
+        return tUser;
+    }
+
+    public UserDto convertTUserToDTO(TUser tUser){
+        var userDto = modelMapper.map(tUser, UserDto.class);
+        userDto.setUserGroupDto(convertTUserGroupToDTO(tUser.getUserGroup()));
+        return userDto;
+    }
+
+    public TUserMeta convertDTOToTUserMeta(UserMetaDto userMetaDto){
+        var tUserMeta = modelMapper.map(userMetaDto, TUserMeta.class);
+        tUserMeta.setCreatedBy(convertDTOToTUser(userMetaDto.getCreatedBy()));
+
+        if(userMetaDto.getModifiedBy() != null){
+            tUserMeta.setModifiedBy(convertDTOToTUser(userMetaDto.getModifiedBy()));
+        }
+        return tUserMeta;
+    }
+
+    public UserMetaDto convertTUserMetaToDTO(TUserMeta tUserMeta){
+        var userMetaDto = modelMapper.map(tUserMeta, UserMetaDto.class);
+        userMetaDto.setCreatedBy(convertTUserToDTO(tUserMeta.getCreatedBy()));
+
+        if(tUserMeta.getModifiedBy() != null){
+            userMetaDto.setCreatedBy(convertTUserToDTO(tUserMeta.getCreatedBy()));
+        }
+        return userMetaDto;
+    }
+
+    public TUserApproval convertDTOToTUserApproval(UserApprovalDto userApprovalDto){
+        return modelMapper.map(userApprovalDto, TUserApproval.class);
+    }
+
+    public UserApprovalDto convertTUserApprovalToDTO(TUserApproval tUserApproval){
+        return modelMapper.map(tUserApproval, UserApprovalDto.class);
     }
 
 }

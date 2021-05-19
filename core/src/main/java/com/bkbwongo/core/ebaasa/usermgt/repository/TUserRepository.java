@@ -1,9 +1,12 @@
 package com.bkbwongo.core.ebaasa.usermgt.repository;
 
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,6 +15,7 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 @Repository
-public interface UserRepository extends JpaRepository<TUser, Long> {
+public interface TUserRepository extends JpaRepository<TUser, Long> {
     Optional<TUser> findByUsername(String username);
+    List<TUser> findAllUsers(Pageable pageable);
 }

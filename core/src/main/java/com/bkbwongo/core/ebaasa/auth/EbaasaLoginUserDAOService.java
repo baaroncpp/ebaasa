@@ -8,10 +8,9 @@ import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TGroupAuthorityRepository;
-import com.bkbwongo.core.ebaasa.usermgt.repository.UserRepository;
+import com.bkbwongo.core.ebaasa.usermgt.repository.TUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,20 +26,20 @@ import java.util.stream.Collectors;
 @Service
 public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
 
-    private UserRepository userRepository;
+    private TUserRepository TUserRepository;
     private TGroupAuthorityRepository groupAuthorityRepository;
 
     @Autowired
-    public EbaasaLoginUserDAOService(UserRepository userRepository,
+    public EbaasaLoginUserDAOService(TUserRepository TUserRepository,
                                      TGroupAuthorityRepository groupAuthorityRepository) {
-        this.userRepository = userRepository;
+        this.TUserRepository = TUserRepository;
         this.groupAuthorityRepository = groupAuthorityRepository;
     }
 
     @Override
     public Optional<EbaasaLoginUser> selectLoginUserByUsername(String username) {
 
-        Optional<TUser> user = userRepository.findByUsername(username);
+        Optional<TUser> user = TUserRepository.findByUsername(username);
         Validate.isTrue(user.isPresent(), ErrorMessageConstants.USER_NOT_FOUND);
 
         return mapUserDetails(user.get());

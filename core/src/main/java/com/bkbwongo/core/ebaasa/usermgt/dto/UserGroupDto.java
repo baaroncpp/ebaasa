@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
@@ -9,6 +11,8 @@ import java.util.Date;
  * @created on 15/05/2021
  * @project ebaasa-sms
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class UserGroupDto {
     private Long id;

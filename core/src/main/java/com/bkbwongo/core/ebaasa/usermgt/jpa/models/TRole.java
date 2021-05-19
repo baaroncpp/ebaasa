@@ -2,6 +2,7 @@ package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,8 @@ import javax.persistence.Table;
  * @created on 13/05/2021
  * @project ebaasa-sms
  */
-@Builder
 @Entity
+@NoArgsConstructor
 @Table(name = "t_role", schema = "core")
 public class TRole extends BaseEntity {
     private String name;

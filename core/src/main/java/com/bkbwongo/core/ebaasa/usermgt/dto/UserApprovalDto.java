@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -8,16 +10,18 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 15/05/2021
+ * @created on 19/05/2021
  * @project ebaasa-sms
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class GroupAuthorityDto {
+public class UserApprovalDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private UserGroupDto userGroupDto;
-    private PermissionDto permissionDto;
+    private TUser createdBy;
+    private TUser modifiedBy;
+    private String userId;
+    private ApprovalEnum status;
 }

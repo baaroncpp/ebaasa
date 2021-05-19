@@ -60,10 +60,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         Optional<TRole> tRole = roleRepository.findByName(role.getName());
 
         if(tRole.isPresent()){
-            throw new BadRequestException(String.format("Role % already exists", role.getName()));
+            throw new BadRequestException(String.format("Role %s already exists", role.getName()));
         }
 
         TRole tr = userManagementDTOMapperService.convertDTOToTRole(role);
+        tr.setCreatedOn(new Date());
 
         return Optional.of(roleRepository.save(tr));
     }
@@ -103,6 +104,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         }
 
         TPermission tp = userManagementDTOMapperService.convertDTOToTPermission(permission);
+        tp.setCreatedOn(new Date());
 
         return Optional.of(permissionRepository.save(tp));
     }
@@ -140,6 +142,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         var tup = new TUserGroup();
         tup.setName(userGroup.getName());
         tup.setNote(userGroup.getNote());
+        tup.setCreatedOn(new Date());
 
         return Optional.of(userGroupRepository.save(tup));
     }
