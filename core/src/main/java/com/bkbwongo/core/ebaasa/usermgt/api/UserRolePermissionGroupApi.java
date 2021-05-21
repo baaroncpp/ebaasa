@@ -32,73 +32,73 @@ public class UserRolePermissionGroupApi {
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/role", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> addUserRole(@RequestBody RoleDto role){
+    public ResponseEntity<Object> addUserRole(@RequestBody RoleDto role){
         return ResponseEntity.ok(userRolePermissionGroupService.createUserRole(role));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/role", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updateUserRole(@RequestBody RoleDto role){
+    public ResponseEntity<Object> updateUserRole(@RequestBody RoleDto role){
         return ResponseEntity.ok(userRolePermissionGroupService.updateUserRole(role));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
     @GetMapping(value = "/role", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> getAllUserRoles(){
+    public ResponseEntity<Object> getAllUserRoles(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllRoles());
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/permission", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> addPermission(@RequestBody PermissionDto permission){
+    public ResponseEntity<Object> addPermission(@RequestBody PermissionDto permission){
         return ResponseEntity.ok(userRolePermissionGroupService.addNewPermission(permission));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/permission", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updatePermission(@RequestBody PermissionDto permission){
+    public ResponseEntity<Object> updatePermission(@RequestBody PermissionDto permission){
         return ResponseEntity.ok(userRolePermissionGroupService.updatePermission(permission));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
     @GetMapping(value = "/permission", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> getAllPermissions(){
+    public ResponseEntity<Object> getAllPermissions(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllPermissions());
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> addUserGroup(@RequestBody UserGroupDto userGroup){
+    public ResponseEntity<Object> addUserGroup(@RequestBody UserGroupDto userGroup){
         return ResponseEntity.ok(userRolePermissionGroupService.createUserGroup(userGroup));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> updateUserGroup(@RequestBody UserGroupDto userGroup){
+    public ResponseEntity<Object> updateUserGroup(@RequestBody UserGroupDto userGroup){
         return ResponseEntity.ok(userRolePermissionGroupService.updateUserGroup(userGroup));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
     @GetMapping(value = "/group", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> getAllUserGroups(){
+    public ResponseEntity<Object> getAllUserGroups(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllUserGroups());
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/group/authority", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> addPermissionToUserGroup(@RequestBody GroupAuthorityDto groupAuthorityDto){
+    public ResponseEntity<Object> addPermissionToUserGroup(@RequestBody GroupAuthorityDto groupAuthorityDto){
         return ResponseEntity.ok(userRolePermissionGroupService.addPermissionToUserGroup(groupAuthorityDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.DELETE")
     @DeleteMapping(value = "/group/authority/remove/{id}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> removeGroupAuthority(@PathVariable("id") Long id){
+    public ResponseEntity<Object> removeGroupAuthority(@PathVariable("id") Long id){
         return ResponseEntity.ok(userRolePermissionGroupService.removePermissionToUserGroup(id));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
     @PostMapping(value = "/group/authorities/{id}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<?> getGroupAuthorities(@PathVariable("id") Long id){
+    public ResponseEntity<Object> getGroupAuthorities(@PathVariable("id") Long id){
         return ResponseEntity.ok(userRolePermissionGroupService.getGroupAuthorities(id));
     }
 }

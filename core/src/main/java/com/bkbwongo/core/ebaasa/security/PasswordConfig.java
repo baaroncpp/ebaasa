@@ -17,4 +17,5 @@ public class PasswordConfig {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder(12);// TODO find out appropriate encoding strength
     }
+
 }

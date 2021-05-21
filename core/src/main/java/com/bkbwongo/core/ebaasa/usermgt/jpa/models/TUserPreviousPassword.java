@@ -3,6 +3,7 @@ package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,12 +14,25 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_user_previous_password", schema = "core")
-public class TUserPreviousPassword extends BaseEntity {
+public class TUserPreviousPassword implements Serializable {
 
+    private Long id;
     private TUser user;
+    private TUser modifiedBy;
     private String password;
     private Date removalTime;
     private String note;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
@@ -58,4 +72,13 @@ public class TUserPreviousPassword extends BaseEntity {
         this.note = note;
     }
 
+    @JoinColumn(name = "modifiedBy", referencedColumnName = "id", insertable = true, updatable = false)
+    @ManyToMany(fetch = FetchType.LAZY)
+    public TUser getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(TUser modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 }
