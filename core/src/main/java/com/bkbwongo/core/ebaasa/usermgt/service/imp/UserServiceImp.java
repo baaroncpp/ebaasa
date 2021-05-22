@@ -2,12 +2,13 @@ package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
+import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
+import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserPreviousPassword;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TUserApprovalRepository;
-import com.bkbwongo.core.ebaasa.usermgt.repository.TUserMetaRepository;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TUserPreviousPasswordRepository;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TUserRepository;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserService;
@@ -29,7 +30,6 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
 
     private TUserRepository tUserRepository;
-    private TUserMetaRepository tUserMetaRepository;
     private TUserApprovalRepository tUserApprovalRepository;
     private UserManagementDTOMapperService userManagementDTOMapperService;
     private TUserPreviousPasswordRepository tUserPreviousPasswordRepository;
@@ -43,12 +43,10 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     public UserServiceImp(TUserRepository tUserRepository,
-                          TUserMetaRepository tUserMetaRepository,
                           TUserApprovalRepository tUserApprovalRepository,
                           UserManagementDTOMapperService userManagementDTOMapperService,
                           TUserPreviousPasswordRepository tUserPreviousPasswordRepository) {
         this.tUserRepository = tUserRepository;
-        this.tUserMetaRepository = tUserMetaRepository;
         this.tUserApprovalRepository = tUserApprovalRepository;
         this.userManagementDTOMapperService = userManagementDTOMapperService;
         this.tUserPreviousPasswordRepository = tUserPreviousPasswordRepository;
@@ -125,6 +123,30 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public Optional<TUser> approveUser(UserApprovalDto userApprovalDto) {
+        Validate.notNull(userApprovalDto.getUserId(), "NULL user ID");
+        Validate.notNull(userApprovalDto.getCreatedBy(), "created by not defined");
+        Validate.notNull(userApprovalDto.getStatus(), "Status not defined");
+
+        var user = tUserRepository.findById(userApprovalDto.getUserId()).orElseThrow(
+                () -> new BadRequestException(ID_NOT_FOUND, userApprovalDto.getUserId())
+        );
+
+        var approvingUser = tUserRepository.findById(userApprovalDto.getCreatedBy().getId()).orElseThrow(
+                () -> new BadRequestException(ID_NOT_FOUND, userApprovalDto.getCreatedBy().getId())
+        );
+
+        var tUserApproval = userManagementDTOMapperService.convertDTOToTUserApproval(userApprovalDto);
+        tUserApproval.setCreatedOn(new Date());
+
+        tUserApprovalRepository.save(tUserApproval);
+
+        return Optional.of(tUserRepository.save(
+                changeUserStatus(user, approvingUser, tUserApproval.getStatus()).get())
+        );
+    }
+
+    @Override
     public Optional<TUserPreviousPassword> changePassword(String username,
                                           String oldPassword,
                                           String newPassword,
@@ -172,5 +194,30 @@ public class UserServiceImp implements UserService {
     @Override
     public List<TUser> getAllUsers(Pageable pageable) {
         return tUserRepository.findAllUsers(pageable);
+    }
+
+    Optional<TUser> changeUserStatus(TUser user, TUser approvingUser, ApprovalEnum status){
+
+        if(status.equals(ApprovalEnum.APPROVED)){
+            user.setApproved(Boolean.TRUE);
+            user.setAccountLocked(Boolean.TRUE);
+            user.setAccountExpired(Boolean.TRUE);
+            user.setDeleted(Boolean.FALSE);
+            user.setApprovedBy(approvingUser.getId());
+            user.setModifiedOn(new Date());
+        }
+
+        if(status.equals(ApprovalEnum.PENDING)){
+            user.setApproved(Boolean.FALSE);
+            user.setAccountLocked(Boolean.FALSE);
+            user.setModifiedOn(new Date());
+        }
+
+        if(status.equals(ApprovalEnum.REJECTED)){
+            user.setApproved(Boolean.FALSE);
+            user.setAccountLocked(Boolean.FALSE);
+            user.setModifiedOn(new Date());
+        }
+        return Optional.of(user);
     }
 }

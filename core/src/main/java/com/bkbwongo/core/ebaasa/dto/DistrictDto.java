@@ -1,7 +1,6 @@
-package com.bkbwongo.core.ebaasa.usermgt.dto;
+package com.bkbwongo.core.ebaasa.dto;
 
-import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -10,18 +9,17 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 19/05/2021
+ * @created on 22/05/2021
  * @project ebaasa-sms
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class UserApprovalDto {
+public class DistrictDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private UserDto createdBy;
-    private UserDto modifiedBy;
-    private Long userId;
-    private ApprovalEnum status;
+    private TCountry country;
+    private String name;
+    private String region;
 }

@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto.service;
 
+import com.bkbwongo.core.ebaasa.service.CoreDTOService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.*;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.*;
 import org.modelmapper.ModelMapper;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 public class UserManagementDTOMapperService {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private CoreDTOService coreDTOService;
 
     public TRole convertDTOToTRole(RoleDto roleDto){
         return modelMapper.map(roleDto, TRole.class);
@@ -92,11 +96,47 @@ public class UserManagementDTOMapperService {
     }
 
     public TUserApproval convertDTOToTUserApproval(UserApprovalDto userApprovalDto){
-        return modelMapper.map(userApprovalDto, TUserApproval.class);
+        var tUserApproval = modelMapper.map(userApprovalDto, TUserApproval.class);
+        tUserApproval.setCreatedBy(convertDTOToTUser(userApprovalDto.getCreatedBy()));
+
+        if(userApprovalDto.getModifiedBy() != null){
+            tUserApproval.setModifiedBy(convertDTOToTUser(userApprovalDto.getModifiedBy()));
+        }
+        return tUserApproval;
     }
 
     public UserApprovalDto convertTUserApprovalToDTO(TUserApproval tUserApproval){
-        return modelMapper.map(tUserApproval, UserApprovalDto.class);
+        var userApprovalDto = modelMapper.map(tUserApproval, UserApprovalDto.class);
+        userApprovalDto.setCreatedBy(convertTUserToDTO(tUserApproval.getCreatedBy()));
+
+        if(tUserApproval.getModifiedBy() != null){
+            userApprovalDto.setModifiedBy(convertTUserToDTO(tUserApproval.getModifiedBy()));
+        }
+        return userApprovalDto;
+    }
+
+    public TCompany convertDTOToTCompany(CompanyDto companyDto){
+        var tCompany = modelMapper.map(companyDto, TCompany.class);
+        tCompany.setCreatedBy(convertDTOToTUser(companyDto.getCreatedBy()));
+        tCompany.setDistrict(coreDTOService.convertDTOToTDistrict(companyDto.getDistrict()));
+        tCompany.setRegistrationCountry(coreDTOService.convertDTOToTCountry(companyDto.getRegistrationCountry()));
+
+        if (companyDto.getModifiedBy() != null){
+            tCompany.setModifiedBy(convertDTOToTUser(companyDto.getModifiedBy()));
+        }
+        return tCompany;
+    }
+
+    public CompanyDto convertTCompanyToDTO(TCompany tCompany){
+        var companyDto = modelMapper.map(tCompany, CompanyDto.class);
+        companyDto.setCreatedBy(convertTUserToDTO(tCompany.getCreatedBy()));
+        companyDto.setDistrict(coreDTOService.convertTDistrictToDTO(tCompany.getDistrict()));
+        companyDto.setRegistrationCountry(coreDTOService.convertTCountryToDTO(tCompany.getRegistrationCountry()));
+
+        if (tCompany.getModifiedBy() != null){
+            companyDto.setModifiedBy(convertTUserToDTO(tCompany.getModifiedBy()));
+        }
+        return companyDto;
     }
 
 }

@@ -26,7 +26,7 @@ create table t_company(
 	district SERIAL references t_district(id),
 	tin_number varchar(50) unique not null,
 	registration_country BIGSERIAL references t_country(id),
-	contact_person varchar(100),
+	contact_person varchar(100) unique not null,
 	contact_identification VARCHAR(20) not null,
 	contact_identification_number varchar(50) not null,
 	contact_identification_path text,

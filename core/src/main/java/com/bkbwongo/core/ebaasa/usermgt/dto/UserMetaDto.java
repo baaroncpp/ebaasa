@@ -26,7 +26,7 @@ public class UserMetaDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String userId;
+    private Long userId;
     private String phoneNumber;
     private String phoneNumber2;
     private String imagePath;

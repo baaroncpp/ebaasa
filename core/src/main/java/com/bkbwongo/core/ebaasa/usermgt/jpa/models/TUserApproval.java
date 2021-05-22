@@ -14,15 +14,15 @@ import javax.persistence.*;
 @Table(name = "t_user_approval", schema = "core")
 public class TUserApproval extends AuditedEntity {
 
-    private String userId;
+    private Long userId;
     private ApprovalEnum status;
 
     @Column(name = "user_id")
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

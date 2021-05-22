@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.service;
 
+import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserMetaDto;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
@@ -20,6 +21,7 @@ public interface UserService {
     Optional<TUser> updateUser(UserDto userDto);
     Optional<TUser> getUserById(Long id);
     Optional<TUser> getUserByUsername(String username);
+    Optional<TUser> approveUser(UserApprovalDto userApprovalDto);
     Optional<TUserPreviousPassword> changePassword(String username, String oldPassword, String newPassword, Long userId, String note);
     List<TUser> getAllUsers(Pageable pageable);
 }

@@ -25,7 +25,7 @@ public class TUser extends BaseEntity implements Serializable {
     private TUserGroup userGroup;
     //private transient TUserMeta userMeta;
     private Boolean isDeleted;
-    private String approvedBy;
+    private Long approvedBy;
     private UserTypeEnum userType;
 
     @Column(name = "username")
@@ -112,11 +112,11 @@ public class TUser extends BaseEntity implements Serializable {
     }
 
     @Column(name = "approved_by")
-    public String getApprovedBy() {
+    public Long getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(String approvedBy) {
+    public void setApprovedBy(Long approvedBy) {
         this.approvedBy = approvedBy;
     }
 

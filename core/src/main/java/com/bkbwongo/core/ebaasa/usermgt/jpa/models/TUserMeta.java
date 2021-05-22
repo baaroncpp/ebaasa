@@ -20,7 +20,7 @@ public class TUserMeta extends AuditedEntity {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String userId;
+    private Long userId;
     private String phoneNumber;
     private String phoneNumber2;
     private String imagePath;
@@ -63,11 +63,11 @@ public class TUserMeta extends AuditedEntity {
     }
 
     @Column(name = "user_id")
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
