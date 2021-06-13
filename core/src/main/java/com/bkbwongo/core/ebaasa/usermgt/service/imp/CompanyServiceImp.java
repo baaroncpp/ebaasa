@@ -2,7 +2,6 @@ package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
-import com.bkbwongo.core.ebaasa.service.CoreDTOService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.CompanyDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TCompany;
@@ -31,6 +30,7 @@ public class CompanyServiceImp implements CompanyService {
     private UserManagementDTOMapperService userManagementDTOMapperService;
 
     private static final String ID_NOT_FOUND = "User with ID: %s not found";
+    private static final String BUSINESS_NOT_FOUND = "Business name not defined";
 
     @Autowired
     public CompanyServiceImp(TCompanyRepository tCompanyRepository,
@@ -44,7 +44,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public Optional<TCompany> addCompany(CompanyDto companyDto) {
         Validate.notNull(companyDto, "NULL company object");
-        Validate.notEmpty(companyDto.getBusinessName(), "Business name not defined");
+        Validate.notEmpty(companyDto.getBusinessName(), BUSINESS_NOT_FOUND);
         Validate.notEmpty(companyDto.getContactPerson(), "Contact person not defined");// CONTACT PERSON IS USERNAME OF USER OWNING COMPANY
         Validate.notNull(companyDto.getCreatedBy(), "User creating the company not defined");
 
@@ -69,7 +69,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public Optional<TCompany> updateCompany(TUser modifiedBy, CompanyDto companyDto) {
         Validate.notNull(companyDto, "NULL company object");
-        Validate.notEmpty(companyDto.getBusinessName(), "Business name not defined");
+        Validate.notEmpty(companyDto.getBusinessName(), BUSINESS_NOT_FOUND);
         Validate.notEmpty(companyDto.getContactPerson(), "Contact person not defined");
         Validate.notNull(companyDto.getCreatedBy(), "User creating the company not defined");
         Validate.notNull(companyDto.getId(), "Company ID not defined");
@@ -86,7 +86,7 @@ public class CompanyServiceImp implements CompanyService {
             }
         }
 
-        var modifyingUser = tUserRepository.findById(modifiedBy.getId())
+        tUserRepository.findById(modifiedBy.getId())
                 .orElseThrow(
                         () -> new BadRequestException(String.format(ID_NOT_FOUND, modifiedBy.getId()))
                 );
@@ -111,7 +111,7 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public Optional<TCompany> getCompanyByBusinessName(String businessName) {
-        Validate.notEmpty(businessName, "Business name not defined");
+        Validate.notEmpty(businessName, BUSINESS_NOT_FOUND);
 
         var company = tCompanyRepository.findByBusinessName(businessName)
             .orElseThrow(

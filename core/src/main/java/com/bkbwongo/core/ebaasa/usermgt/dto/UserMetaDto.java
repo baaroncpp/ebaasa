@@ -1,8 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
-import com.bkbwongo.core.ebaasa.enums.GenderEnum;
-import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.base.enums.GenderEnum;
+import com.bkbwongo.core.ebaasa.base.jpa.models.TCountry;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

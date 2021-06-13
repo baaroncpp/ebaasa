@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
-import com.bkbwongo.core.ebaasa.api.BaseAPI;
+import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
 import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
@@ -91,7 +91,7 @@ public class UserRolePermissionGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.DELETE")
-    @DeleteMapping(value = "/group/authority/remove/{id}", produces = BaseAPI.APPLICATION_JSON)
+    @DeleteMapping(value = "/group/authority/{id}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> removeGroupAuthority(@PathVariable("id") Long id){
         return ResponseEntity.ok(userRolePermissionGroupService.removePermissionToUserGroup(id));
     }

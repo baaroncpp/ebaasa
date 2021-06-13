@@ -1,7 +1,5 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

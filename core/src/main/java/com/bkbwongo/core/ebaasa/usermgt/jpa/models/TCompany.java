@@ -1,9 +1,9 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.jpa.models.AuditedEntity;
-import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
-import com.bkbwongo.core.ebaasa.jpa.models.TDistrict;
-import com.bkbwongo.core.ebaasa.enums.IdentificationEnum;
+import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
+import com.bkbwongo.core.ebaasa.base.jpa.models.TCountry;
+import com.bkbwongo.core.ebaasa.base.jpa.models.TDistrict;
+import com.bkbwongo.core.ebaasa.base.enums.IdentificationEnum;
 
 import javax.persistence.*;
 

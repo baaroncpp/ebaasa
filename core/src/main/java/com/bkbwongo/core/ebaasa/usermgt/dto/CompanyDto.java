@@ -1,8 +1,8 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
-import com.bkbwongo.core.ebaasa.dto.CountryDto;
-import com.bkbwongo.core.ebaasa.dto.DistrictDto;
-import com.bkbwongo.core.ebaasa.enums.IdentificationEnum;
+import com.bkbwongo.core.ebaasa.base.dto.CountryDto;
+import com.bkbwongo.core.ebaasa.base.dto.DistrictDto;
+import com.bkbwongo.core.ebaasa.base.enums.IdentificationEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

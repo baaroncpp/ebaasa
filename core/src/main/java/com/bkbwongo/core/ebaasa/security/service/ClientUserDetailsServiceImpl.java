@@ -1,7 +1,5 @@
 package com.bkbwongo.core.ebaasa.security.service;
 
-import com.bkbwongo.core.ebaasa.repository.TAppClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.oauth2.provider.ClientDetails;
 //import org.springframework.security.oauth2.provider.ClientDetailsService;
 //import org.springframework.security.oauth2.provider.ClientRegistrationException;

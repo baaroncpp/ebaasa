@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto.service;
 
-import com.bkbwongo.core.ebaasa.service.CoreDTOService;
+import com.bkbwongo.core.ebaasa.base.service.CoreDTOService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.*;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.*;
 import org.modelmapper.ModelMapper;

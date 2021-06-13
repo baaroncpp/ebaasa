@@ -2,7 +2,7 @@ package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
-import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
+import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;

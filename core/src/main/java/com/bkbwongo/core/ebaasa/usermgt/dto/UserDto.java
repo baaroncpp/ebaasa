@@ -1,7 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
-import com.bkbwongo.core.ebaasa.enums.UserTypeEnum;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
+import com.bkbwongo.core.ebaasa.base.enums.UserTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -1,7 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
-import lombok.Builder;
+import com.bkbwongo.core.ebaasa.base.jpa.models.BaseEntity;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;

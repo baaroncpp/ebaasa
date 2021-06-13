@@ -1,8 +1,8 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.enums.GenderEnum;
-import com.bkbwongo.core.ebaasa.jpa.models.AuditedEntity;
-import com.bkbwongo.core.ebaasa.jpa.models.TCountry;
+import com.bkbwongo.core.ebaasa.base.enums.GenderEnum;
+import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
+import com.bkbwongo.core.ebaasa.base.jpa.models.TCountry;
 
 import javax.persistence.*;
 import java.util.Date;

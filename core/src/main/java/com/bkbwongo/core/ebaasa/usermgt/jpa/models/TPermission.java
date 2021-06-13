@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.jpa.models.BaseEntity;
+import com.bkbwongo.core.ebaasa.base.jpa.models.BaseEntity;
 
 import javax.persistence.*;
 

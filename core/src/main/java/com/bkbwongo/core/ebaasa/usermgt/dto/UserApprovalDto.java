@@ -1,7 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
-import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

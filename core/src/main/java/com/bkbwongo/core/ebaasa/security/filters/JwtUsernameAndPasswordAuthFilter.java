@@ -34,6 +34,8 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
     @Autowired
     private JwtConfig jwtConfig;
 
+    static final String CLAIM_USER_ID="userid";
+
     //@Value("${app.security.jwt.secret-key}")
     private String secretKey = "allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest";
 
@@ -71,7 +73,6 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                //.signWith(jwtConfig.getSecretKeyForSigning())
                 .compact();
 
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer "+token);// add token in response header

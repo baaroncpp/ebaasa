@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
-import com.bkbwongo.core.ebaasa.api.BaseAPI;
+import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserService;
@@ -72,7 +72,7 @@ public class UserApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/user", params = { "page", "size" ,"sort"}, produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/users", params = { "page", "size" ,"sort"}, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllUsers(@RequestParam("page") int page,
                                               @RequestParam("size") int size,
                                               @RequestParam("sort") String sort){

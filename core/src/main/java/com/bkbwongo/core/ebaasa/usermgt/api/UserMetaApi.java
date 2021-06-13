@@ -1,13 +1,12 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
-import com.bkbwongo.core.ebaasa.api.BaseAPI;
+import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserMetaDto;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserMetaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.security.RolesAllowed;
 
 /**
@@ -46,4 +45,5 @@ public class UserMetaApi {
     public ResponseEntity<Object> getUserMetaByUserId(@PathVariable("userid") Long id){
         return ResponseEntity.ok(userMetaService.getUserMetaByUserId(id));
     }
+
 }

@@ -1,8 +1,7 @@
 package com.bkbwongo.core.ebaasa.security.service;
 
-import com.bkbwongo.core.ebaasa.auth.EbaasaLoginUserDAO;
+import com.bkbwongo.core.ebaasa.security.auth.EbaasaLoginUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

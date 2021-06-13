@@ -1,7 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.enums.ApprovalEnum;
-import com.bkbwongo.core.ebaasa.jpa.models.AuditedEntity;
+import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
+import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 
 import javax.persistence.*;
 
