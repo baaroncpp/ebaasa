@@ -15,10 +15,10 @@ import java.util.Date;
  * @project ebaasa-sms
  */
 @Entity
-@Table(name = "t_cash_flow_request",schema = "core")
-public class TCashFlowRequest extends AuditedEntity {
+@Table(name = "t_cash_flow",schema = "core")
+public class TCashFlow extends AuditedEntity {
 
-    private String externalReference;//MOMO transaction id
+    private String externalReference;//MOMO transaction id, bank transaction id
     private Money amount;
     private TWalletTransaction fromWalletTransaction;
     private TWalletTransaction toWalletTransaction;
@@ -84,7 +84,7 @@ public class TCashFlowRequest extends AuditedEntity {
         this.fromWallet = fromWallet;
     }
 
-    @JoinColumn(name = "approve_user_1",referencedColumnName = "user_id",insertable = true,updatable = true)
+    @JoinColumn(name = "approve_user_1",referencedColumnName = "id",insertable = true,updatable = true)
     @OneToOne(fetch = FetchType.LAZY)
     public TUser getApproveUser1() {
         return approveUser1;
@@ -94,7 +94,7 @@ public class TCashFlowRequest extends AuditedEntity {
         this.approveUser1 = approveUser1;
     }
 
-    @JoinColumn(name = "approve_user_2",referencedColumnName = "user_id",insertable = true,updatable = true)
+    @JoinColumn(name = "approve_user_2",referencedColumnName = "id",insertable = true,updatable = true)
     @OneToOne(fetch = FetchType.LAZY)
     public TUser getApproveUser2() {
         return approveUser2;
@@ -122,7 +122,7 @@ public class TCashFlowRequest extends AuditedEntity {
         this.note2 = note2;
     }
 
-    @JoinColumn(name = "rejected_by",referencedColumnName = "user_id",insertable = true,updatable = true)
+    @JoinColumn(name = "rejected_by",referencedColumnName = "id",insertable = true,updatable = true)
     @OneToOne(fetch = FetchType.LAZY)
     public TUser getRejectedBy() {
         return rejectedBy;

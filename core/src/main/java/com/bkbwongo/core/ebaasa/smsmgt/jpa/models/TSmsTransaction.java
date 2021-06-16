@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.smsmgt.jpa.models;
 
+import com.bkbwongo.core.ebaasa.base.jpa.models.BaseEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,5 +12,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_sms_transaction",schema = "core")
-public class TSmsTransaction {
+public class TSmsTransaction extends BaseEntity {
 }

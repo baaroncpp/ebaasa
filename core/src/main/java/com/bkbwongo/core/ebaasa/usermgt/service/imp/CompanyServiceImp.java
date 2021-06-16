@@ -122,6 +122,6 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public List<TCompany> getAllCompanies(Pageable pageable) {
-        return tCompanyRepository.findAllCompanies(pageable);
+        return tCompanyRepository.findAll(pageable).getContent();
     }
 }

@@ -8,7 +8,6 @@ import com.bkbwongo.core.ebaasa.walletmgt.dto.WalletDto;
 import com.bkbwongo.core.ebaasa.walletmgt.service.WalletService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +25,7 @@ import java.util.Optional;
  */
 @Tag(name = "Wallet Accounts", description = "Manage wallet accounts")
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class WalletApi {
 
     private WalletService walletService;
@@ -44,8 +43,8 @@ public class WalletApi {
         this.jwtUtil = jwtUtil;
     }
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
+    //@Value("${jwt.header}")
+    private String tokenHeader = "Bearer ";
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/wallet", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
@@ -68,7 +67,7 @@ public class WalletApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/wallets", params = { "page", "size" ,"sort", "walletgroupid"}, produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/wallets/group", params = { "page", "size" ,"sort", "walletgroupid"}, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllWalletsByGroup(@RequestParam("page") int page,
                                               @RequestParam("size") int size,
                                               @RequestParam("sort") String sort,

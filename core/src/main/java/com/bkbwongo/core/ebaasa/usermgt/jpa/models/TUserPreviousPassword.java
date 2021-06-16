@@ -71,7 +71,7 @@ public class TUserPreviousPassword implements Serializable {
     }
 
     @JoinColumn(name = "modifiedBy", referencedColumnName = "id", insertable = true, updatable = false)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     public TUser getModifiedBy() {
         return modifiedBy;
     }

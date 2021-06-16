@@ -8,8 +8,6 @@ import com.bkbwongo.core.ebaasa.walletmgt.dto.WalletGroupDto;
 import com.bkbwongo.core.ebaasa.walletmgt.service.WalletGroupService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ import java.util.Optional;
  */
 @Tag(name = "Wallet Groups", description = "Manage wallet groups")
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class WalletGroupApi {
 
     private UserService userService;
@@ -40,11 +38,11 @@ public class WalletGroupApi {
         this.jwtUtil = jwtUtil;
     }
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
+    //@Value("${jwt.header}")
+    private String tokenHeader = "Bearer ";
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
-    @PostMapping(value = "/company", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
+    @PostMapping(value = "/wallet/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> addWalletGroup(HttpServletRequest request, @RequestBody WalletGroupDto walletGroupDto){
         String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
         Optional<TUser> user = userService.getUserByUsername(username);
@@ -52,25 +50,25 @@ public class WalletGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
-    @PutMapping(value = "/company", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
+    @PutMapping(value = "/wallet/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> updateWalletGroup(@RequestBody WalletGroupDto walletGroupDto){
         return ResponseEntity.ok(walletGroupService.updateWalletGroup(walletGroupDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/company/{id}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> getWalletGroupById(@PathVariable Long id){
+    @GetMapping(value = "/wallet/group/{id}", produces = BaseAPI.APPLICATION_JSON)
+    public ResponseEntity<Object> getWalletGroupById(@PathVariable("id") Long id){
         return ResponseEntity.ok(walletGroupService.getWalletGroupById(id));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/company/name/{name}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> getWalletGroupByName(@PathVariable String name){
+    @GetMapping(value = "/wallet/group/{name}", produces = BaseAPI.APPLICATION_JSON)
+    public ResponseEntity<Object> getWalletGroupByName(@PathVariable("name") String name){
         return ResponseEntity.ok(walletGroupService.getWalletGroupByName(name));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/companies", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/wallet/groups", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllWalletGroup(){
         return ResponseEntity.ok(walletGroupService.getAllWalletGroups());
     }

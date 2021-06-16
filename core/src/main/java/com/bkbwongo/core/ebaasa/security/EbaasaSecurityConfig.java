@@ -30,6 +30,13 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final EbaasaAuthenticationEntryPoint ebaasaAuthenticationEntryPoint;
 
+    private static final String[] SWAGGER_URL_PATHS = new String[] {
+            "**/termsofuse",
+            "/v3/api-docs/**",
+            "/swagger-ui.html**","/swagger-ui/**",
+            "/configuration/security","/configuration/ui","/swagger-resources/**",
+            "/v2/api-docs**", "/webjars/**" };
+
     @Autowired
     public EbaasaSecurityConfig(EbaasaUserDetailsService ebaasaUserDetailsService,
                                 PasswordEncoder passwordEncoder,
@@ -54,7 +61,8 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/token/**").permitAll()
-                .antMatchers("swagger*").permitAll()
+                .mvcMatchers(SWAGGER_URL_PATHS).permitAll()
+                //.antMatchers("swagger*").permitAll()
                 .anyRequest()
                 .authenticated();
     }

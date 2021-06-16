@@ -17,5 +17,5 @@ import java.util.Optional;
 @Repository
 public interface TUserRepository extends JpaRepository<TUser, Long> {
     Optional<TUser> findByUsername(String username);
-    List<TUser> findAllUsers(Pageable pageable);
+    Page<TUser> findAll(Pageable pageable);
 }

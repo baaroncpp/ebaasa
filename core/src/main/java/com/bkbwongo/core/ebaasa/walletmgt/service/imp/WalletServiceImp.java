@@ -102,12 +102,12 @@ public class WalletServiceImp implements WalletService {
                 .orElseThrow(
                         () -> new BadRequestException(String.format("WalletGroup with ID: %s does not exist", walletGroupId))
                 );
-        return walletRepository.findAllByTWalletGroup(pageable, walletGroup);
+        return walletRepository.findByWalletGroup(pageable, walletGroup).getContent();
     }
 
     @Override
     public List<TWallet> getAllWallets(Pageable pageable) {
-        return walletRepository.findAllByCreatedOn(pageable);
+        return walletRepository.findAll(pageable).getContent();
     }
 
     @Override

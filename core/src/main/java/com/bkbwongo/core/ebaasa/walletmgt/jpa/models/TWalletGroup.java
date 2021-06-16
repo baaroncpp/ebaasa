@@ -3,8 +3,7 @@ package com.bkbwongo.core.ebaasa.walletmgt.jpa.models;
 import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author bkaaron
@@ -18,4 +17,41 @@ public class TWalletGroup extends AuditedEntity {
     private String note;
     private WalletAccountTypeEnum groupType;
     private boolean isDebited;//find a word that can be invoiced on debt
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "note")
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Column(name = "wallet_account_type")
+    @Enumerated(EnumType.STRING)
+    public WalletAccountTypeEnum getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(WalletAccountTypeEnum groupType) {
+        this.groupType = groupType;
+    }
+
+    @Column(name = "is_debited")
+    public boolean isDebited() {
+        return isDebited;
+    }
+
+    public void setDebited(boolean debited) {
+        isDebited = debited;
+    }
 }

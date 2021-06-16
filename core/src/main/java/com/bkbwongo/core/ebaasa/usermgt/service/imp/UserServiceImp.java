@@ -193,7 +193,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<TUser> getAllUsers(Pageable pageable) {
-        return tUserRepository.findAllUsers(pageable);
+        return tUserRepository.findAll(pageable).getContent();
     }
 
     Optional<TUser> changeUserStatus(TUser user, TUser approvingUser, ApprovalEnum status){

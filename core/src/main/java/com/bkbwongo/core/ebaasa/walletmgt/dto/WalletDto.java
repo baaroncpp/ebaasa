@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
+import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWalletGroup;
 import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
@@ -22,8 +23,8 @@ public class WalletDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private TUser createdBy;
-    private TUser modifiedBy;
+    private UserDto createdBy;
+    private UserDto modifiedBy;
     private String name;
     private String code;
     private WalletGroupDto walletGroupDto;
@@ -33,10 +34,10 @@ public class WalletDto {
     private AccountStatusEnum accountStatus;
     private String statusDescription;
     private Date activateOn;
-    private TUser activatedBy;
+    private UserDto activatedBy;
     private Date suspendedOn;
-    private TUser suspendedBy;
+    private UserDto suspendedBy;
     private Date closedOn;
-    private TUser closedBy;
+    private UserDto closedBy;
     private Boolean isAssigned;
 }

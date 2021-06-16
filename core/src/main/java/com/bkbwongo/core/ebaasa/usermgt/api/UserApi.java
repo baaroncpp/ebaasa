@@ -21,7 +21,7 @@ import javax.annotation.security.RolesAllowed;
  */
 @Tag(name = "Users", description = "Manage all user")
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class UserApi {
 
     @Autowired
@@ -38,7 +38,7 @@ public class UserApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
-    @PostMapping(value = "/user", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
+    @PostMapping(value = "/user/approval", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> approveUser(@RequestBody UserApprovalDto userApprovalDto){
         return ResponseEntity.ok(userService.approveUser(userApprovalDto));
     }

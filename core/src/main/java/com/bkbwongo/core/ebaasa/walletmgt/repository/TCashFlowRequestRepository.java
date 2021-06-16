@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.repository;
 
-import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TCashFlowRequest;
+import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TCashFlow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * @project ebaasa-sms
  */
 @Repository
-public interface TCashFlowRequestRepository extends JpaRepository<TCashFlowRequest, Long> {
+public interface TCashFlowRequestRepository extends JpaRepository<TCashFlow, Long> {
 }

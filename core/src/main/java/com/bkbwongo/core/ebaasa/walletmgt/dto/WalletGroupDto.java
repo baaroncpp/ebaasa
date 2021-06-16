@@ -1,6 +1,7 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
 import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
+import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,8 +21,8 @@ public class WalletGroupDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private TUser createdBy;
-    private TUser modifiedBy;
+    private UserDto createdBy;
+    private UserDto modifiedBy;
     private String name;
     private String note;
     private WalletAccountTypeEnum groupType;

@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @Tag(name = "Users", description = "Manage all user")
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class CompanyApi {
 
     private CompanyService companyService;
