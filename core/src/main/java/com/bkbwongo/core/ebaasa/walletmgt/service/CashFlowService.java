@@ -14,11 +14,12 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 public interface CashFlowService {
-    Optional<TCashFlow> initiateCashFlow(CashFlowDto cashFlowDto);
+    Optional<TCashFlow> initiateCashFlow(CashFlowDto cashFlowDto, TUser user);
     Optional<TCashFlow> automaticCashFlow(CashFlowDto cashFlowDto);
     Optional<TCashFlow> cashFlowApproval1(Long id, TUser user);
     Optional<TCashFlow> cashFlowApproval2(Long id, TUser user);
     Optional<TCashFlow> getCashFlowById(Long id);
-    List<TCashFlow> getCashFlowsByWalletId(Long walletId, Pageable pageable);
+    List<TCashFlow> getDepositCashFlowsByWalletId(Long walletId, Pageable pageable);
+    List<TCashFlow> getWithDrawCashFlowsByWalletId(Long walletId, Pageable pageable);
     List<TCashFlow> getCashFlows(Pageable pageable);
 }

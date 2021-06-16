@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.service.imp;
 
+import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWalletTransaction;
@@ -32,11 +33,22 @@ public class WalletTransactionServiceImp implements WalletTransactionService {
     }
 
     @Override
-    public Optional<TWalletTransaction> getWalletTransactionById(Long id) {
+    public Optional<TWalletTransaction> getWalletTransactionById(String id) {
         Validate.notNull(id, "Null ID value");
         var walletTransaction = walletTransactionRepository.findById(id)
                 .orElseThrow(
                         () -> new BadRequestException(String.format("Transaction with ID: %s not found", id))
+                );
+        return Optional.of(walletTransaction);
+    }
+
+    @Override
+    public Optional<TWalletTransaction> getWalletTransactionByExternalTransactionId(String id) {
+        Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
+
+        var walletTransaction = walletTransactionRepository.findByExternalTransactionId(id)
+                .orElseThrow(
+                        () -> new BadRequestException(String.format("Wallet transaction with ID: %s not found", id))
                 );
         return Optional.of(walletTransaction);
     }

@@ -12,6 +12,7 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 public interface WalletTransactionService {
-    Optional<TWalletTransaction> getWalletTransactionById(Long id);
+    Optional<TWalletTransaction> getWalletTransactionById(String id);
+    Optional<TWalletTransaction> getWalletTransactionByExternalTransactionId(String id);
     List<TWalletTransaction> getWalletTransactions(Long walletId, Pageable pageable);
 }

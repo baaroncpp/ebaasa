@@ -31,7 +31,7 @@ public class WalletTransactionApi {
 
     @RolesAllowed("ROLE_ADMIN.READ")
     @GetMapping(value = "/wallet/transaction/{id}", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> getWalletTransaction(@PathVariable Long id){
+    public ResponseEntity<Object> getWalletTransaction(@PathVariable String id){
         return ResponseEntity.ok(walletTransactionService.getWalletTransactionById(id));
     }
 

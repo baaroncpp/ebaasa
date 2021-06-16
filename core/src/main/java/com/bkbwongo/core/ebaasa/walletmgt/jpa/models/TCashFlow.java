@@ -31,10 +31,30 @@ public class TCashFlow extends AuditedEntity {
     private String note2;
     private TUser rejectedBy;
     private CashFlowEnum flowType;
+    private Boolean isFirstApproved;
+    private Boolean isSecondApproved;
     private Date firstApprovedOn;
     private Date secondApprovedOn;
     private Integer approvalCount;
     private ApprovalEnum status;
+
+    @Column(name = "first_approved")
+    public Boolean getFirstApproved() {
+        return isFirstApproved;
+    }
+
+    public void setFirstApproved(Boolean firstApproved) {
+        isFirstApproved = firstApproved;
+    }
+
+    @Column(name = "second_approved")
+    public Boolean getSecondApproved() {
+        return isSecondApproved;
+    }
+
+    public void setSecondApproved(Boolean secondApproved) {
+        isSecondApproved = secondApproved;
+    }
 
     @Column(name = "external_reference")
     public String getExternalReference() {
