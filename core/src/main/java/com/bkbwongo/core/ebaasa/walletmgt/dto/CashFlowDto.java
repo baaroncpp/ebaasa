@@ -39,9 +39,11 @@ public class CashFlowDto {
     private String note1;
     private String note2;
     private UserDto rejectedBy;
+    private Date rejectedOn;
     private CashFlowEnum flowType;
     private Boolean isFirstApproved;
     private Boolean isSecondApproved;
+    private Boolean isRejected;
     private Date firstApprovedOn;
     private Date secondApprovedOn;
     private Integer approvalCount;

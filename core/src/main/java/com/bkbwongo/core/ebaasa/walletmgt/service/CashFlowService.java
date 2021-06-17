@@ -18,6 +18,7 @@ public interface CashFlowService {
     Optional<TCashFlow> automaticCashFlow(CashFlowDto cashFlowDto);
     Optional<TCashFlow> cashFlowApproval1(Long id, TUser user);
     Optional<TCashFlow> cashFlowApproval2(Long id, TUser user);
+    Optional<TCashFlow> rejectCashFlow(Long id, TUser user);
     Optional<TCashFlow> getCashFlowById(Long id);
     List<TCashFlow> getDepositCashFlowsByWalletId(Long walletId, Pageable pageable);
     List<TCashFlow> getWithDrawCashFlowsByWalletId(Long walletId, Pageable pageable);

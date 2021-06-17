@@ -22,5 +22,7 @@ public class ErrorMessageConstants {
     public static final String SECOND_CASH_FLOW_APPROVED = "Cash flow approval already completed";
     public static final String FIRST_CASH_FLOW_APPROVED = "First Cash flow approval already completed";
     public static final String FIRST_CASH_FLOW_NOT_APPROVED = "First Cash flow approval not completed";
+    public static final String CASH_FLOW_REJECTED = "Cash flow approval is rejected";
+    public static final String CASH_FLOW_APPROVED_SUCCESSFULLY = "Cash flow approval successfully";
     public static final String SAME_WALLET_ACCOUNT = "Same Source and Destination wallet account";
 }

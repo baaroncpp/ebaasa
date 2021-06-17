@@ -58,7 +58,7 @@ public class CashFlowServiceImp implements CashFlowService {
 
         var createdOn = new Date();
 
-        TCashFlow tCashFlow = walletManagementDTOMapperService.convertDTOToTCashFlow(cashFlowDto);
+        var tCashFlow = walletManagementDTOMapperService.convertDTOToTCashFlow(cashFlowDto);
         tCashFlow.setCreatedOn(createdOn);
         tCashFlow.setCreatedBy(user);
 
@@ -112,6 +112,7 @@ public class CashFlowServiceImp implements CashFlowService {
         tCashFlow.setToWalletTransaction(toWalletTransaction);
         tCashFlow.setFirstApproved(Boolean.FALSE);
         tCashFlow.setSecondApproved(Boolean.FALSE);
+        tCashFlow.setRejected(Boolean.FALSE);
 
         walletTransactionRepository.save(fromWalletTransaction);
         walletTransactionRepository.save(toWalletTransaction);
@@ -129,19 +130,36 @@ public class CashFlowServiceImp implements CashFlowService {
     public Optional<TCashFlow> cashFlowApproval1(Long id, TUser user) {
 
         Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
-        var now = new Date();
 
         var cashFlow = cashFlowRepository.findById(id).orElseThrow(
                 () -> new BadRequestException(String.format(ErrorMessageConstants.CASH_FLOW_NOT_FOUND, id))
         );
 
-        if (cashFlow.getFirstApproved()){
+        if (Boolean.TRUE.equals(cashFlow.getFirstApproved())){
             throw new BadRequestException(ErrorMessageConstants.FIRST_CASH_FLOW_APPROVED);
         }
 
+        if (cashFlow.getRejected()){
+            throw new BadRequestException(ErrorMessageConstants.CASH_FLOW_REJECTED);
+        }
+
         cashFlow.setFirstApproved(Boolean.TRUE);
-        cashFlow.setFirstApprovedOn(now);
+        cashFlow.setFirstApprovedOn(new Date());
         cashFlow.setApproveUser1(user);
+
+        return Optional.of(cashFlowRepository.save(cashFlow));
+    }
+
+    @Transactional
+    @Override
+    public Optional<TCashFlow> cashFlowApproval2(Long id, TUser user) {
+
+        var now = new Date();
+        Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
+
+        var cashFlow = cashFlowRepository.findById(id).orElseThrow(
+                () -> new BadRequestException(String.format(ErrorMessageConstants.CASH_FLOW_NOT_FOUND, id))
+        );
 
         var fromWalletTransaction = walletTransactionRepository.findById(cashFlow.getFromWalletTransaction().getId())
                 .orElseThrow(
@@ -153,41 +171,69 @@ public class CashFlowServiceImp implements CashFlowService {
                         () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_TRANSACTION_NOT_FOUND, cashFlow.getToWalletTransaction().getId()))
                 );
 
+        if (Boolean.FALSE.equals(cashFlow.getFirstApproved())){
+            throw new BadRequestException(ErrorMessageConstants.FIRST_CASH_FLOW_NOT_APPROVED);
+        }
+
+        if (Boolean.TRUE.equals(cashFlow.getSecondApproved())){
+            throw new BadRequestException(ErrorMessageConstants.SECOND_CASH_FLOW_APPROVED);
+        }
+
         fromWalletTransaction.setTransactionStatus(TransactionStatusEnum.SUCCESSFUL);
         fromWalletTransaction.setModifiedOn(now);
+        fromWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_APPROVED_SUCCESSFULLY);
 
         toWalletTransaction.setTransactionStatus(TransactionStatusEnum.SUCCESSFUL);
         toWalletTransaction.setModifiedOn(now);
+        fromWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_APPROVED_SUCCESSFULLY);
 
         walletTransactionRepository.save(fromWalletTransaction);
         walletTransactionRepository.save(toWalletTransaction);
 
+        cashFlow.setSecondApproved(Boolean.TRUE);
+        cashFlow.setSecondApprovedOn(now);
+        cashFlow.setApproveUser2(user);
+        cashFlow.setRejected(Boolean.FALSE);
+
         return Optional.of(cashFlowRepository.save(cashFlow));
     }
 
-    @Transactional
     @Override
-    public Optional<TCashFlow> cashFlowApproval2(Long id, TUser user) {
-
+    public Optional<TCashFlow> rejectCashFlow(Long id, TUser user) {
         Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
+        var now = new Date();
 
         var cashFlow = cashFlowRepository.findById(id).orElseThrow(
                 () -> new BadRequestException(String.format(ErrorMessageConstants.CASH_FLOW_NOT_FOUND, id))
         );
 
-        if (!cashFlow.getFirstApproved()){
-            throw new BadRequestException(ErrorMessageConstants.FIRST_CASH_FLOW_NOT_APPROVED);
-        }
+        var fromWalletTransaction = walletTransactionRepository.findById(cashFlow.getFromWalletTransaction().getId())
+                .orElseThrow(
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_TRANSACTION_NOT_FOUND, cashFlow.getFromWalletTransaction().getId()))
+                );
 
-        if (cashFlow.getSecondApproved()){
-            throw new BadRequestException(ErrorMessageConstants.SECOND_CASH_FLOW_APPROVED);
-        }
+        var toWalletTransaction = walletTransactionRepository.findById(cashFlow.getToWalletTransaction().getId())
+                .orElseThrow(
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_TRANSACTION_NOT_FOUND, cashFlow.getToWalletTransaction().getId()))
+                );
+
+        fromWalletTransaction.setTransactionStatus(TransactionStatusEnum.FAILED);
+        fromWalletTransaction.setModifiedOn(now);
+        fromWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_REJECTED);
+
+        toWalletTransaction.setTransactionStatus(TransactionStatusEnum.FAILED);
+        toWalletTransaction.setModifiedOn(now);
+        toWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_REJECTED);
+
+        walletTransactionRepository.save(fromWalletTransaction);
+        walletTransactionRepository.save(toWalletTransaction);
 
         cashFlow.setSecondApproved(Boolean.TRUE);
-        cashFlow.setSecondApprovedOn(new Date());
-        cashFlow.setApproveUser2(user);
+        cashFlow.setFirstApproved(Boolean.TRUE);
+        cashFlow.setRejectedBy(user);
+        cashFlow.setRejected(Boolean.TRUE);
 
-        return Optional.empty();
+        return Optional.of(cashFlowRepository.save(cashFlow));
     }
 
     @Override

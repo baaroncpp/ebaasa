@@ -34,10 +34,20 @@ public class TCashFlow extends AuditedEntity {
     private CashFlowEnum flowType;
     private Boolean isFirstApproved;
     private Boolean isSecondApproved;
+    private Boolean isRejected;
     private Date firstApprovedOn;
     private Date secondApprovedOn;
     private Integer approvalCount;
     private ApprovalEnum status;
+
+    @Column(name = "is_rejected")
+    public Boolean getRejected() {
+        return isRejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        isRejected = rejected;
+    }
 
     @Column(name = "rejected_on")
     public Date getRejectedOn() {

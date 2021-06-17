@@ -1,0 +1,1 @@
+ALTER TABLE core.t_cash_flow ADD COLUMN is_rejected boolean not null default false;
