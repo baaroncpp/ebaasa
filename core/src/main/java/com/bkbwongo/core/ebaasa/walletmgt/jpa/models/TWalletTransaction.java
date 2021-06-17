@@ -42,7 +42,7 @@ public class TWalletTransaction implements Serializable {
         this.id = id;
     }
 
-    @JoinColumn(name = "account_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "wallet_id",referencedColumnName = "id",insertable = false,updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TWallet getWallet() {
         return wallet;

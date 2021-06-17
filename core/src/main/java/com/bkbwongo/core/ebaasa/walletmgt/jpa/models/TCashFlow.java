@@ -30,6 +30,7 @@ public class TCashFlow extends AuditedEntity {
     private String note1;
     private String note2;
     private TUser rejectedBy;
+    private Date rejectedOn;
     private CashFlowEnum flowType;
     private Boolean isFirstApproved;
     private Boolean isSecondApproved;
@@ -37,6 +38,15 @@ public class TCashFlow extends AuditedEntity {
     private Date secondApprovedOn;
     private Integer approvalCount;
     private ApprovalEnum status;
+
+    @Column(name = "rejected_on")
+    public Date getRejectedOn() {
+        return rejectedOn;
+    }
+
+    public void setRejectedOn(Date rejectedOn) {
+        this.rejectedOn = rejectedOn;
+    }
 
     @Column(name = "first_approved")
     public Boolean getFirstApproved() {
@@ -133,7 +143,7 @@ public class TCashFlow extends AuditedEntity {
         this.note1 = note1;
     }
 
-    @Column(name = "")
+    @Column(name = "note2")
     public String getNote2() {
         return note2;
     }
@@ -153,6 +163,7 @@ public class TCashFlow extends AuditedEntity {
     }
 
     @Column(name = "flow_type")
+    @Enumerated(EnumType.STRING)
     public CashFlowEnum getFlowType() {
         return flowType;
     }
