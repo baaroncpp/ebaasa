@@ -56,6 +56,7 @@ dependencies {
 	compile group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.5.3'
 
 	implementation project(':commons')
+	implementation project(':mobile-money')
 
 }
 
