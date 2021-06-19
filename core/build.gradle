@@ -57,6 +57,7 @@ dependencies {
 
 	implementation project(':commons')
 	implementation project(':mobile-money')
+	implementation project(':twilio')
 
 }
 
