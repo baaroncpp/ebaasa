@@ -69,6 +69,14 @@ public class CashFlowApi {
         return ResponseEntity.ok(cashFlowService.cashFlowApproval2(cashFlowId, user.get()));
     }
 
+    @RolesAllowed("ROLE_ADMIN.UPDATE")
+    @PutMapping(value = "/cashflow/reject/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
+    public ResponseEntity<Object> rejectCashFlow(HttpServletRequest request, @PathVariable("cashFlowId") Long cashFlowId){
+        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
+        Optional<TUser> user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(cashFlowService.rejectCashFlow(cashFlowId, user.get()));
+    }
+
     @RolesAllowed("ROLE_ADMIN.READ")
     @GetMapping(value = "/cashflow/{id}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getCashFlowById(@PathVariable("cashFlowId") Long id){

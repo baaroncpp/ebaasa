@@ -6,7 +6,6 @@ import com.bkbwongo.core.ebaasa.base.enums.UserTypeEnum;
 import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TGroupAuthorityRepository;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +25,20 @@ import java.util.stream.Collectors;
 @Service
 public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
 
-    private TUserRepository TUserRepository;
+    private TUserRepository tUserRepository;
     private TGroupAuthorityRepository groupAuthorityRepository;
 
     @Autowired
-    public EbaasaLoginUserDAOService(TUserRepository TUserRepository,
+    public EbaasaLoginUserDAOService(TUserRepository tUserRepository,
                                      TGroupAuthorityRepository groupAuthorityRepository) {
-        this.TUserRepository = TUserRepository;
+        this.tUserRepository = tUserRepository;
         this.groupAuthorityRepository = groupAuthorityRepository;
     }
 
     @Override
     public Optional<EbaasaLoginUser> selectLoginUserByUsername(String username) {
 
-        Optional<TUser> user = TUserRepository.findByUsername(username);
+        var user = tUserRepository.findByUsername(username);
         Validate.isTrue(user.isPresent(), ErrorMessageConstants.USER_NOT_FOUND);
 
         return mapUserDetails(user.get());
@@ -47,7 +46,7 @@ public class EbaasaLoginUserDAOService implements EbaasaLoginUserDAO{
 
     private Optional<EbaasaLoginUser> mapUserDetails(TUser user){
 
-        TUserGroup userGroup = user.getUserGroup();
+        var userGroup = user.getUserGroup();
         Validate.notNull(userGroup, "User group is NULL");
 
         List<TGroupAuthority> groupAuthorities = groupAuthorityRepository.findByUserGroup(userGroup);
