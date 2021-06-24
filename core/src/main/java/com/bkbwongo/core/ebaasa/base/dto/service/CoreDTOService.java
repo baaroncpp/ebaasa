@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.base.service;
+package com.bkbwongo.core.ebaasa.base.dto.service;
 
 import com.bkbwongo.core.ebaasa.base.dto.CountryDto;
 import com.bkbwongo.core.ebaasa.base.dto.DistrictDto;
@@ -28,10 +28,14 @@ public class CoreDTOService {
     }
 
     public TDistrict convertDTOToTDistrict(DistrictDto districtDto){
-        return modelMapper.map(districtDto, TDistrict.class);
+        var district = modelMapper.map(districtDto, TDistrict.class);
+        district.setCountry(convertDTOToTCountry(districtDto.getCountry()));
+        return district;
     }
 
     public DistrictDto convertTDistrictToDTO(TDistrict tDistrict){
-        return modelMapper.map(tDistrict, DistrictDto.class);
+        var districtDto = modelMapper.map(tDistrict, DistrictDto.class);
+        districtDto.setCountry(convertTCountryToDTO(tDistrict.getCountry()));
+        return districtDto;
     }
 }

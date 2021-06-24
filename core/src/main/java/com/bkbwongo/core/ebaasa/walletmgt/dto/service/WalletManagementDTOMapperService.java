@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto.service;
 
-import com.bkbwongo.core.ebaasa.base.service.CoreDTOService;
+import com.bkbwongo.core.ebaasa.base.dto.service.CoreDTOService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.CashFlowDto;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.WalletDto;

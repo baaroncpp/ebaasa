@@ -25,4 +25,6 @@ public class ErrorMessageConstants {
     public static final String CASH_FLOW_REJECTED = "Cash flow approval is rejected";
     public static final String CASH_FLOW_APPROVED_SUCCESSFULLY = "Cash flow approval successfully";
     public static final String SAME_WALLET_ACCOUNT = "Same Source and Destination wallet account";
+    public static final String NULL_BANK_ACCOUNT = "Null bank account payload";
+    public static final String NULL_COUNTRY_VALUE_OR_OBJECT = "Null country payload";
 }

@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto.service;
 
-import com.bkbwongo.core.ebaasa.base.service.CoreDTOService;
+import com.bkbwongo.core.ebaasa.base.dto.service.CoreDTOService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.*;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.*;
 import org.modelmapper.ModelMapper;
@@ -20,6 +20,8 @@ public class UserManagementDTOMapperService {
 
     @Autowired
     private CoreDTOService coreDTOService;
+
+    private final static String PASSWORD_MASK = "******";
 
     public TRole convertDTOToTRole(RoleDto roleDto){
         return modelMapper.map(roleDto, TRole.class);
@@ -72,6 +74,7 @@ public class UserManagementDTOMapperService {
     public UserDto convertTUserToDTO(TUser tUser){
         var userDto = modelMapper.map(tUser, UserDto.class);
         userDto.setUserGroupDto(convertTUserGroupToDTO(tUser.getUserGroup()));
+        userDto.setPassword(PASSWORD_MASK);
         return userDto;
     }
 

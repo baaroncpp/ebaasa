@@ -20,6 +20,7 @@ public class TWallet extends AuditedEntity {
     private String code;
     private TWalletGroup walletGroup;
     private BigDecimal balanceToNotifyAt;
+    private Date dateToNotifyAt;
     private Date balanceNotificationSentOn;
     private BigDecimal availableBalance;
     private AccountStatusEnum accountStatus;
@@ -34,6 +35,15 @@ public class TWallet extends AuditedEntity {
     private Date closedOn;
     private TUser closedBy;
     private Boolean isAssigned;
+
+    @Column(name = "date_to_notify_at")
+    public Date getDateToNotifyAt() {
+        return dateToNotifyAt;
+    }
+
+    public void setDateToNotifyAt(Date dateToNotifyAt) {
+        this.dateToNotifyAt = dateToNotifyAt;
+    }
 
     @Column(name = "is_active")
     public Boolean getActive() {

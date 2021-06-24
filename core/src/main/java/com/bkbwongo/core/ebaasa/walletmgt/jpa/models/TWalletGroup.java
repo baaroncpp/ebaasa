@@ -1,9 +1,11 @@
 package com.bkbwongo.core.ebaasa.walletmgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
+import com.bkbwongo.core.ebaasa.base.enums.WalletTimeDebitLimitEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * @author bkaaron
@@ -16,7 +18,9 @@ public class TWalletGroup extends AuditedEntity {
     private String name;//unique
     private String note;
     private WalletAccountTypeEnum groupType;
-    private boolean isDebited;//find a word that can be invoiced on debt
+    private boolean isDebited;
+    private BigDecimal cashDebitLimit;
+    private WalletTimeDebitLimitEnum periodDebitLimit;
 
     @Column(name = "name")
     public String getName() {
@@ -53,5 +57,24 @@ public class TWalletGroup extends AuditedEntity {
 
     public void setDebited(boolean debited) {
         isDebited = debited;
+    }
+
+    @Column(name = "cash_debit_limit")
+    public BigDecimal getCashDebitLimit() {
+        return cashDebitLimit;
+    }
+
+    public void setCashDebitLimit(BigDecimal cashDebitLimit) {
+        this.cashDebitLimit = cashDebitLimit;
+    }
+
+    @Column(name = "period_debit_limit")
+    @Enumerated(EnumType.STRING)
+    public WalletTimeDebitLimitEnum getPeriodDebitLimit() {
+        return periodDebitLimit;
+    }
+
+    public void setPeriodDebitLimit(WalletTimeDebitLimitEnum periodDebitLimit) {
+        this.periodDebitLimit = periodDebitLimit;
     }
 }

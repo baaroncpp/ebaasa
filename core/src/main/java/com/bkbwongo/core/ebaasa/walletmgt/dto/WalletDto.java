@@ -29,6 +29,7 @@ public class WalletDto {
     private String code;
     private WalletGroupDto walletGroupDto;
     private BigDecimal balanceToNotifyAt;
+    private Date dateToNotifyAt;
     private Date balanceNotificationSentOn;
     private BigDecimal availableBalance;
     private AccountStatusEnum accountStatus;
