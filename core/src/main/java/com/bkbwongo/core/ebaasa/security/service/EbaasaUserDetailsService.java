@@ -26,6 +26,6 @@ public class EbaasaUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return ebaasaLoginUserDAO
                 .selectLoginUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username %s not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
     }
 }

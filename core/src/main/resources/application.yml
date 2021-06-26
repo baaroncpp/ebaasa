@@ -25,6 +25,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/bk_db
     locations: classpath:db/migration
 
+check-user-scopes: false
+
 app:
   security:
     jwt:

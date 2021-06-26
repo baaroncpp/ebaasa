@@ -70,7 +70,7 @@ public class BankDepositServiceImp implements BankDepositService {
         //auditedService required
 
         bankDepositApprovalRepository.save(approvalRequest);
-        
+
         return Optional.of(bankDeposit);
     }
 

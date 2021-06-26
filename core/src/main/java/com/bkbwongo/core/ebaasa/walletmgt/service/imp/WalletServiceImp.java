@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -171,6 +172,11 @@ public class WalletServiceImp implements WalletService {
                 );
 
         var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
+
+        Validate.isTrue(wallet.getAvailableBalance().compareTo(BigDecimal.ZERO) == 0,"Account balance has to be 0 to close account");
+        Validate.isTrue(!wallet.getAssigned(),"Account that has been assigned cannot be closed");
+
+
         if(wallet.getClosed()){
             throw new BadRequestException("Wallet account is already closed");
         }
