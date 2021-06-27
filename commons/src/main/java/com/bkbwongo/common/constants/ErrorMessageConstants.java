@@ -9,6 +9,8 @@ public class ErrorMessageConstants {
 
     private ErrorMessageConstants() {}
 
+    public static String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
+    public static String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";
     public static final String INSUFFICIENT_FUNDS_ON_ACCOUNT = "Insufficient balance on wallet account for transaction";
     public static final String ACCOUNT_IS_CLOSED = "Account is already closed and cannot be operated";
     public static final String ACCOUNT_ALREADY_ASSIGNED = "Wallet account with ID %s is already assigned to another bank";//not wallets are assigned to banks

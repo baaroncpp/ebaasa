@@ -15,7 +15,7 @@ public class PasswordConfig {
 
     @Bean
     public PasswordEncoder getPasswordEncoder(){
-        return new BCryptPasswordEncoder(12);// TODO find out appropriate encoding strength
+        return new BCryptPasswordEncoder(12);
     }
 
 }

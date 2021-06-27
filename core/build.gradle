@@ -16,14 +16,19 @@ configurations {
 
 repositories {
 	mavenCentral()// or jcenter()
+	jcenter()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	implementation 'org.flywaydb:flyway-core'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -36,7 +41,15 @@ dependencies {
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
 	//implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.1.RELEASE'
-	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '5.4.6'
+
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '3.0.0-M6'
+
+	//compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.4.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '5.4.1'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+
+	//implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '5.4.6'
 
 	compile 'org.springframework.boot:spring-boot-starter-webflux'
 	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'

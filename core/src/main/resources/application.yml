@@ -30,9 +30,9 @@ check-user-scopes: false
 app:
   security:
     jwt:
-      keystore-location: keys/ebaasakeystore.jks
-      keystore-pasword: Oliviatyra256aaron
-      key-alias: ebaasajwtsigning
+      keystore-location: keys/ebaasa.jks
+      keystore-password: oliviatyra
+      key-alias: ebaasa
       private-key-passphrase: Oliviatyra256aaron
       secretKey: allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest
       tokenPrefix: Bearer

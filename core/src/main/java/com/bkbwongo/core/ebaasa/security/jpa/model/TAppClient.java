@@ -1,4 +1,6 @@
-package com.bkbwongo.core.ebaasa.base.jpa.models;
+package com.bkbwongo.core.ebaasa.security.jpa.model;
+
+import com.bkbwongo.core.ebaasa.base.jpa.models.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,13 +10,12 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 04/05/2021
+ * @created on 26/06/2021
  * @project ebaasa-sms
  */
 @Entity
 @Table(name = "t_app_client",schema = "core")
 public class TAppClient extends BaseEntity {
-
     private String secret;
     private String name;
     private Boolean isSecretRequired;
@@ -136,5 +137,4 @@ public class TAppClient extends BaseEntity {
     public void setScope(String scope) {
         this.scope = scope;
     }
-
 }

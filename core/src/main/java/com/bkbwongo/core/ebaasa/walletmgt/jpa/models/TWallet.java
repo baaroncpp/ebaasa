@@ -14,7 +14,7 @@ import java.util.Date;
  * @project ebaasa-sms
  */
 @Entity
-@Table(name = "t_wallet_account",schema = "core")
+@Table(name = "t_wallet",schema = "core")
 public class TWallet extends AuditedEntity {
     private String name;
     private String code;

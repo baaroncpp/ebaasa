@@ -15,12 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EbaasaUserDetailsService implements UserDetailsService {
 
-    private EbaasaLoginUserDAO ebaasaLoginUserDAO;
-
     @Autowired
-    public EbaasaUserDetailsService(EbaasaLoginUserDAO ebaasaLoginUserDAO) {
-        this.ebaasaLoginUserDAO = ebaasaLoginUserDAO;
-    }
+    private EbaasaLoginUserDAO ebaasaLoginUserDAO;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

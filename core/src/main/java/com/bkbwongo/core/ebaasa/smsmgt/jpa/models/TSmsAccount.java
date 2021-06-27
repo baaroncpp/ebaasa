@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.smsmgt.jpa.models;
 
+import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,5 +12,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_sms_account",schema = "core")
-public class TSmsAccount {
+public class TSmsAccount extends AuditedEntity {
 }

@@ -21,22 +21,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @created on 26/04/2021
  * @project ebaasa-sms
  */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)  //enable resource authentication instead of antMatchers
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)  //enable resource authentication instead of antMatchers
 public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final EbaasaUserDetailsService ebaasaUserDetailsService;
+    /*private final EbaasaUserDetailsService ebaasaUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final EbaasaAuthenticationEntryPoint ebaasaAuthenticationEntryPoint;
-
+*/
     private static final String[] SWAGGER_URL_PATHS = new String[] {
             "**/termsofuse",
             "/v3/api-docs/**",
             "/swagger-ui.html**","/swagger-ui/**",
             "/configuration/security","/configuration/ui","/swagger-resources/**",
             "/v2/api-docs**", "/webjars/**" };
-
+/*
     @Autowired
     public EbaasaSecurityConfig(EbaasaUserDetailsService ebaasaUserDetailsService,
                                 PasswordEncoder passwordEncoder,
@@ -80,4 +80,6 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return provider;
     }
+        */
+
 }
