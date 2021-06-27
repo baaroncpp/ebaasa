@@ -9,8 +9,9 @@ public class ErrorMessageConstants {
 
     private ErrorMessageConstants() {}
 
-    public static String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
-    public static String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";
+    public static final String AMOUNT_MUST_BE_GREATER_THAN_ZERO = "Amount to transact should be greater than 0";
+    public static final String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
+    public static final String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";
     public static final String INSUFFICIENT_FUNDS_ON_ACCOUNT = "Insufficient balance on wallet account for transaction";
     public static final String ACCOUNT_IS_CLOSED = "Account is already closed and cannot be operated";
     public static final String ACCOUNT_ALREADY_ASSIGNED = "Wallet account with ID %s is already assigned to another bank";//not wallets are assigned to banks
@@ -19,6 +20,7 @@ public class ErrorMessageConstants {
     public static final String NULL_OBJECT_VALUE = "Null %s object value";
     public static final String NULL_VALUE = "Null %s value";
     public static final String WALLET_NOT_FOUND = "Wallet with ID: %s not found";
+    public static final String WALLET_GROUP_NOT_FOUND = "Wallet group with ID: %s not found";
     public static final String WALLET_TRANSACTION_NOT_FOUND = "Wallet transaction with ID: %s not found";
     public static final String CASH_FLOW_NOT_FOUND = "Cash flow with ID: %s not found";
     public static final String SECOND_CASH_FLOW_APPROVED = "Cash flow approval already completed";

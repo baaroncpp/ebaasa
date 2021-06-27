@@ -1,9 +1,11 @@
 package com.bkbwongo.core.ebaasa.walletmgt.service.imp;
 
+import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.CodeGenerator;
+import com.bkbwongo.common.utils.DateTimeUtil;
 import com.bkbwongo.common.utils.Validate;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.WalletDto;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.service.WalletManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWallet;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,21 +31,23 @@ public class WalletServiceImp implements WalletService {
     private TWalletGroupRepository walletGroupRepository;
     private TWalletRepository walletRepository;
     private WalletManagementDTOMapperService walletManagementDTOMapperService;
+    private AuditService auditService;
 
     @Autowired
     public WalletServiceImp(TWalletGroupRepository walletGroupRepository,
                             TWalletRepository walletRepository,
-                            WalletManagementDTOMapperService walletManagementDTOMapperService) {
+                            WalletManagementDTOMapperService walletManagementDTOMapperService,
+                            AuditService auditService) {
         this.walletGroupRepository = walletGroupRepository;
         this.walletRepository = walletRepository;
         this.walletManagementDTOMapperService = walletManagementDTOMapperService;
+        this.auditService = auditService;
     }
 
     @Override
-    public Optional<TWallet> createWallet(WalletDto walletDto, TUser user) {
-        Validate.notNull(walletDto, "Null wallet object");
-        Validate.notEmpty(walletDto.getName(),"Name value not defined");
-        Validate.notNull(walletDto.getWalletGroupDto(), "WalletGroup not defined");
+    public Optional<TWallet> createWallet(WalletDto walletDto) {
+
+        walletDto.validate();
 
         walletGroupRepository.findById(walletDto.getWalletGroupDto().getId())
                 .orElseThrow(
@@ -65,8 +68,7 @@ public class WalletServiceImp implements WalletService {
 
         var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
         wallet.setCode(walletAccountCode);
-        wallet.setCreatedOn(new Date());
-        wallet.setCreatedBy(user);
+        auditService.stampAuditedEntity(wallet);
 
         return Optional.of(walletRepository.save(wallet));
     }
@@ -74,25 +76,24 @@ public class WalletServiceImp implements WalletService {
     @Override
     public Optional<TWallet> updateWallet(WalletDto walletDto) {
 
-        Validate.notNull(walletDto, "Null wallet object");
-        Validate.notNull(walletDto.getId(), "Null ID value");
-        Validate.notEmpty(walletDto.getName(),"Name value not defined");
-        Validate.notNull(walletDto.getWalletGroupDto(), "WalletGroup not defined");
+        Validate.notNull(walletDto.getId(), String.format(ErrorMessageConstants.NULL_VALUE,"ID"));
+        walletDto.validate();
 
         walletRepository.findById(walletDto.getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Wallet with ID: %s does not exist", walletDto.getId()))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletDto.getId()))
                 );
-        return Optional.of(walletRepository.save(
-                walletManagementDTOMapperService.convertDTOToTWallet(walletDto)
-        ));
+
+        var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
+        auditService.stampAuditedEntity(wallet);
+        return Optional.of(walletRepository.save(wallet));
     }
 
     @Override
     public Optional<TWallet> getWalletById(Long id) {
         var wallet = walletRepository.findById(id)
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Wallet with ID: %s does not exist", id))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_NOT_FOUND, id))
                 );
         return Optional.of(wallet);
     }
@@ -112,24 +113,27 @@ public class WalletServiceImp implements WalletService {
     }
 
     @Override
-    public Optional<TWallet> activateWallet(WalletDto walletDto, TUser user) {
+    public Optional<TWallet> activateWallet(WalletDto walletDto) {
 
-        Validate.notNull(walletDto, "Null wallet object");
-        Validate.notNull(walletDto.getId(), "Wallet ID not defined");
+        walletDto.validate();
+        Validate.notNull(walletDto.getId(), String.format(ErrorMessageConstants.NULL_VALUE,"ID"));
 
         walletRepository.findById(walletDto.getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Wallet with ID: %s does not exist", walletDto.getId()))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletDto.getId()))
                 );
 
         var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
-        if(wallet.getActive()){
+        if(Boolean.TRUE.equals(wallet.getActive())){
             throw new BadRequestException("Wallet account is already active");
         }
 
+        auditService.stampAuditedEntity(wallet);
+        var activatingUser = wallet.getModifiedBy();
+
         wallet.setActive(Boolean.TRUE);
-        wallet.setActivateOn(new Date());
-        wallet.setActivatedBy(user);
+        wallet.setActivateOn(DateTimeUtil.getCurrentUTCTime());
+        wallet.setActivatedBy(activatingUser);
         wallet.setClosed(Boolean.FALSE);
         wallet.setSuspended(Boolean.FALSE);
 
@@ -137,38 +141,41 @@ public class WalletServiceImp implements WalletService {
     }
 
     @Override
-    public Optional<TWallet> suspendWallet(WalletDto walletDto, TUser user) {
+    public Optional<TWallet> suspendWallet(WalletDto walletDto) {
 
-        Validate.notNull(walletDto, "Null wallet object");
-        Validate.notNull(walletDto.getId(), "Wallet ID not defined");
+        walletDto.validate();
+        Validate.notNull(walletDto.getId(), String.format(ErrorMessageConstants.NULL_VALUE,"ID"));
 
         walletRepository.findById(walletDto.getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Wallet with ID: %s does not exist", walletDto.getId()))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletDto.getId()))
                 );
 
         var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
-        if(wallet.getSuspended()){
+        if(Boolean.TRUE.equals(wallet.getSuspended())){
             throw new BadRequestException("Wallet account is already suspended");
         }
 
+        auditService.stampAuditedEntity(wallet);
+        var suspendingUser = wallet.getModifiedBy();
+
         wallet.setActive(Boolean.FALSE);
         wallet.setSuspended(Boolean.TRUE);
-        wallet.setSuspendedBy(user);
-        wallet.setSuspendedOn(new Date());
+        wallet.setSuspendedBy(suspendingUser);
+        wallet.setSuspendedOn(DateTimeUtil.getCurrentUTCTime());
 
         return Optional.of(wallet);
     }
 
     @Override
-    public Optional<TWallet> closeWallet(WalletDto walletDto, TUser user) {
+    public Optional<TWallet> closeWallet(WalletDto walletDto) {
 
-        Validate.notNull(walletDto, "Null wallet object");
-        Validate.notNull(walletDto.getId(), "Wallet ID not defined");
+        walletDto.validate();
+        Validate.notNull(walletDto.getId(), String.format(ErrorMessageConstants.NULL_VALUE,"ID"));
 
         walletRepository.findById(walletDto.getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Wallet with ID: %s does not exist", walletDto.getId()))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletDto.getId()))
                 );
 
         var wallet = walletManagementDTOMapperService.convertDTOToTWallet(walletDto);
@@ -177,14 +184,17 @@ public class WalletServiceImp implements WalletService {
         Validate.isTrue(!wallet.getAssigned(),"Account that has been assigned cannot be closed");
 
 
-        if(wallet.getClosed()){
+        if(Boolean.TRUE.equals(wallet.getClosed())){
             throw new BadRequestException("Wallet account is already closed");
         }
 
+        auditService.stampAuditedEntity(wallet);
+        var closingUser = wallet.getModifiedBy();
+
         wallet.setActive(Boolean.FALSE);
         wallet.setClosed(Boolean.TRUE);
-        wallet.setClosedBy(user);
-        wallet.setClosedOn(new Date());
+        wallet.setClosedBy(closingUser);
+        wallet.setClosedOn(DateTimeUtil.getCurrentUTCTime());
 
         return Optional.of(wallet);
     }

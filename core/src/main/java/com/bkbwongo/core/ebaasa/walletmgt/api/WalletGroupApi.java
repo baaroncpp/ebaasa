@@ -25,28 +25,13 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class WalletGroupApi {
 
-    private UserService userService;
-    private WalletGroupService walletGroupService;
-    private JwtUtil jwtUtil;
-
     @Autowired
-    public WalletGroupApi(UserService userService,
-                          WalletGroupService walletGroupService,
-                          JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.walletGroupService = walletGroupService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    //@Value("${jwt.header}")
-    private String tokenHeader = "Bearer ";
+    private WalletGroupService walletGroupService;
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/wallet/group", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> addWalletGroup(HttpServletRequest request, @RequestBody WalletGroupDto walletGroupDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(walletGroupService.createWalletGroup(walletGroupDto, user.get()));
+    public ResponseEntity<Object> addWalletGroup(@RequestBody WalletGroupDto walletGroupDto){
+        return ResponseEntity.ok(walletGroupService.createWalletGroup(walletGroupDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")

@@ -28,53 +28,35 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CashFlowApi {
 
+    @Autowired
     private CashFlowService cashFlowService;
-    private UserService userService;
-    private JwtUtil jwtUtil;
 
     private static final String SORT_DESC = "DESCENDING";
     private static final String SORT_ASC = "ASCENDING";
     private static final String SORT_BY = "createdOn";
 
-    @Autowired
-    public CashFlowApi(CashFlowService cashFlowService, UserService userService, JwtUtil jwtUtil) {
-        this.cashFlowService = cashFlowService;
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    private String tokenHeader = "Bearer ";
-
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/cashflow/request", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> makeCashFlowRequest(HttpServletRequest request, @RequestBody CashFlowDto cashFlowDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(cashFlowService.initiateCashFlow(cashFlowDto, user.get()));
+    public ResponseEntity<Object> makeCashFlowRequest(@RequestBody CashFlowDto cashFlowDto){
+        return ResponseEntity.ok(cashFlowService.initiateCashFlow(cashFlowDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/cashflow/firstaprroval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> makeFirstApproval(HttpServletRequest request, @PathVariable("cashFlowId") Long cashFlowId){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(cashFlowService.cashFlowApproval1(cashFlowId, user.get()));
+    public ResponseEntity<Object> makeFirstApproval( @PathVariable("cashFlowId") Long cashFlowId){
+        return ResponseEntity.ok(cashFlowService.cashFlowApproval1(cashFlowId));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/cashflow/secondaprroval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> makeSecondApproval(HttpServletRequest request, @PathVariable("cashFlowId") Long cashFlowId){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(cashFlowService.cashFlowApproval2(cashFlowId, user.get()));
+    public ResponseEntity<Object> makeSecondApproval(@PathVariable("cashFlowId") Long cashFlowId){
+        return ResponseEntity.ok(cashFlowService.cashFlowApproval2(cashFlowId));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/cashflow/reject/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> rejectCashFlow(HttpServletRequest request, @PathVariable("cashFlowId") Long cashFlowId){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(cashFlowService.rejectCashFlow(cashFlowId, user.get()));
+    public ResponseEntity<Object> rejectCashFlow(@PathVariable("cashFlowId") Long cashFlowId){
+        return ResponseEntity.ok(cashFlowService.rejectCashFlow(cashFlowId));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")

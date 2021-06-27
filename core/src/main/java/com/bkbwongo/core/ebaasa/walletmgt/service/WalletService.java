@@ -14,12 +14,12 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 public interface WalletService {
-    Optional<TWallet> createWallet(WalletDto walletDto, TUser user);
+    Optional<TWallet> createWallet(WalletDto walletDto);
     Optional<TWallet> updateWallet(WalletDto walletDto);
     Optional<TWallet> getWalletById(Long id);
     List<TWallet> getWalletsByGroup(Long walletGroupId, Pageable pageable);
     List<TWallet> getAllWallets(Pageable pageable);
-    Optional<TWallet> activateWallet(WalletDto walletDto, TUser user);
-    Optional<TWallet> suspendWallet(WalletDto walletDto, TUser use);
-    Optional<TWallet> closeWallet(WalletDto walletDto, TUser use);
+    Optional<TWallet> activateWallet(WalletDto walletDto);
+    Optional<TWallet> suspendWallet(WalletDto walletDto);
+    Optional<TWallet> closeWallet(WalletDto walletDto);
 }

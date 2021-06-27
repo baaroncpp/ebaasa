@@ -28,30 +28,17 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class WalletApi {
 
+    @Autowired
     private WalletService walletService;
-    private UserService userService;
-    private JwtUtil jwtUtil;
 
     private static final String SORT_DESC = "DESCENDING";
     private static final String SORT_ASC = "ASCENDING";
     private static final String SORT_BY = "createdOn";
 
-    @Autowired
-    public WalletApi(WalletService walletService, UserService userService, JwtUtil jwtUtil) {
-        this.walletService = walletService;
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    //@Value("${jwt.header}")
-    private String tokenHeader = "Bearer ";
-
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/wallet", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> addWallet(HttpServletRequest request, @RequestBody WalletDto walletDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(walletService.createWallet(walletDto, user.get()));
+    public ResponseEntity<Object> addWallet(@RequestBody WalletDto walletDto){
+        return ResponseEntity.ok(walletService.createWallet(walletDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
@@ -109,25 +96,19 @@ public class WalletApi {
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/wallet/activate", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> activateWallet(HttpServletRequest request, @RequestBody WalletDto walletDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(walletService.activateWallet(walletDto, user.get()));
+    public ResponseEntity<Object> activateWallet(@RequestBody WalletDto walletDto){
+        return ResponseEntity.ok(walletService.activateWallet(walletDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/wallet/suspend", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> suspendWallet(HttpServletRequest request, @RequestBody WalletDto walletDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(walletService.suspendWallet(walletDto, user.get()));
+    public ResponseEntity<Object> suspendWallet(@RequestBody WalletDto walletDto){
+        return ResponseEntity.ok(walletService.suspendWallet(walletDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/wallet/close", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
-    public ResponseEntity<Object> closeWallet(HttpServletRequest request, @RequestBody WalletDto walletDto){
-        String username = jwtUtil.getUsernameFromToken(request.getHeader(tokenHeader).substring(7));
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(walletService.closeWallet(walletDto, user.get()));
+    public ResponseEntity<Object> closeWallet(@RequestBody WalletDto walletDto){
+        return ResponseEntity.ok(walletService.closeWallet(walletDto));
     }
 }

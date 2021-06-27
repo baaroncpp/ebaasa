@@ -1,6 +1,8 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
+import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.utils.Money;
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.bkbwongo.core.ebaasa.base.enums.CashFlowEnum;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -48,5 +51,12 @@ public class CashFlowDto {
     private Date secondApprovedOn;
     private Integer approvalCount;
     private ApprovalEnum status;
+
+    public void validate(){
+        Validate.isTrue(amount.compareTo(BigDecimal.ZERO) > 0, ErrorMessageConstants.AMOUNT_MUST_BE_GREATER_THAN_ZERO);
+        Validate.notNull(fromWallet, String.format(ErrorMessageConstants.NULL_OBJECT_VALUE, "debt wallet"));
+        Validate.notNull(toWallet, String.format(ErrorMessageConstants.NULL_OBJECT_VALUE, "credit wallet"));
+        Validate.notNull(flowType, "cash flow type not defined");
+    }
 
 }

@@ -11,6 +11,7 @@ import com.bkbwongo.core.ebaasa.bankmgt.repository.TBankDepositRepository;
 import com.bkbwongo.core.ebaasa.bankmgt.service.BankDepositService;
 import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.bkbwongo.core.ebaasa.base.enums.TransactionStatusEnum;
+import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -32,16 +33,19 @@ public class BankDepositServiceImp implements BankDepositService {
     private TBankDepositRepository bankDepositRepository;
     private TBankDepositApprovalRepository bankDepositApprovalRepository;
     private TBankAccountRepository bankAccountRepository;
+    private AuditService auditService;
 
     @Autowired
     public BankDepositServiceImp(BankManagementDTOMapperService bankManagementDTOMapperService,
                                  TBankDepositRepository bankDepositRepository,
                                  TBankDepositApprovalRepository bankDepositApprovalRepository,
-                                 TBankAccountRepository bankAccountRepository) {
+                                 TBankAccountRepository bankAccountRepository,
+                                 AuditService auditService) {
         this.bankManagementDTOMapperService = bankManagementDTOMapperService;
         this.bankDepositRepository = bankDepositRepository;
         this.bankDepositApprovalRepository = bankDepositApprovalRepository;
         this.bankAccountRepository = bankAccountRepository;
+        this.auditService = auditService;
     }
 
     @Override
@@ -55,19 +59,15 @@ public class BankDepositServiceImp implements BankDepositService {
         var bankDeposit = bankManagementDTOMapperService.convertDTOToTBankDeposit(bankDepositDto);
         bankDeposit.setBank(bankAccount.get());
         bankDeposit.setStatus(TransactionStatusEnum.PENDING);
-
-        //auditedService required
+        auditService.stampLongEntity(bankDeposit);
 
         bankDepositRepository.save(bankDeposit);
 
         TBankDepositApproval approvalRequest = new TBankDepositApproval();
+        auditService.stampLongEntity(approvalRequest);
         approvalRequest.setBankDeposit(bankDeposit);
         approvalRequest.setStatus(ApprovalEnum.PENDING);
         approvalRequest.setApprovalCount(0);
-        approvalRequest.setCreatedOn(new Date());
-        approvalRequest.setCreatedBy(bankDeposit.getCreatedBy());
-
-        //auditedService required
 
         bankDepositApprovalRepository.save(approvalRequest);
 

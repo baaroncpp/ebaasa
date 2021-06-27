@@ -6,9 +6,13 @@ import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.base.jpa.models.BaseEntity;
 import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author bkaaron
@@ -19,7 +23,7 @@ import java.util.Date;
 public class AuditServiceImp implements AuditService{
     @Override
     public void stampLongEntity(BaseEntity entity) {
-        Date date = DateTimeUtil.getCurrentUTCTime();
+        var date = DateTimeUtil.getCurrentUTCTime();
         if(entity.getId() == null){
             entity.setCreatedOn(date);
         }
@@ -32,7 +36,7 @@ public class AuditServiceImp implements AuditService{
         EbaasaLoginUser user = getLoggedInUser();
         Validate.notNull(user, "Only a logged in user can make this change");
 
-        Date date = DateTimeUtil.getCurrentUTCTime();
+        var date = DateTimeUtil.getCurrentUTCTime();
         var tUser = new TUser();
         tUser.setId(user.getId());
 
@@ -47,6 +51,16 @@ public class AuditServiceImp implements AuditService{
 
     @Override
     public EbaasaLoginUser getLoggedInUser() {
+
+        final OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.isAuthenticated()){
+            Map<String,?> decoded = (LinkedHashMap)( (OAuth2AuthenticationDetails)authentication.getDetails()).getDecodedDetails();
+            var user = new EbaasaLoginUser();
+            user.setUsername((String)decoded.get("username"));
+            user.setId(Long.valueOf((Integer) decoded.get("id")));
+            return user;
+        }
         return null;
     }
 }

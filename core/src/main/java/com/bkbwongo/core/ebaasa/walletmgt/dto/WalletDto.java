@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWalletGroup;
 import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
@@ -41,4 +42,9 @@ public class WalletDto {
     private Date closedOn;
     private UserDto closedBy;
     private Boolean isAssigned;
+
+    public void validate(){
+        Validate.notEmpty(name, "wallet name is missing");
+        Validate.notNull(walletGroupDto, "wallet group not defined");
+    }
 }

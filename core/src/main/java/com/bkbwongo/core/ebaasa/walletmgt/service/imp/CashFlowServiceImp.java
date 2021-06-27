@@ -5,7 +5,7 @@ import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.TransactionStatusEnum;
 import com.bkbwongo.core.ebaasa.base.enums.TransactionTypeEnum;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.CashFlowDto;
 import com.bkbwongo.core.ebaasa.walletmgt.dto.service.WalletManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TCashFlow;
@@ -36,31 +36,28 @@ public class CashFlowServiceImp implements CashFlowService {
     private TCashFlowRepository cashFlowRepository;
     private TWalletTransactionRepository walletTransactionRepository;
     private TWalletRepository walletRepository;
+    private AuditService auditService;
 
     @Autowired
     public CashFlowServiceImp(WalletManagementDTOMapperService walletManagementDTOMapperService,
                               TCashFlowRepository cashFlowRepository,
                               TWalletTransactionRepository walletTransactionRepository,
-                              TWalletRepository walletRepository) {
+                              TWalletRepository walletRepository,
+                              AuditService auditService) {
         this.walletManagementDTOMapperService = walletManagementDTOMapperService;
         this.cashFlowRepository = cashFlowRepository;
         this.walletTransactionRepository = walletTransactionRepository;
         this.walletRepository = walletRepository;
+        this.auditService = auditService;
     }
 
     @Transactional
     @Override
-    public Optional<TCashFlow> initiateCashFlow(CashFlowDto cashFlowDto, TUser user) {
+    public Optional<TCashFlow> initiateCashFlow(CashFlowDto cashFlowDto) {
 
-        Validate.notNull(cashFlowDto.getFromWallet(), String.format(ErrorMessageConstants.NULL_OBJECT_VALUE, "wallet"));
-        Validate.notNull(cashFlowDto.getToWallet(), String.format(ErrorMessageConstants.NULL_OBJECT_VALUE, "wallet"));
-        Validate.notNull(cashFlowDto.getFlowType(), "cash flow type not defined");
-
-        var createdOn = new Date();
+        cashFlowDto.validate();
 
         var tCashFlow = walletManagementDTOMapperService.convertDTOToTCashFlow(cashFlowDto);
-        tCashFlow.setCreatedOn(createdOn);
-        tCashFlow.setCreatedBy(user);
 
         var fromWallet = walletRepository.findById(tCashFlow.getFromWallet().getId())
                 .orElseThrow(
@@ -82,7 +79,6 @@ public class CashFlowServiceImp implements CashFlowService {
 
         //from wallet transaction
         TWalletTransaction fromWalletTransaction = TWalletTransaction.builder()
-                .createdOn(createdOn)
                 .externalTransactionId(tCashFlow.getExternalReference())
                 .transactionType(TransactionTypeEnum.WALLET_WITHDRAW)
                 .balanceBefore(tCashFlow.getFromWallet().getAvailableBalance())
@@ -93,9 +89,10 @@ public class CashFlowServiceImp implements CashFlowService {
                 .statusDescription(tCashFlow.getNote())
                 .build();
 
+        auditService.stampAuditedEntity(fromWallet);
+
         //to wallet transaction
         TWalletTransaction toWalletTransaction = TWalletTransaction.builder()
-                .createdOn(createdOn)
                 .externalTransactionId(tCashFlow.getExternalReference())
                 .transactionType(TransactionTypeEnum.WALLET_DEPOSIT)
                 .balanceBefore(tCashFlow.getToWallet().getAvailableBalance())
@@ -106,6 +103,8 @@ public class CashFlowServiceImp implements CashFlowService {
                 .statusDescription(tCashFlow.getNote())
                 .build();
 
+        auditService.stampAuditedEntity(toWallet);
+
         tCashFlow.setToWallet(toWallet);
         tCashFlow.setFromWallet(fromWallet);
         tCashFlow.setFromWalletTransaction(fromWalletTransaction);
@@ -113,6 +112,7 @@ public class CashFlowServiceImp implements CashFlowService {
         tCashFlow.setFirstApproved(Boolean.FALSE);
         tCashFlow.setSecondApproved(Boolean.FALSE);
         tCashFlow.setRejected(Boolean.FALSE);
+        auditService.stampAuditedEntity(tCashFlow);
 
         walletTransactionRepository.save(fromWalletTransaction);
         walletTransactionRepository.save(toWalletTransaction);
@@ -127,7 +127,7 @@ public class CashFlowServiceImp implements CashFlowService {
 
     @Transactional
     @Override
-    public Optional<TCashFlow> cashFlowApproval1(Long id, TUser user) {
+    public Optional<TCashFlow> cashFlowApproval1(Long id) {
 
         Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
 
@@ -139,20 +139,23 @@ public class CashFlowServiceImp implements CashFlowService {
             throw new BadRequestException(ErrorMessageConstants.FIRST_CASH_FLOW_APPROVED);
         }
 
-        if (cashFlow.getRejected()){
+        if (Boolean.TRUE.equals(cashFlow.getRejected())){
             throw new BadRequestException(ErrorMessageConstants.CASH_FLOW_REJECTED);
         }
 
+        auditService.stampAuditedEntity(cashFlow);
+        var approveUser = cashFlow.getModifiedBy();
+
         cashFlow.setFirstApproved(Boolean.TRUE);
         cashFlow.setFirstApprovedOn(new Date());
-        cashFlow.setApproveUser1(user);
+        cashFlow.setApproveUser1(approveUser);
 
         return Optional.of(cashFlowRepository.save(cashFlow));
     }
 
     @Transactional
     @Override
-    public Optional<TCashFlow> cashFlowApproval2(Long id, TUser user) {
+    public Optional<TCashFlow> cashFlowApproval2(Long id) {
 
         var now = new Date();
         Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
@@ -184,22 +187,24 @@ public class CashFlowServiceImp implements CashFlowService {
         fromWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_APPROVED_SUCCESSFULLY);
 
         toWalletTransaction.setTransactionStatus(TransactionStatusEnum.SUCCESSFUL);
-        toWalletTransaction.setModifiedOn(now);
-        fromWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_APPROVED_SUCCESSFULLY);
+        toWalletTransaction.setStatusDescription(ErrorMessageConstants.CASH_FLOW_APPROVED_SUCCESSFULLY);
 
         walletTransactionRepository.save(fromWalletTransaction);
         walletTransactionRepository.save(toWalletTransaction);
 
+        auditService.stampAuditedEntity(cashFlow);
+        var approveUser = cashFlow.getModifiedBy();
+
         cashFlow.setSecondApproved(Boolean.TRUE);
         cashFlow.setSecondApprovedOn(now);
-        cashFlow.setApproveUser2(user);
+        cashFlow.setApproveUser2(approveUser);
         cashFlow.setRejected(Boolean.FALSE);
 
         return Optional.of(cashFlowRepository.save(cashFlow));
     }
 
     @Override
-    public Optional<TCashFlow> rejectCashFlow(Long id, TUser user) {
+    public Optional<TCashFlow> rejectCashFlow(Long id) {
         Validate.notNull(id, String.format(ErrorMessageConstants.NULL_VALUE, "id"));
         var now = new Date();
 
@@ -228,9 +233,13 @@ public class CashFlowServiceImp implements CashFlowService {
         walletTransactionRepository.save(fromWalletTransaction);
         walletTransactionRepository.save(toWalletTransaction);
 
+        auditService.stampAuditedEntity(cashFlow);
+        var rejectUser = cashFlow.getModifiedBy();
+
         cashFlow.setSecondApproved(Boolean.TRUE);
         cashFlow.setFirstApproved(Boolean.TRUE);
-        cashFlow.setRejectedBy(user);
+        cashFlow.setRejectedBy(rejectUser);
+        cashFlow.setRejectedOn(now);
         cashFlow.setRejected(Boolean.TRUE);
 
         return Optional.of(cashFlowRepository.save(cashFlow));

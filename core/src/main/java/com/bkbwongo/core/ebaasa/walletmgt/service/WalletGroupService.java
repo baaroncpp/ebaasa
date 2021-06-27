@@ -13,7 +13,7 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 public interface WalletGroupService {
-    Optional<TWalletGroup> createWalletGroup(WalletGroupDto walletGroupDto, TUser creator);
+    Optional<TWalletGroup> createWalletGroup(WalletGroupDto walletGroupDto);
     Optional<TWalletGroup> updateWalletGroup(WalletGroupDto walletGroupDto);
     Optional<TWalletGroup> getWalletGroupById(Long id);
     Optional<TWalletGroup> getWalletGroupByName(String name);
