@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.dto.CountryDto;
 import com.bkbwongo.core.ebaasa.base.dto.DistrictDto;
 import com.bkbwongo.core.ebaasa.base.enums.IdentificationEnum;
@@ -38,4 +39,12 @@ public class CompanyDto {
     private String email;
     private String formSerial;
     private String note;
+
+    public void validate(){
+        Validate.notEmpty(businessName, "Business name is required");
+        Validate.notEmpty(tinNumber, "Business tin number is required");
+        Validate.notEmpty(physicalAddress, "Business physical address is required");
+        Validate.notEmpty(contactPerson, "Contact person is required");
+        Validate.notNull(registrationCountry, "country is missing");
+    }
 }

@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,4 +24,9 @@ public class UserApprovalDto {
     private UserDto modifiedBy;
     private Long userId;
     private ApprovalEnum status;
+
+    public void validate(){
+        Validate.notNull(userId, "user ID is missing");
+        Validate.notNull(status, "Approval status is missing");
+    }
 }

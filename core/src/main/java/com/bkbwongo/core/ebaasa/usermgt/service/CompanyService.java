@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public interface CompanyService {
     Optional<TCompany> addCompany(CompanyDto companyDto);
-    Optional<TCompany> updateCompany(TUser modifiedBy, CompanyDto companyDto);
+    Optional<TCompany> updateCompany(CompanyDto companyDto);
     Optional<TCompany> getCompanyById(Long id);
     Optional<TCompany> getCompanyByBusinessName(String businessName);
     List<TCompany> getAllCompanies(Pageable pageable);

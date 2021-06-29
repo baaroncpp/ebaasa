@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -20,4 +21,9 @@ public class GroupAuthorityDto {
     private Date modifiedOn;
     private UserGroupDto userGroupDto;
     private PermissionDto permissionDto;
+
+    public void validate(){
+        Validate.notNull(userGroupDto, "user group is required");
+        Validate.notNull(permissionDto, "user permission is not defined");
+    }
 }

@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.UserTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,4 +31,10 @@ public class UserDto {
     private Boolean isDeleted;
     private String approvedBy;
     private UserTypeEnum userType;
+
+    public void validate(){
+        Validate.notEmpty(username, "username is required");
+        Validate.notEmpty(password, "password is required");
+        Validate.notNull(userGroupDto, "user group is required");
+    }
 }

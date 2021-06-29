@@ -9,6 +9,8 @@ public class ErrorMessageConstants {
 
     private ErrorMessageConstants() {}
 
+    public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
+    public static final String ID_NOT_FOUND = "User with ID: %s not found";
     public static final String AMOUNT_MUST_BE_GREATER_THAN_ZERO = "Amount to transact should be greater than 0";
     public static final String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
     public static final String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";
@@ -31,4 +33,6 @@ public class ErrorMessageConstants {
     public static final String SAME_WALLET_ACCOUNT = "Same Source and Destination wallet account";
     public static final String NULL_BANK_ACCOUNT = "Null bank account payload";
     public static final String NULL_COUNTRY_VALUE_OR_OBJECT = "Null country payload";
+    public static final String BUSINESS_NAME_TAKEN = "Company with BUSINESS NAME %s already exists";
+    public static final String BUSINESS_NAME_NOT_FOUND = "Company with BUSINESS NAME %s does not exist";
 }

@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -20,4 +21,9 @@ public class RoleDto {
     private Date modifiedOn;
     private String name;
     private String note;
+
+    public void validate(){
+        Validate.notEmpty(name, "Role name is required");
+        Validate.notEmpty(note, "note is required");
+    }
 }

@@ -1,8 +1,11 @@
 package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 
+import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.exceptions.BadRequestException;
+import com.bkbwongo.common.utils.DateTimeUtil;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
+import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
@@ -36,10 +39,12 @@ public class UserServiceImp implements UserService {
 
     private static final String PASSWORD_MASK = "**********";
     private static final String USERNAME_NOT_FOUND = "Username is not defined";
-    private static final  String ID_NOT_FOUND = "User with ID: %s not found";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuditService auditService;
 
     @Autowired
     public UserServiceImp(TUserRepository tUserRepository,
@@ -54,19 +59,18 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<TUser> addUser(UserDto userDto) {
-        Validate.notNull(userDto, "NULL User object");
-        Validate.notEmpty(userDto.getUsername(), USERNAME_NOT_FOUND);
-        Validate.notEmpty(userDto.getPassword(), "Password is not defined");
+
+        userDto.validate();
 
         Optional<TUser> tUser = tUserRepository.findByUsername(userDto.getUsername());
         if(tUser.isPresent()){
-            throw new BadRequestException(String.format("Username %s is already taken", userDto.getUsername()));
+            throw new BadRequestException(String.format(ErrorMessageConstants.USERNAME_IS_TAKEN, userDto.getUsername()));
         }
         var user = userManagementDTOMapperService.convertDTOToTUser(userDto);
-        user.setCreatedOn(new Date());
+        auditService.stampLongEntity(user);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        TUser result = tUserRepository.save(user);
+        var result = tUserRepository.save(user);
         result.setPassword(PASSWORD_MASK);
 
         return Optional.of(result);
@@ -74,19 +78,17 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<TUser> updateUser(UserDto userDto) {
-        Validate.notNull(userDto, "NULL User object");
-        Validate.notNull(userDto.getId(), "ID is not defined");
-        Validate.notEmpty(userDto.getUsername(), USERNAME_NOT_FOUND);
-        Validate.notEmpty(userDto.getPassword(), "Password is not defined");
+
+        userDto.validate();
 
         var user = tUserRepository.findById(userDto.getId()).orElseThrow(
-                () -> new BadRequestException(String.format(ID_NOT_FOUND, userDto.getId()))
+                () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, userDto.getId()))
         );
 
         if(!userDto.getUsername().equalsIgnoreCase(user.getUsername())){
             Optional<TUser> tUser = tUserRepository.findByUsername(userDto.getUsername());
             if(tUser.isPresent()){
-                throw new BadRequestException(String.format("Username %s is already taken", userDto.getUsername()));
+                throw new BadRequestException(String.format(ErrorMessageConstants.USERNAME_IS_TAKEN, userDto.getUsername()));
             }
         }
 
@@ -97,7 +99,8 @@ public class UserServiceImp implements UserService {
         var updatedUser = userManagementDTOMapperService.convertDTOToTUser(userDto);
         updatedUser.setPassword(user.getPassword());
 
-        TUser result = tUserRepository.save(updatedUser);
+        var result = tUserRepository.save(updatedUser);
+        result.setPassword(PASSWORD_MASK);
 
         return Optional.of(result);
     }
@@ -106,7 +109,7 @@ public class UserServiceImp implements UserService {
     public Optional<TUser> getUserById(Long id) {
         Validate.notNull(id, "NULL ID value");
         var user = tUserRepository.findById(id).orElseThrow(
-                () -> new BadRequestException(String.format(ID_NOT_FOUND, id))
+                () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, id))
         );
         user.setPassword(PASSWORD_MASK);
         return Optional.of(user);
@@ -124,26 +127,22 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<TUser> approveUser(UserApprovalDto userApprovalDto) {
-        Validate.notNull(userApprovalDto.getUserId(), "NULL user ID");
-        Validate.notNull(userApprovalDto.getCreatedBy(), "created by not defined");
-        Validate.notNull(userApprovalDto.getStatus(), "Status not defined");
+
+        userApprovalDto.validate();
 
         var user = tUserRepository.findById(userApprovalDto.getUserId()).orElseThrow(
-                () -> new BadRequestException(ID_NOT_FOUND, userApprovalDto.getUserId())
-        );
-
-        var approvingUser = tUserRepository.findById(userApprovalDto.getCreatedBy().getId()).orElseThrow(
-                () -> new BadRequestException(ID_NOT_FOUND, userApprovalDto.getCreatedBy().getId())
+                () -> new BadRequestException(ErrorMessageConstants.ID_NOT_FOUND, userApprovalDto.getUserId())
         );
 
         var tUserApproval = userManagementDTOMapperService.convertDTOToTUserApproval(userApprovalDto);
-        tUserApproval.setCreatedOn(new Date());
+        auditService.stampAuditedEntity(tUserApproval);
 
         tUserApprovalRepository.save(tUserApproval);
 
-        return Optional.of(tUserRepository.save(
-                changeUserStatus(user, approvingUser, tUserApproval.getStatus()).get())
-        );
+        var result = changeUserStatus(user, tUserApproval.getCreatedBy(), tUserApproval.getStatus()).get();
+        result.setPassword(PASSWORD_MASK);
+
+        return Optional.of(tUserRepository.save(result));
     }
 
     @Override
@@ -161,7 +160,7 @@ public class UserServiceImp implements UserService {
         );
 
         var changedUser = tUserRepository.findById(userId).orElseThrow(
-                () -> new BadRequestException(String.format(ID_NOT_FOUND, userId))
+                () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, userId))
         );
 
         if(!passwordEncoder.matches(oldPassword, changedUser.getPassword())){
@@ -174,7 +173,7 @@ public class UserServiceImp implements UserService {
 
         changedUser.setPassword(passwordEncoder.encode(newPassword));
 
-        TUser updatedUser = tUserRepository.save(changedUser);
+        var updatedUser = tUserRepository.save(changedUser);
         updatedUser.setPassword(PASSWORD_MASK);
 
         changingUser.setPassword(PASSWORD_MASK);
@@ -204,19 +203,19 @@ public class UserServiceImp implements UserService {
             user.setAccountExpired(Boolean.TRUE);
             user.setDeleted(Boolean.FALSE);
             user.setApprovedBy(approvingUser.getId());
-            user.setModifiedOn(new Date());
+            user.setModifiedOn(DateTimeUtil.getCurrentUTCTime());
         }
 
         if(status.equals(ApprovalEnum.PENDING)){
             user.setApproved(Boolean.FALSE);
             user.setAccountLocked(Boolean.FALSE);
-            user.setModifiedOn(new Date());
+            user.setModifiedOn(DateTimeUtil.getCurrentUTCTime());
         }
 
         if(status.equals(ApprovalEnum.REJECTED)){
             user.setApproved(Boolean.FALSE);
             user.setAccountLocked(Boolean.FALSE);
-            user.setModifiedOn(new Date());
+            user.setModifiedOn(DateTimeUtil.getCurrentUTCTime());
         }
         return Optional.of(user);
     }

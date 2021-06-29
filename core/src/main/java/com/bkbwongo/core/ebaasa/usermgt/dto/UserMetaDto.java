@@ -1,12 +1,15 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.GenderEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.TCountry;
+import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserMeta;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @author bkaaron
@@ -39,4 +42,12 @@ public class UserMetaDto {
     private String identificationPath;
     private Boolean nonVerifiedEmail;
     private Boolean nonVerifiedPhoneNumber;
+
+    public void validate(){
+        Validate.notEmpty(firstName, "first name is required");
+        Validate.notEmpty(lastName,"last name is required");
+        Validate.notNull(userId, "userId is required");
+        Validate.notNull(countryCode, "country is required");
+    }
+
 }

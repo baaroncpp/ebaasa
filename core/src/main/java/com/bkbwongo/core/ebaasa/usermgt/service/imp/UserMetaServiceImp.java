@@ -1,7 +1,9 @@
 package com.bkbwongo.core.ebaasa.usermgt.service.imp;
 
+import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
+import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserMetaDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserMeta;
@@ -21,11 +23,13 @@ import java.util.Optional;
 @Service
 public class UserMetaServiceImp implements UserMetaService {
 
+    @Autowired
+    private AuditService auditService;
+
     private TUserMetaRepository tUserMetaRepository;
     private TUserRepository tUserRepository;
     private UserManagementDTOMapperService userManagementDTOMapperService;
 
-    private static final String ID_NOT_FOUND = "User with ID: %s not found";
     private static final String ID_NOT_DEFINED= "User ID not defined";
 
     @Autowired
@@ -39,11 +43,11 @@ public class UserMetaServiceImp implements UserMetaService {
 
     @Override
     public Optional<TUserMeta> addUserMeta(UserMetaDto userMetaDto) {
-        Validate.notNull(userMetaDto, "NULL user object");
-        Validate.notNull(userMetaDto.getUserId(), ID_NOT_DEFINED);
+
+        userMetaDto.validate();
 
         tUserRepository.findById(userMetaDto.getUserId()).orElseThrow(
-                () -> new BadRequestException(String.format(ID_NOT_FOUND, userMetaDto.getUserId()))
+                () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, userMetaDto.getUserId()))
         );
 
         Optional<TUserMeta> userMeta = tUserMetaRepository.findByUserId(userMetaDto.getUserId());
@@ -51,23 +55,28 @@ public class UserMetaServiceImp implements UserMetaService {
             throw new BadRequestException("UserMeta already exists");
         }
 
+        var result = userManagementDTOMapperService.convertDTOToTUserMeta(userMetaDto);
+        auditService.stampAuditedEntity(result);
+
         return Optional.of(
-                tUserMetaRepository.save(userManagementDTOMapperService.convertDTOToTUserMeta(userMetaDto))
+                tUserMetaRepository.save(result)
         );
     }
 
     @Override
     public Optional<TUserMeta> updateUserMeta(UserMetaDto userMetaDto) {
-        Validate.notNull(userMetaDto, "NULL user object");
-        Validate.notNull(userMetaDto.getId(), "UserMeta ID not defined");
+
+        userMetaDto.validate();
+
         tUserMetaRepository.findById(userMetaDto.getId())
                 .orElseThrow(
-                        () -> new BadRequestException(ID_NOT_FOUND, userMetaDto.getId())
+                        () -> new BadRequestException(ErrorMessageConstants.ID_NOT_FOUND, userMetaDto.getId())
                 );
 
-        return Optional.of(
-                tUserMetaRepository.save(userManagementDTOMapperService.convertDTOToTUserMeta(userMetaDto))
-        );
+        var result = userManagementDTOMapperService.convertDTOToTUserMeta(userMetaDto);
+        auditService.stampAuditedEntity(result);
+
+        return Optional.of(tUserMetaRepository.save(result));
     }
 
     @Override
@@ -75,7 +84,7 @@ public class UserMetaServiceImp implements UserMetaService {
         Validate.notNull(id, ID_NOT_DEFINED);
         var userMeta = tUserMetaRepository.findById(id)
                 .orElseThrow(
-                        () -> new BadRequestException(String.format(ID_NOT_FOUND, id))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, id))
                 );
         return Optional.of(userMeta);
     }
@@ -85,7 +94,7 @@ public class UserMetaServiceImp implements UserMetaService {
         Validate.notNull(id, ID_NOT_DEFINED);
         var userMeta = tUserMetaRepository.findByUserId(id)
                 .orElseThrow(
-                        () -> new BadRequestException(String.format(ID_NOT_FOUND, id))
+                        () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, id))
                 );
         return Optional.of(userMeta);
     }

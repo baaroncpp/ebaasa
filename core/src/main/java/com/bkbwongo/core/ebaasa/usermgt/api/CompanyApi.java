@@ -26,18 +26,12 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CompanyApi {
 
+    @Autowired
     private CompanyService companyService;
-    private UserService userService;
 
     private static final String SORT_DESC = "DESCENDING";
     private static final String SORT_ASC = "ASCENDING";
     private static final String SORT_BY = "createdOn";
-
-    @Autowired
-    public CompanyApi(CompanyService companyService, UserService userService) {
-        this.companyService = companyService;
-        this.userService = userService;
-    }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
     @PostMapping(value = "/company", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
@@ -48,9 +42,7 @@ public class CompanyApi {
     @RolesAllowed("ROLE_ADMIN.UPDATE")
     @PutMapping(value = "/company", consumes = BaseAPI.APPLICATION_JSON, produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> updateCompany(@RequestBody CompanyDto companyDto){
-        String username = "";
-        Optional<TUser> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(companyService.updateCompany(user.get(), companyDto));
+        return ResponseEntity.ok(companyService.updateCompany(companyDto));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
