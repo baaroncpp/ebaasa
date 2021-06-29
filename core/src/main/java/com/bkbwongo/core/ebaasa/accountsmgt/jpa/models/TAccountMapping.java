@@ -1,10 +1,11 @@
-package com.bkbwongo.core.ebaasa.walletmgt.jpa.models;
+package com.bkbwongo.core.ebaasa.accountsmgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.bankmgt.jpa.models.TBankAccount;
 import com.bkbwongo.core.ebaasa.base.enums.StatusEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsAccount;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
+import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWallet;
 
 import javax.persistence.*;
 
@@ -17,9 +18,9 @@ import javax.persistence.*;
 @Table(name = "t_account_mapping", schema = "core")
 public class TAccountMapping extends AuditedEntity {
     private TBankAccount bankAccountId;
-    private TUser userId;
-    private TSmsAccount smsAccountId;
-    private TWallet walletId;
+    private TUser user;
+    private TSmsAccount smsAccount;
+    private TWallet wallet;
     private StatusEnum status;
     private Boolean systemAccount = Boolean.FALSE;
 
@@ -35,33 +36,33 @@ public class TAccountMapping extends AuditedEntity {
 
     @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    public TUser getUserId() {
-        return userId;
+    public TUser getUser() {
+        return user;
     }
 
-    public void setUserId(TUser userId) {
-        this.userId = userId;
+    public void setUser(TUser user) {
+        this.user = user;
     }
 
     @JoinColumn(name = "sms_account_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    public TSmsAccount getSmsAccountId() {
-        return smsAccountId;
+    public TSmsAccount getSmsAccount() {
+        return smsAccount;
     }
 
-    public void setSmsAccountId(TSmsAccount smsAccountId) {
-        this.smsAccountId = smsAccountId;
+    public void setSmsAccount(TSmsAccount smsAccount) {
+        this.smsAccount = smsAccount;
     }
 
     @JoinColumn(name = "wallet_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    public TWallet getWalletId() {
-        return walletId;
+    public TWallet getWallet() {
+        return wallet;
     }
 
     @Column(name = "")
-    public void setWalletId(TWallet walletId) {
-        this.walletId = walletId;
+    public void setWallet(TWallet wallet) {
+        this.wallet = wallet;
     }
 
     @Column(name = "status")

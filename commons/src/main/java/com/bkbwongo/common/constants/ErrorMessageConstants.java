@@ -35,4 +35,6 @@ public class ErrorMessageConstants {
     public static final String NULL_COUNTRY_VALUE_OR_OBJECT = "Null country payload";
     public static final String BUSINESS_NAME_TAKEN = "Company with BUSINESS NAME %s already exists";
     public static final String BUSINESS_NAME_NOT_FOUND = "Company with BUSINESS NAME %s does not exist";
+    public static final String ACCOUNT_MAPPING_NOT_FOUND = "account mapping with ID: %s not found";
+    public static final String PROVIDER_TYPE_NOT_SUPPORTED = "Provided link type is not supported";
 }
