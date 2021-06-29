@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bk_db
-    username: aaron
-    password: aaron
+    url: jdbc:postgresql://${EB_DB_HOST}:${EB_DB_PORT}/${EB_DB}
+    username: ${EB_DB_USERNAME}
+    password: ${EB_DB_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
@@ -19,10 +19,7 @@ spring:
         format_sql: true
 
   flyway:
-    user: aaron
-    password: aaron
     schemas: core
-    url: jdbc:postgresql://localhost:5432/bk_db
     locations: classpath:db/migration
 
 check-user-scopes: false
@@ -30,10 +27,6 @@ check-user-scopes: false
 app:
   security:
     jwt:
-      keystore-location: keys/ebaasa.jks
-      keystore-password: oliviatyra
-      key-alias: ebaasa
-      private-key-passphrase: Oliviatyra256aaron
-      secretKey: allthisisstillundertestallthisisstillundertestallthisisstillundertestallthisisstillundertest
-      tokenPrefix: Bearer
-      tokenExpirationAfterMinutes:
+      keystore-location: ${KEYSTORE_LOCATION}
+      keystore-password: ${KEYSTORE_PASSWORD}
+      key-alias: ${KEY_ALIAS} 

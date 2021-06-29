@@ -16,7 +16,7 @@ import javax.crypto.SecretKey;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix = "app.security.jwt")
+//@ConfigurationProperties(prefix = "app.security.jwt")
 public class JwtConfig {
     private String secretKey;
     private String tokenPrefix;
@@ -48,10 +48,10 @@ public class JwtConfig {
         this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
     }
 
-    @Bean
+    /*@Bean
     public SecretKey getSecretKeyForSigning(){
         return Keys.hmacShaKeyFor(getSecretKey().getBytes());
-    }
+    }*/
 
     public String getAuthorizationHeader(){
         return HttpHeaders.AUTHORIZATION;
