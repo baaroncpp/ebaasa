@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_account_mapping", schema = "core")
 public class TAccountMapping extends AuditedEntity {
-    private TBankAccount bankAccountId;
+    private TBankAccount bankAccount;
     private TUser user;
     private TSmsAccount smsAccount;
     private TWallet wallet;
@@ -26,12 +26,12 @@ public class TAccountMapping extends AuditedEntity {
 
     @JoinColumn(name = "bank_account_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    public TBankAccount getBankAccountId() {
-        return bankAccountId;
+    public TBankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public void setBankAccountId(TBankAccount bankAccountId) {
-        this.bankAccountId = bankAccountId;
+    public void setBankAccount(TBankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = true,updatable = false)
