@@ -1,7 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_sms_package",schema = "core")
 public class TSmsPackage extends AuditedEntity {
-    private TUser user;
+    private TSmsAccount smsAccount;
     private TSmsPackageType smsPackageType;
     private Boolean isUsedUp;
     private Boolean isActive;

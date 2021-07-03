@@ -141,10 +141,6 @@ public class AccountMappingServiceImp implements AccountMappingService{
     }
 
     private TAccountMapping linkWalletAccount(Long walletId, TAccountMapping accountMapping){
-        return null;
-    }
-
-    private TAccountMapping unlinkWalletAccount(Long walletId, TAccountMapping accountMapping){
 
         var wallet = walletRepository.findById(walletId);
         Validate.isPresent(wallet, String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletId));
@@ -161,6 +157,10 @@ public class AccountMappingServiceImp implements AccountMappingService{
 
         auditService.stampAuditedEntity(accountMapping);
         return accountMappingRepository.save(accountMapping);
+    }
+
+    private TAccountMapping unlinkWalletAccount(Long walletId, TAccountMapping accountMapping){
+        return null;
     }
 
     private TAccountMapping linkBankAccount(Long bankAccountId, TAccountMapping accountMapping){

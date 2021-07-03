@@ -13,4 +13,5 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_sms_transaction",schema = "core")
 public class TSmsTransaction extends BaseEntity {
+    private TSmsAccount smsAccount;
 }
