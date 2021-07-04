@@ -19,10 +19,12 @@ public class TSmsAccount extends AuditedEntity {
     private Date isCosedOn;
     private TUser closedBy;
     private TUser activatedBy;
+    private Date activatedOn;
     private Boolean isClosed;
     private Boolean isActive;
     private Long accountSmsCount;
     private Boolean isAssigned;
+    private TUser assignedBy;
 
     @Column(name = "sms_account_type")
     @Enumerated(EnumType.STRING)
@@ -34,7 +36,7 @@ public class TSmsAccount extends AuditedEntity {
         this.smsAccountType = smsAccountType;
     }
 
-    @Column(name = "is_closed_on")
+    @Column(name = "closed_on")
     public Date getIsCosedOn() {
         return isCosedOn;
     }
@@ -43,7 +45,7 @@ public class TSmsAccount extends AuditedEntity {
         this.isCosedOn = isCosedOn;
     }
 
-    @JoinColumn(name = "is_closed_by", referencedColumnName = "id", insertable = true, updatable = true)
+    @JoinColumn(name = "closed_by", referencedColumnName = "id", insertable = true, updatable = true)
     @OneToOne(fetch = FetchType.LAZY)
     public TUser getClosedBy() {
         return closedBy;
@@ -53,7 +55,7 @@ public class TSmsAccount extends AuditedEntity {
         this.closedBy = closedBy;
     }
 
-    @JoinColumn(name = "is_closed_by", referencedColumnName = "id", insertable = true, updatable = true)
+    @JoinColumn(name = "activated_by", referencedColumnName = "id", insertable = true, updatable = true)
     @OneToOne(fetch = FetchType.LAZY)
     public TUser getActivatedBy() {
         return activatedBy;
@@ -97,5 +99,24 @@ public class TSmsAccount extends AuditedEntity {
 
     public void setAssigned(Boolean assigned) {
         isAssigned = assigned;
+    }
+
+    @JoinColumn(name = "assigned_by", referencedColumnName = "id", insertable = true, updatable = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    public TUser getAssignedBy() {
+        return assignedBy;
+    }
+
+    public void setAssignedBy(TUser assignedBy) {
+        this.assignedBy = assignedBy;
+    }
+
+    @Column(name = "activated_on")
+    public Date getActivatedOn() {
+        return activatedOn;
+    }
+
+    public void setActivatedOn(Date activatedOn) {
+        this.activatedOn = activatedOn;
     }
 }
