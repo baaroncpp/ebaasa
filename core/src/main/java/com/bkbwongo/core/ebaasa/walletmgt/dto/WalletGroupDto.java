@@ -1,7 +1,7 @@
 package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
 import com.bkbwongo.common.utils.Validate;
-import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
+import com.bkbwongo.core.ebaasa.base.enums.AccountTypeEnum;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,13 +25,14 @@ public class WalletGroupDto {
     private UserDto modifiedBy;
     private String name;
     private String note;
-    private WalletAccountTypeEnum groupType;
+    private AccountTypeEnum groupType;
     private boolean isDebited;
 
     public void validate(){
         Validate.notEmpty(name, "Null walletGroup name value");
         Validate.notNull(groupType, "Null group type value");
         Validate.notNull(isDebited, "Null isDebited value");
-
+        Validate.isTrue(AccountTypeEnum.MAIN_SMS.getAcronym().equals(groupType.getAcronym()), "Invalid account type");
+        Validate.isTrue(AccountTypeEnum.SMS.getAcronym().equals(groupType.getAcronym()), "Invalid account type");
     }
 }

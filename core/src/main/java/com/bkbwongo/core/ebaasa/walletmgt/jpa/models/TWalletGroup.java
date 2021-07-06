@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.walletmgt.jpa.models;
 
-import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
+import com.bkbwongo.core.ebaasa.base.enums.AccountTypeEnum;
 import com.bkbwongo.core.ebaasa.base.enums.WalletTimeDebitLimitEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class TWalletGroup extends AuditedEntity {
     private String name;//unique
     private String note;
-    private WalletAccountTypeEnum groupType;
+    private AccountTypeEnum groupType;
     private boolean isDebited;
     private BigDecimal cashDebitLimit;
     private WalletTimeDebitLimitEnum periodDebitLimit;
@@ -42,11 +42,11 @@ public class TWalletGroup extends AuditedEntity {
 
     @Column(name = "wallet_account_type")
     @Enumerated(EnumType.STRING)
-    public WalletAccountTypeEnum getGroupType() {
+    public AccountTypeEnum getGroupType() {
         return groupType;
     }
 
-    public void setGroupType(WalletAccountTypeEnum groupType) {
+    public void setGroupType(AccountTypeEnum groupType) {
         this.groupType = groupType;
     }
 

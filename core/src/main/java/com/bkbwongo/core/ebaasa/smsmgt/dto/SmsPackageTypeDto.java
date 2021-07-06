@@ -9,26 +9,23 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 29/06/2021
+ * @created on 06/07/2021
  * @project ebaasa-sms
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class SmsAccountDto {
+public class SmsPackageTypeDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
     private UserDto createdBy;
     private UserDto modifiedBy;
-    private SmsAccountGroupDto smsAccountType;
-    private Date isCosedOn;
-    private UserDto closedBy;
-    private UserDto activatedBy;
-    private Date activatedOn;
-    private Boolean isClosed;
+    private String name;
+    private String note;
+    private int smsCount;
     private Boolean isActive;
-    private Long accountSmsCount;
-    private Boolean isAssigned;
-    private UserDto assignedBy;
+    private Boolean isClosed;
+    private UserDto activatedBy;
+    private UserDto closedBy;
 }

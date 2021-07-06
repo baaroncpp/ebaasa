@@ -3,7 +3,7 @@ package com.bkbwongo.core.ebaasa.walletmgt.utitlities;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
-import com.bkbwongo.core.ebaasa.base.enums.WalletAccountTypeEnum;
+import com.bkbwongo.core.ebaasa.base.enums.AccountTypeEnum;
 import com.bkbwongo.core.ebaasa.walletmgt.jpa.models.TWallet;
 
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class WalletUtilities {
 
     public static  void checkThatAccountCanBeAssignedAsMain(TWallet wallet){
         WalletUtilities.checkThatAccountCanBeAssigned(wallet);
-        Validate.isTrue(wallet.getWalletGroup().getGroupType().equals(WalletAccountTypeEnum.MAIN_CASH),"Only a main account can be assigned to a bank");
+        Validate.isTrue(wallet.getWalletGroup().getGroupType().equals(AccountTypeEnum.MAIN_CASH),"Only a main account can be assigned to a bank");
 
     }
 

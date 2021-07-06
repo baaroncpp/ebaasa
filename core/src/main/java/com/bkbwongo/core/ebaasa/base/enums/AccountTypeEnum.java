@@ -5,14 +5,15 @@ package com.bkbwongo.core.ebaasa.base.enums;
  * @created on 24/04/2021
  * @project ebaasa-sms
  */
-public enum WalletAccountTypeEnum {
-    MAIN_CASH("MC"),
-    COMPANY_CASH("CC"),
-    CASH("CA");
+public enum AccountTypeEnum {
+    MAIN_WALLET("MW"),
+    WALLET("WA"),
+    MAIN_SMS("WS"),
+    SMS("SMS");
 
     private final String acronym;
 
-    WalletAccountTypeEnum(String acronym) {
+    AccountTypeEnum(String acronym) {
         this.acronym = acronym;
     }
 

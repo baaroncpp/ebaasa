@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "t_sms_account",schema = "core")
 public class TSmsAccount extends AuditedEntity {
-    private SmsAccountTypeEnum smsAccountType;
+    private TSmsAccountGroup smsAccountType;
     private Date isCosedOn;
     private TUser closedBy;
     private TUser activatedBy;
@@ -26,13 +26,13 @@ public class TSmsAccount extends AuditedEntity {
     private Boolean isAssigned;
     private TUser assignedBy;
 
-    @Column(name = "sms_account_type")
-    @Enumerated(EnumType.STRING)
-    public SmsAccountTypeEnum getSmsAccountType() {
+    @JoinColumn(name = "sms_account_group_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    public TSmsAccountGroup getSmsAccountType() {
         return smsAccountType;
     }
 
-    public void setSmsAccountType(SmsAccountTypeEnum smsAccountType) {
+    public void setSmsAccountType(TSmsAccountGroup smsAccountType) {
         this.smsAccountType = smsAccountType;
     }
 

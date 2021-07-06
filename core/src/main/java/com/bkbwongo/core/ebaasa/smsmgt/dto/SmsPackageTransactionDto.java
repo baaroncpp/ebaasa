@@ -1,5 +1,7 @@
 package com.bkbwongo.core.ebaasa.smsmgt.dto;
 
+import com.bkbwongo.core.ebaasa.base.enums.TransactionStatusEnum;
+import com.bkbwongo.core.ebaasa.base.enums.TransactionTypeEnum;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,26 +11,24 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 29/06/2021
+ * @created on 06/07/2021
  * @project ebaasa-sms
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class SmsAccountDto {
+public class SmsPackageTransactionDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
     private UserDto createdBy;
     private UserDto modifiedBy;
-    private SmsAccountGroupDto smsAccountType;
-    private Date isCosedOn;
-    private UserDto closedBy;
-    private UserDto activatedBy;
-    private Date activatedOn;
-    private Boolean isClosed;
-    private Boolean isActive;
-    private Long accountSmsCount;
-    private Boolean isAssigned;
-    private UserDto assignedBy;
+    private SmsAccountDto smsAccount;
+    private SmsPackageDto smsPackage;
+    private TransactionTypeEnum transactionType;
+    private TransactionStatusEnum status;
+    private String statusDescription;
+    private Boolean nonReversal;
+    private Long numberSmsBefore;
+    private Long numberSmsAfter;
 }

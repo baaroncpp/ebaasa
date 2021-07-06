@@ -7,10 +7,12 @@ package com.bkbwongo.core.ebaasa.base.enums;
  */
 public enum TransactionTypeEnum {
     SMS_PURCHASE("buying sms from using ebaasa wallet credit"),
+    SMS_DEBIT("sms leaving sms account"),
+    SMS_CREDIT("sms coming to sms account"),
     MOMO_DEPOSIT("depositing money from MOMO to wallet"),
     MOMO_WITHDRAW("withdrawing money from wallet to MOMO"),
-    WALLET_DEPOSIT("depositing money to wallet"),
-    WALLET_WITHDRAW("withdrawing money from wallet"),
+    WALLET_DEBIT("money leaving wallet"),
+    WALLET_CREDIT("money coming to wallet"),
     REFUND("refunding money from ebaasa wallet to MOMO");
 
     private final String description;

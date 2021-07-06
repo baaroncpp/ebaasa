@@ -1,6 +1,7 @@
 package com.bkbwongo.core.ebaasa.accountsmgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.bankmgt.jpa.models.TBankAccount;
+import com.bkbwongo.core.ebaasa.base.enums.AccountMappingTypeEnum;
 import com.bkbwongo.core.ebaasa.base.enums.StatusEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsAccount;
@@ -22,7 +23,7 @@ public class TAccountMapping extends AuditedEntity {
     private TSmsAccount smsAccount;
     private TWallet wallet;
     private StatusEnum status;
-    private Boolean systemAccount = Boolean.FALSE;
+    private AccountMappingTypeEnum accountMappingTypeEnum;
 
     @JoinColumn(name = "bank_account_id",referencedColumnName = "id",insertable = true,updatable = false)
     @OneToOne(fetch = FetchType.EAGER)
@@ -75,12 +76,13 @@ public class TAccountMapping extends AuditedEntity {
         this.status = status;
     }
 
-    @Column(name = "is_system_account")
-    public Boolean getSystemAccount() {
-        return systemAccount;
+    @Column(name = "account_mapping_type")
+    @Enumerated(EnumType.STRING)
+    public AccountMappingTypeEnum getAccountMappingEnum() {
+        return accountMappingTypeEnum;
     }
 
-    public void setSystemAccount(Boolean systemAccount) {
-        this.systemAccount = systemAccount;
+    public void setAccountMappingEnum(AccountMappingTypeEnum accountMappingTypeEnum) {
+        this.accountMappingTypeEnum = accountMappingTypeEnum;
     }
 }
