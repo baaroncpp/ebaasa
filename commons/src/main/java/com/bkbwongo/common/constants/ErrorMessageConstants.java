@@ -10,6 +10,7 @@ public class ErrorMessageConstants {
     private ErrorMessageConstants() {}
 
     public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
+    public static final String ONLY_SYSTEM_ACCOUNT_TO_MAIN_ACCOUNT = "Only system user accounts can map to main accounts";
     public static final String ID_NOT_FOUND = "User with ID: %s not found";
     public static final String SMS_ACCOUNT_NOT_FOUND = "Sms account with ID: %s not found";
     public static final String AMOUNT_MUST_BE_GREATER_THAN_ZERO = "Amount to transact should be greater than 0";
@@ -40,4 +41,5 @@ public class ErrorMessageConstants {
     public static final String PROVIDER_TYPE_NOT_SUPPORTED = "Provided link type is not supported";
     public static final String BANK_ACCOUNT_NOT_FOUND = "Bank account with ID %s not found";
     public static final String WALLET_MAPPING_FOR_USER_DOES_NOT_EXIST = "Mapping for wallet %s and user %s does not exist";
+    public static final String WALLET_MAPPING_TO_BANK_DOES_NOT_EXIST = "Mapping for wallet %s and bank %s does not exist";
 }

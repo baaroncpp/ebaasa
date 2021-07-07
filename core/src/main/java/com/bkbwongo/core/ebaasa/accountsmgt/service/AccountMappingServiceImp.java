@@ -7,9 +7,11 @@ import com.bkbwongo.core.ebaasa.accountsmgt.dto.AccountLinkDto;
 import com.bkbwongo.core.ebaasa.accountsmgt.dto.AccountMappingDto;
 import com.bkbwongo.core.ebaasa.accountsmgt.jpa.models.TAccountMapping;
 import com.bkbwongo.core.ebaasa.accountsmgt.repository.TAccountMappingRepository;
+import com.bkbwongo.core.ebaasa.bankmgt.jpa.models.TBankAccount;
 import com.bkbwongo.core.ebaasa.bankmgt.repository.TBankAccountRepository;
 import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
 import com.bkbwongo.core.ebaasa.base.enums.StatusEnum;
+import com.bkbwongo.core.ebaasa.base.enums.UserTypeEnum;
 import com.bkbwongo.core.ebaasa.base.utils.AuditService;
 import com.bkbwongo.core.ebaasa.security.model.EbaasaLoginUser;
 import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsAccount;
@@ -59,8 +61,10 @@ public class AccountMappingServiceImp implements AccountMappingService{
         var user = userRepository.findById(accountMappingDto.getUserId());
         Validate.isPresent(user, String.format(ErrorMessageConstants.ID_NOT_FOUND, accountMappingDto.getUserId()));
 
-        TAccountMapping accountMapping = new TAccountMapping();
-        accountMapping.setUser(user.get());
+        TUser userToLink = user.get();
+
+        var accountMapping = new TAccountMapping();
+        accountMapping.setUser(userToLink);
         auditService.stampAuditedEntity(accountMapping);
 
         return Optional.of(accountMappingRepository.save(accountMapping));
@@ -107,39 +111,17 @@ public class AccountMappingServiceImp implements AccountMappingService{
 
     @Override
     public Optional<TAccountMapping> linkSystemAccount(AccountLinkDto accountLinkDto) {
+
         accountLinkDto.validate();
+
         TAccountMapping result = null;
 
         switch (accountLinkDto.getLinkType()){
             case SMS_ACCOUNT:
                 result = linkMainSmsAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
                 break;
-            case BANK:
-                result = linkMainBankAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
-                break;
             case WALLET:
                 result = linkMainWalletAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
-                break;
-            default:
-                throw new UnsupportedOperationException(ErrorMessageConstants.PROVIDER_TYPE_NOT_SUPPORTED);
-        }
-        return Optional.of(result);
-    }
-
-    @Override
-    public Optional<TAccountMapping> unlinkSystemAccount(AccountLinkDto accountLinkDto) {
-        accountLinkDto.validate();
-        TAccountMapping result = null;
-
-        switch (accountLinkDto.getLinkType()){
-            case SMS_ACCOUNT:
-                result = unlinkMainSmsAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
-                break;
-            case BANK:
-                result = unlinkMainBankAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
-                break;
-            case WALLET:
-                result = unlinkMainWalletAccount(accountLinkDto.getEntityId(), accountLinkDto.getUserId());
                 break;
             default:
                 throw new UnsupportedOperationException(ErrorMessageConstants.PROVIDER_TYPE_NOT_SUPPORTED);
@@ -175,6 +157,7 @@ public class AccountMappingServiceImp implements AccountMappingService{
 
         var user = userRepository.findById(userId);
         Validate.isPresent(user, String.format(ErrorMessageConstants.ID_NOT_FOUND, userId));
+        Validate.isTrue(!user.get().getUserType().name().equals(UserTypeEnum.SYSTEM), "System account cannot be linked to this wallet");
 
         var wallet = walletRepository.findById(walletId);
         Validate.isPresent(wallet, String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletId));
@@ -188,14 +171,18 @@ public class AccountMappingServiceImp implements AccountMappingService{
             accountMapping = am.get();
         }else {
             accountMapping = new TAccountMapping();
+            accountMapping.setStatus(StatusEnum.ACTIVE);
         }
 
-        WalletUtilities.checkThatAccountCanBeAssigned(wallet.get());
-        setActivated(wallet.get());
-        walletRepository.save(wallet.get());
+        TWallet walletToLink = wallet.get();
 
-        accountMapping.setWallet(wallet.get());
-        accountMapping.setStatus(StatusEnum.ACTIVE);
+        WalletUtilities.checkThatAccountCanBeAssigned(walletToLink);
+        setActivated(walletToLink);
+        auditService.stampAuditedEntity(walletToLink);
+
+        walletRepository.save(walletToLink);
+
+        accountMapping.setWallet(walletToLink);
 
         auditService.stampAuditedEntity(accountMapping);
         return accountMappingRepository.save(accountMapping);
@@ -231,25 +218,114 @@ public class AccountMappingServiceImp implements AccountMappingService{
         return accountMappingRepository.save(mapping);
     }
 
-    private TAccountMapping linkMainBankAccount(Long bankAccountId, Long userId){
+    @Override
+    public TAccountMapping linkMainBankAccountToWallet(Long bankAccountId, Long walletId){
+
+        var bankAccount = bankAccountRepository.findById(bankAccountId);
+        Validate.isPresent(bankAccount, String.format(ErrorMessageConstants.BANK_ACCOUNT_NOT_FOUND, bankAccountId));
+        Validate.isTrue(bankAccount.get().getAssigned(), "bank is already assigned");
+
+        var wallet = walletRepository.findById(walletId);
+        Validate.isPresent(wallet, String.format(ErrorMessageConstants.SAME_WALLET_ACCOUNT));
+
+        var am = accountMappingRepository.findByBankAccount(bankAccount.get());
+        Validate.isTrue(!am.isPresent(), "Bank account is already mapped to a wallet account");
+
+        final TBankAccount bankToAssign = bankAccount.get();
+        bankToAssign.setAssigned(Boolean.TRUE);
+        final TWallet walletToAssign = wallet.get();
+
+        WalletUtilities.checkThatAccountCanBeAssignedAsMain(walletToAssign);
+        setActivated(walletToAssign);
+        auditService.stampAuditedEntity(walletToAssign);
+
+        bankAccountRepository.save(bankToAssign);
+        walletRepository.save(walletToAssign);
+
+        var accountMapping = new TAccountMapping();
+        accountMapping.setBankAccount(bankToAssign);
+        accountMapping.setWallet(walletToAssign);
+        accountMapping.setStatus(StatusEnum.ACTIVE);
+        auditService.stampAuditedEntity(accountMapping);
+
+        return accountMappingRepository.save(accountMapping);
+    }
+
+    @Override
+    public TAccountMapping unlinkMainBankAccountToWallet(Long bankAccountId, Long walletId) {
 
         var bankAccount = bankAccountRepository.findById(bankAccountId);
         Validate.isPresent(bankAccount, String.format(ErrorMessageConstants.BANK_ACCOUNT_NOT_FOUND, bankAccountId));
 
-        var am = accountMappingRepository.findByBankAccount(bankAccount.get());
-        Validate.isTrue(am.isPresent(), "Bank account is already mapped to user");
+        var walletToUnlink = walletRepository.findById(walletId);
 
-        return null;
+        Optional<TAccountMapping> accountMapping = accountMappingRepository.findByBankAccount(bankAccount.get());
+        Validate.isPresent(accountMapping,"Bank is not linked to this wallet account");
+        Validate.isTrue(accountMapping.get().getWallet().getId().equals(walletId), String.format(ErrorMessageConstants.WALLET_MAPPING_TO_BANK_DOES_NOT_EXIST, walletId, bankAccountId));
+
+        final TWallet wallet = walletToUnlink.get();
+        final TBankAccount bank = bankAccount.get();
+        bank.setAssigned(Boolean.FALSE);
+        auditService.stampLongEntity(bank);
+
+        bankAccountRepository.save(bank);
+
+        WalletUtilities.checkThatAccountCanBeUnAssigned(wallet);
+
+        wallet.setAccountStatus(AccountStatusEnum.CLOSED);
+        wallet.setStatusDescription(AccountStatusEnum.CLOSED.getDescription());
+        wallet.setAssigned(Boolean.FALSE);
+
+        auditService.stampAuditedEntity(wallet);
+        walletRepository.save(wallet);
+
+        final TAccountMapping mapping = accountMapping.get();
+        mapping.setStatus(StatusEnum.NOT_ACTIVE);
+        auditService.stampAuditedEntity(mapping);
+
+        return accountMappingRepository.save(mapping);
     }
 
-    private TAccountMapping linkMainSmsAccount(Long bankAccountId, Long userId){
-        return null;
+    private TAccountMapping linkMainSmsAccount(Long smsAccountId, Long userId){
+
+        var user = userRepository.findById(userId);
+        Validate.isPresent(user, String.format(ErrorMessageConstants.ID_NOT_FOUND, userId));
+        Validate.isTrue(user.get().getUserType().name().equals(UserTypeEnum.SYSTEM.name()), ErrorMessageConstants.ONLY_SYSTEM_ACCOUNT_TO_MAIN_ACCOUNT);
+
+        var smsAccount = smsAccountRepository.findById(smsAccountId);
+        Validate.isPresent(smsAccount, String.format(ErrorMessageConstants.SMS_ACCOUNT_NOT_FOUND, smsAccountId));
+
+        var accountMapping = accountMappingRepository.findBySmsAccount(smsAccount.get());
+        Validate.isTrue(!accountMapping.isPresent(), "User already has sms account");
+
+        var mapping = accountMappingRepository.findByUser(user.get());
+        TAccountMapping result = null;
+        if (mapping.isPresent()){
+            result = mapping.get();
+        }else {
+            result = new TAccountMapping();
+            result.setStatus(StatusEnum.ACTIVE);
+        }
+
+        TSmsAccount smsAccountToLink = smsAccount.get();
+
+        SmsUtilities.checkThatAccountCanBeAssignedAsMain(smsAccountToLink);
+        setSmsAccountActivated(smsAccountToLink);
+        auditService.stampAuditedEntity(smsAccountToLink);
+
+        smsAccountRepository.save(smsAccountToLink);
+
+        result.setSmsAccount(smsAccountToLink);
+        auditService.stampAuditedEntity(result);
+
+        return accountMappingRepository.save(result);
     }
 
     private TAccountMapping linkMainWalletAccount(Long walletId, Long userId){
 
         var user = userRepository.findById(userId);
         Validate.isPresent(user, String.format(ErrorMessageConstants.ID_NOT_FOUND, userId));
+        Validate.isTrue(user.get().getUserType().name().equals(UserTypeEnum.SYSTEM.name()), ErrorMessageConstants.ONLY_SYSTEM_ACCOUNT_TO_MAIN_ACCOUNT);
 
         var wallet = walletRepository.findById(walletId);
         Validate.isPresent(wallet, String.format(ErrorMessageConstants.WALLET_NOT_FOUND, walletId));
@@ -263,29 +339,21 @@ public class AccountMappingServiceImp implements AccountMappingService{
             accountMapping = am.get();
         }else {
             accountMapping = new TAccountMapping();
+            accountMapping.setStatus(StatusEnum.ACTIVE);
         }
 
-        WalletUtilities.checkThatAccountCanBeAssignedAsMain(wallet.get());
-        setActivated(wallet.get());
-        walletRepository.save(wallet.get());
+        TWallet walletToAssign = wallet.get();
 
-        accountMapping.setWallet(wallet.get());
-        accountMapping.setStatus(StatusEnum.ACTIVE);
+        WalletUtilities.checkThatAccountCanBeAssignedAsMain(walletToAssign);
+        setActivated(walletToAssign);
+        auditService.stampAuditedEntity(walletToAssign);
 
+        walletRepository.save(walletToAssign);
+
+        accountMapping.setWallet(walletToAssign);
         auditService.stampAuditedEntity(accountMapping);
+
         return accountMappingRepository.save(accountMapping);
-    }
-
-    private TAccountMapping unlinkMainSmsAccount(Long bankAccountId, Long userId){
-        return null;
-    }
-
-    private TAccountMapping unlinkMainWalletAccount(Long bankAccountId, Long userId){
-        return null;
-    }
-
-    private TAccountMapping unlinkMainBankAccount(Long bankAccountId, Long userId){
-        return null;
     }
 
     private TAccountMapping linkSmsAccount(Long smsAccountId, Long userId){
@@ -308,12 +376,16 @@ public class AccountMappingServiceImp implements AccountMappingService{
             result.setStatus(StatusEnum.ACTIVE);
         }
 
-        SmsUtilities.checkThatAccountCanBeAssigned(smsAccount.get());
-        setSmsAccountActivated(smsAccount.get());
+        final TSmsAccount smsAccountToLink = smsAccount.get();
 
-        smsAccountRepository.save(smsAccount.get());
+        SmsUtilities.checkThatAccountCanBeAssigned(smsAccountToLink);
+        setSmsAccountActivated(smsAccountToLink);
+        auditService.stampAuditedEntity(smsAccountToLink);
 
-        result.setSmsAccount(smsAccount.get());
+        smsAccountRepository.save(smsAccountToLink);
+
+        result.setSmsAccount(smsAccountToLink);
+        auditService.stampAuditedEntity(result);
 
         return accountMappingRepository.save(result);
     }
@@ -329,14 +401,16 @@ public class AccountMappingServiceImp implements AccountMappingService{
         var accountMapping = accountMappingRepository.findBySmsAccount(smsAccount.get());
         Validate.isTrue(accountMapping.get().getUser().getId().equals(userId), "Sms account is not mapped to user");
 
-        SmsUtilities.checkThatAccountCanBeUnAssigned(smsAccount.get());
+        TSmsAccount smsAccountToLink = smsAccount.get();
 
-        smsAccount.get().setAccountStatus(AccountStatusEnum.CLOSED);
-        smsAccount.get().setStatusDescription(AccountStatusEnum.CLOSED.getDescription());
-        smsAccount.get().setAssigned(Boolean.FALSE);
+        SmsUtilities.checkThatAccountCanBeUnAssigned(smsAccountToLink);
 
-        auditService.stampAuditedEntity(smsAccount.get());
-        smsAccountRepository.save(smsAccount.get());
+        smsAccountToLink.setAccountStatus(AccountStatusEnum.CLOSED);
+        smsAccountToLink.setStatusDescription(AccountStatusEnum.CLOSED.getDescription());
+        smsAccountToLink.setAssigned(Boolean.FALSE);
+
+        auditService.stampAuditedEntity(smsAccountToLink);
+        smsAccountRepository.save(smsAccountToLink);
 
         final TAccountMapping mapping = accountMapping.get();
         mapping.setStatus(StatusEnum.NOT_ACTIVE);
@@ -348,7 +422,7 @@ public class AccountMappingServiceImp implements AccountMappingService{
     private void setActivated(TWallet wallet){
         EbaasaLoginUser user = auditService.getLoggedInUser();
 
-        final TUser s = new TUser();
+        final var s = new TUser();
         s.setId(user.getId());
         wallet.setActivatedBy(s);
         wallet.setActivateOn(DateTimeUtil.getCurrentUTCTime());
@@ -361,7 +435,7 @@ public class AccountMappingServiceImp implements AccountMappingService{
     private void setSmsAccountActivated(TSmsAccount smsAccount){
         EbaasaLoginUser user = auditService.getLoggedInUser();
 
-        final TUser s = new TUser();
+        final var s = new TUser();
         s.setId(user.getId());
         smsAccount.setActivatedBy(s);
         smsAccount.setActivatedOn(DateTimeUtil.getCurrentUTCTime());

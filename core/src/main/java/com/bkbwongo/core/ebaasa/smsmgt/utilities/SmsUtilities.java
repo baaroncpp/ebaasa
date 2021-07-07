@@ -20,7 +20,6 @@ public class SmsUtilities {
     public static  void checkThatAccountCanBeAssignedAsMain(TSmsAccount smsAccount){
         SmsUtilities.checkThatAccountCanBeAssigned(smsAccount);
         Validate.isTrue(smsAccount.getSmsAccountType().equals(AccountTypeEnum.MAIN_SMS),"Only a main account can be assigned to a bank");
-
     }
 
     public static void checkThatAccountCanBeAssigned(TSmsAccount smsAccount){

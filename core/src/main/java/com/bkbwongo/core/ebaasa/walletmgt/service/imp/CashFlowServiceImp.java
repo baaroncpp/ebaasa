@@ -80,7 +80,7 @@ public class CashFlowServiceImp implements CashFlowService {
         //from wallet transaction
         TWalletTransaction fromWalletTransaction = TWalletTransaction.builder()
                 .externalTransactionId(tCashFlow.getExternalReference())
-                .transactionType(TransactionTypeEnum.WALLET_WITHDRAW)
+                .transactionType(TransactionTypeEnum.WALLET_DEBIT)
                 .balanceBefore(tCashFlow.getFromWallet().getAvailableBalance())
                 .balanceAfter(tCashFlow.getFromWallet().getAvailableBalance().subtract(tCashFlow.getAmount()))
                 .wallet(fromWallet)
@@ -94,7 +94,7 @@ public class CashFlowServiceImp implements CashFlowService {
         //to wallet transaction
         TWalletTransaction toWalletTransaction = TWalletTransaction.builder()
                 .externalTransactionId(tCashFlow.getExternalReference())
-                .transactionType(TransactionTypeEnum.WALLET_DEPOSIT)
+                .transactionType(TransactionTypeEnum.WALLET_CREDIT)
                 .balanceBefore(tCashFlow.getToWallet().getAvailableBalance())
                 .balanceAfter(tCashFlow.getToWallet().getAvailableBalance().add(tCashFlow.getAmount()))
                 .wallet(toWallet)

@@ -20,6 +20,7 @@ public class TBankAccount extends BaseEntity {
     private String swiftCode;
     private String currency;
     private TCountry country;
+    private Boolean isAssigned;
 
     @Column(name = "bank_name")
     public String getBankName() {
@@ -83,5 +84,14 @@ public class TBankAccount extends BaseEntity {
 
     public void setCountry(TCountry country) {
         this.country = country;
+    }
+
+    @Column(name = "is_assigned")
+    public Boolean getAssigned() {
+        return isAssigned;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        isAssigned = assigned;
     }
 }
