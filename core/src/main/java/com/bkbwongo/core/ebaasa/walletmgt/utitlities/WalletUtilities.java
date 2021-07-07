@@ -17,7 +17,7 @@ public class WalletUtilities {
 
     public static  void checkThatAccountCanBeAssignedAsMain(TWallet wallet){
         WalletUtilities.checkThatAccountCanBeAssigned(wallet);
-        Validate.isTrue(wallet.getWalletGroup().getGroupType().equals(AccountTypeEnum.MAIN_CASH),"Only a main account can be assigned to a bank");
+        Validate.isTrue(wallet.getWalletGroup().getGroupType().equals(AccountTypeEnum.MAIN_WALLET),"Only a main account can be assigned to a bank");
 
     }
 
@@ -26,6 +26,11 @@ public class WalletUtilities {
         Validate.isTrue(!wallet.getAccountStatus().equals(AccountStatusEnum.CLOSED), ErrorMessageConstants.ACCOUNT_IS_CLOSED);
         Validate.isTrue(wallet.getAccountStatus().equals(AccountStatusEnum.NOT_ACTIVE), ErrorMessageConstants.ACCOUNT_ALREADY_ASSIGNED, wallet.getId());
         Validate.isTrue(wallet.getAvailableBalance().compareTo(BigDecimal.ZERO) == 0,ErrorMessageConstants.ACCOUNT_BALANCE_MUST_BE_ZERO);
+    }
+
+    public static void checkThatAccountCanBeUnAssigned(TWallet wallet){
+        Validate.isTrue(wallet.getAccountStatus().equals(AccountStatusEnum.ACTIVE),"Account is already not assigned");
+        Validate.isTrue(wallet.getAvailableBalance().compareTo(BigDecimal.ZERO) == 0, ErrorMessageConstants.ACCOUNT_BALANCE_MUST_BE_ZERO );
     }
 
     public static void checkThatTransactionWontResultInNegativeBalance(TWallet wallet, BigDecimal transactionAmount){

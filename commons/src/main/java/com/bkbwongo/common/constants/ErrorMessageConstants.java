@@ -11,6 +11,7 @@ public class ErrorMessageConstants {
 
     public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
     public static final String ID_NOT_FOUND = "User with ID: %s not found";
+    public static final String SMS_ACCOUNT_NOT_FOUND = "Sms account with ID: %s not found";
     public static final String AMOUNT_MUST_BE_GREATER_THAN_ZERO = "Amount to transact should be greater than 0";
     public static final String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
     public static final String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";
@@ -38,4 +39,5 @@ public class ErrorMessageConstants {
     public static final String ACCOUNT_MAPPING_NOT_FOUND = "account mapping with ID: %s not found";
     public static final String PROVIDER_TYPE_NOT_SUPPORTED = "Provided link type is not supported";
     public static final String BANK_ACCOUNT_NOT_FOUND = "Bank account with ID %s not found";
+    public static final String WALLET_MAPPING_FOR_USER_DOES_NOT_EXIST = "Mapping for wallet %s and user %s does not exist";
 }

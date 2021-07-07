@@ -15,6 +15,8 @@ public interface AccountMappingService {
     Optional<TAccountMapping> addAccountMapping(AccountMappingDto accountMappingDto);
     Optional<TAccountMapping> linkAccount(AccountLinkDto accountLinkDto);
     Optional<TAccountMapping> unlinkAccount(AccountLinkDto accountLinkDto);
+    Optional<TAccountMapping> linkSystemAccount(AccountLinkDto accountLinkDto);
+    Optional<TAccountMapping> unlinkSystemAccount(AccountLinkDto accountLinkDto);
     Optional<TAccountMapping> getAccountMappingById(Long id);
     Optional<TAccountMapping> getAccountMappingByUserId(Long id);
 }

@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.jpa.models;
 
+import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
 import com.bkbwongo.core.ebaasa.base.enums.SmsAccountTypeEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
@@ -25,6 +26,8 @@ public class TSmsAccount extends AuditedEntity {
     private Long accountSmsCount;
     private Boolean isAssigned;
     private TUser assignedBy;
+    private AccountStatusEnum accountStatus;
+    private String statusDescription;
 
     @JoinColumn(name = "sms_account_group_id", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.LAZY)
@@ -118,5 +121,24 @@ public class TSmsAccount extends AuditedEntity {
 
     public void setActivatedOn(Date activatedOn) {
         this.activatedOn = activatedOn;
+    }
+
+    @Column(name = "account_status")
+    @Enumerated(EnumType.STRING)
+    public AccountStatusEnum getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatusEnum accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    @Column(name = "status_description")
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 }
