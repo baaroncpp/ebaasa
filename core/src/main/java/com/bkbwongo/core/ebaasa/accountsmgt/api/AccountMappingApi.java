@@ -37,14 +37,14 @@ public class AccountMappingApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
-    @GetMapping(value = "/mapping", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/mapping/link", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> linkWalletToBank(@RequestParam("bankid") Long bankId,
                                                    @RequestParam("walletid") Long walletId){
         return ResponseEntity.ok(accountMappingService.linkMainBankAccountToWallet(bankId, walletId));
     }
 
     @RolesAllowed("ROLE_ADMIN.WRITE")
-    @GetMapping(value = "/mapping", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/mapping/unlink", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> unlinkWalletToBank(@RequestParam("bankid") Long bankId,
                                                    @RequestParam("walletid") Long walletId){
         return ResponseEntity.ok(accountMappingService.unlinkMainBankAccountToWallet(bankId, walletId));
