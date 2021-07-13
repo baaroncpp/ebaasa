@@ -10,6 +10,9 @@ public class ErrorMessageConstants {
     private ErrorMessageConstants() {}
 
     public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
+    public static final String SMS_PACKAGE_TYPE_NOT_FOUND = "Sms package type %s is not found";
+    public static final String SMS_PACKAGE_TYPE_ALREADY_ACTIVE = "Sms package type is already activated";
+    public static final String SMS_PACKAGE_TYPE_ALREADY_CLOSED = "Sms package type is already closed";
     public static final String ONLY_SYSTEM_ACCOUNT_TO_MAIN_ACCOUNT = "Only system user accounts can map to main accounts";
     public static final String ID_NOT_FOUND = "User with ID: %s not found";
     public static final String SMS_ACCOUNT_NOT_FOUND = "Sms account with ID: %s not found";

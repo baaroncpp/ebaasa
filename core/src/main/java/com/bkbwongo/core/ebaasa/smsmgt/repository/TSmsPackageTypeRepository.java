@@ -1,8 +1,10 @@
 package com.bkbwongo.core.ebaasa.smsmgt.repository;
 
-import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsPackage;
+import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsPackageType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * @author bkaaron
@@ -10,5 +12,6 @@ import org.springframework.stereotype.Repository;
  * @project ebaasa-sms
  */
 @Repository
-public interface TSmsPackageTypeRepository extends JpaRepository<TSmsPackage, Long> {
+public interface TSmsPackageTypeRepository extends JpaRepository<TSmsPackageType, Long> {
+    Optional<TSmsPackageType> findByName(String name);
 }

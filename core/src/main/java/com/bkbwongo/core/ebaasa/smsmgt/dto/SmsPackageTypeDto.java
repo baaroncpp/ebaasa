@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -28,4 +29,10 @@ public class SmsPackageTypeDto {
     private Boolean isClosed;
     private UserDto activatedBy;
     private UserDto closedBy;
+
+    public void validate(){
+        Validate.notEmpty(name, "name is required");
+        Validate.notEmpty(note, "not is required");
+        Validate.isTrue(smsCount > 0, "sms count must be greater than zero");
+    }
 }
