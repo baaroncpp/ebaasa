@@ -1,8 +1,12 @@
 package com.bkbwongo.core.ebaasa.smsmgt.repository;
 
 import com.bkbwongo.core.ebaasa.smsmgt.jpa.models.TSmsAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * @author bkaaron
@@ -11,4 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TSmsAccountRepository extends JpaRepository<TSmsAccount, Long> {
+    Optional<TSmsAccount> findByName(String name);
+    Page<TSmsAccount> findAll(Pageable pageable);
 }

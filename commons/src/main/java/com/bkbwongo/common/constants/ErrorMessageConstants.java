@@ -11,11 +11,16 @@ public class ErrorMessageConstants {
 
     public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
     public static final String SMS_PACKAGE_TYPE_NOT_FOUND = "Sms package type %s is not found";
+    public static final String SMS_ACCOUNT_GROUP_NOT_FOUND = "Sms account group %s is not found";
+    public static final String SMS_ACCOUNT_ALREADY_CLOSED = "Sms account is already closed";
+    public static final String SMS_ACCOUNT_ALREADY_ACTIVE = "Sms account is already active";
+    public static final String SMS_ACCOUNT_ALREADY_SUSPENDED = "Sms account is already suspended";
+    public static final String SMS_ACCOUNT_NOT_ASSIGNED = "Sms account is not assigned";
     public static final String SMS_PACKAGE_TYPE_ALREADY_ACTIVE = "Sms package type is already activated";
     public static final String SMS_PACKAGE_TYPE_ALREADY_CLOSED = "Sms package type is already closed";
     public static final String ONLY_SYSTEM_ACCOUNT_TO_MAIN_ACCOUNT = "Only system user accounts can map to main accounts";
     public static final String ID_NOT_FOUND = "User with ID: %s not found";
-    public static final String SMS_ACCOUNT_NOT_FOUND = "Sms account with ID: %s not found";
+    public static final String SMS_ACCOUNT_NOT_FOUND = "Sms account %s not found";
     public static final String AMOUNT_MUST_BE_GREATER_THAN_ZERO = "Amount to transact should be greater than 0";
     public static final String APP_CLIENT_NOT_FOUND = "App client with identifier %s could not found";
     public static final String APP_CLIENT_NOT_ENABLED = "App client with identifier %s has been disabled";

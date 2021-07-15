@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,6 +22,7 @@ public class SmsAccountDto {
     private Date modifiedOn;
     private UserDto createdBy;
     private UserDto modifiedBy;
+    private String name;
     private SmsAccountGroupDto smsAccountType;
     private Date isCosedOn;
     private UserDto closedBy;
@@ -31,4 +33,9 @@ public class SmsAccountDto {
     private Long accountSmsCount;
     private Boolean isAssigned;
     private UserDto assignedBy;
+
+    public void validate(){
+        Validate.notNull(smsAccountType, "Please define sms account type");
+        Validate.notEmpty(name, "Sms account name not defined");
+    }
 }

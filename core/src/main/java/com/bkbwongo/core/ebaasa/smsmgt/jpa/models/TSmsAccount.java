@@ -1,7 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.jpa.models;
 
 import com.bkbwongo.core.ebaasa.base.enums.AccountStatusEnum;
-import com.bkbwongo.core.ebaasa.base.enums.SmsAccountTypeEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.AuditedEntity;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 
@@ -16,6 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "t_sms_account",schema = "core")
 public class TSmsAccount extends AuditedEntity {
+    private String name;
     private TSmsAccountGroup smsAccountType;
     private Date isCosedOn;
     private TUser closedBy;
@@ -28,6 +28,18 @@ public class TSmsAccount extends AuditedEntity {
     private TUser assignedBy;
     private AccountStatusEnum accountStatus;
     private String statusDescription;
+    private TUser suspendedBy;
+    private Boolean isSuspended;
+    private Date suspendedOn;
+
+    @Column(name = "sms_account_name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @JoinColumn(name = "sms_account_group_id", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.LAZY)
@@ -140,5 +152,33 @@ public class TSmsAccount extends AuditedEntity {
 
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    @JoinColumn(name = "suspended_by", referencedColumnName = "id", insertable = true, updatable = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    public TUser getSuspendedBy() {
+        return suspendedBy;
+    }
+
+    public void setSuspendedBy(TUser suspendedBy) {
+        this.suspendedBy = suspendedBy;
+    }
+
+    @Column(name = "is_suspended")
+    public Boolean getSuspended() {
+        return isSuspended;
+    }
+
+    public void setSuspended(Boolean suspended) {
+        isSuspended = suspended;
+    }
+
+    @Column(name = "suspended_on")
+    public Date getSuspendedOn() {
+        return suspendedOn;
+    }
+
+    public void setSuspendedOn(Date suspendedOn) {
+        this.suspendedOn = suspendedOn;
     }
 }
