@@ -12,6 +12,8 @@ public class ErrorMessageConstants {
     public static final String USERNAME_IS_TAKEN = "Username %s is already taken";
     public static final String SMS_PACKAGE_TYPE_NOT_FOUND = "Sms package type %s is not found";
     public static final String SMS_ACCOUNT_GROUP_NOT_FOUND = "Sms account group %s is not found";
+    public static final String SMS_ACCOUNT_GROUP_WITH_NAME_EXISTS = "Sms account group %s already exists";
+    public static final String SMS_ACCOUNT_GROUP_WITH_SMS_LIMIT_EXISTS = "Sms account group with sms limit %s already exists";
     public static final String SMS_ACCOUNT_ALREADY_CLOSED = "Sms account is already closed";
     public static final String SMS_ACCOUNT_ALREADY_ACTIVE = "Sms account is already active";
     public static final String SMS_ACCOUNT_ALREADY_SUSPENDED = "Sms account is already suspended";

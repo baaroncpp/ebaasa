@@ -42,13 +42,13 @@ public class CashFlowApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
-    @PutMapping(value = "/cashflow/firstaprroval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
+    @PutMapping(value = "/cashflow/firstapproval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> makeFirstApproval( @PathVariable("cashFlowId") Long cashFlowId){
         return ResponseEntity.ok(cashFlowService.cashFlowApproval1(cashFlowId));
     }
 
     @RolesAllowed("ROLE_ADMIN.UPDATE")
-    @PutMapping(value = "/cashflow/secondaprroval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
+    @PutMapping(value = "/cashflow/secondapproval/{cashFlowId}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> makeSecondApproval(@PathVariable("cashFlowId") Long cashFlowId){
         return ResponseEntity.ok(cashFlowService.cashFlowApproval2(cashFlowId));
     }

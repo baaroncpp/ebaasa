@@ -1,5 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.dto;
 
+import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.AccountTypeEnum;
 import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,4 +28,11 @@ public class SmsAccountGroupDto {
     private AccountTypeEnum accountType;
     private Boolean isDebited;
     private Long smsDebitLimit;
+
+    public void validate(){
+        Validate.notEmpty(name, "Account group name is not defined");
+        Validate.notNull(note, "Account group note is not defined");
+        Validate.notNull(accountType, "Account type is not defined");
+        Validate.isTrue(smsDebitLimit < 1, "smsDebitLimit must be greater than zero");
+    }
 }

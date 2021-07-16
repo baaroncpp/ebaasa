@@ -3,7 +3,6 @@ package com.bkbwongo.core.ebaasa.smsmgt.api;
 import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
 import com.bkbwongo.core.ebaasa.smsmgt.dto.SmsAccountDto;
 import com.bkbwongo.core.ebaasa.smsmgt.service.SmsAccountService;
-import com.bkbwongo.core.ebaasa.usermgt.dto.CompanyDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +18,7 @@ import javax.annotation.security.RolesAllowed;
  * @created on 15/07/2021
  * @project ebaasa-sms
  */
-@Tag(name = "Users", description = "Manage all user")
+@Tag(name = "Sms Accounts", description = "Manage CRUD operations on sms accounts")
 @RestController
 @RequestMapping("/api/sms")
 public class SmsAccountApi {
