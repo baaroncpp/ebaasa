@@ -1,0 +1,43 @@
+CREATE TABLE t_sms_package_transaction(
+    id SERIAL primary key,
+    created_on timestamp not null default now(),
+	modified_on timestamp,
+	created_by integer references t_user(id),
+	modified_by integer references t_user(id),
+	sms_account_id integer references t_sms_account(id),
+	sms_package_id integer references t_sms_package(id),
+	transaction_type varchar(50) not null,
+	status varchar(50) not null,
+	status_description text,
+	non_reversal boolean not null default false,
+	number_sms_before integer,
+	number_sms_after integer
+);
+
+CREATE TABLE t_sms_package_flow(
+    id SERIAL primary key,
+    created_on timestamp not null default now(),
+	modified_on timestamp,
+	created_by integer references t_user(id),
+	modified_by integer references t_user(id),
+	sms_package_id integer references t_sms_package(id),
+	from_package_transaction_id integer references t_sms_package_transaction(id),
+	to_package_transaction_id integer references t_sms_package_transaction(id),
+	from_sms_account_id integer references t_sms_account(id),
+	to_sms_account_id integer references t_sms_account(id),
+	approve_user_1 integer references t_user(id),
+	approve_user_2 integer references t_user(id),
+	note text,
+	note1 text,
+	note2 text,
+	rejected_by integer references t_user(id),
+	rejected_on boolean not null default false,
+	flow_type varchar(50) not null,
+	first_approved boolean not null default false,
+	second_approved boolean not null default false,
+	rejected_on timestamp,
+	first_approve_on timestamp,
+	second_approve_on timestamp,
+	approval_count integer,
+	status varchar(50) not null
+);
