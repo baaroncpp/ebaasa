@@ -18,7 +18,6 @@ public class WalletUtilities {
     public static  void checkThatAccountCanBeAssignedAsMain(TWallet wallet){
         WalletUtilities.checkThatAccountCanBeAssigned(wallet);
         Validate.isTrue(wallet.getWalletGroup().getGroupType().equals(AccountTypeEnum.MAIN_WALLET),"Only a main account can be assigned to a bank");
-
     }
 
     public static void checkThatAccountCanBeAssigned(TWallet wallet){

@@ -181,7 +181,7 @@ public class TSmsPackageFlow extends AuditedEntity {
         isSecondApproved = secondApproved;
     }
 
-    @Column(name = "rejected_on")
+    @Column(name = "is_rejected")
     public Boolean getRejected() {
         return isRejected;
     }

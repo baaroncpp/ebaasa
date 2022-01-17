@@ -1,7 +1,6 @@
-rootProject.name = 'ebaasa-sms'
-include 'commons'
-include 'core'
-include 'serenity-tests'
-include 'twilio'
-include 'mobile-money'
-
+rootProject.name = 'ebaasa'
+include ':commons'
+include ':mobile-money'
+include ':twilio'
+include ':core'
+include ':serenity-tests'

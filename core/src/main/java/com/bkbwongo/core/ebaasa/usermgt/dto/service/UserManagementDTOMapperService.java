@@ -41,13 +41,13 @@ public class UserManagementDTOMapperService {
 
     public TPermission convertDTOToTPermission(PermissionDto permissionDto){
         var tPermission = modelMapper.map(permissionDto, TPermission.class);
-        tPermission.setRole(convertDTOToTRole(permissionDto.getRoleDto()));
+        tPermission.setRole(convertDTOToTRole(permissionDto.getRole()));
         return tPermission;
     }
 
     public PermissionDto convertTPermissionToDTO(TPermission tPermission){
         var permissionDto = modelMapper.map(tPermission, PermissionDto.class);
-        permissionDto.setRoleDto(convertTRoleToDTO(tPermission.getRole()));
+        permissionDto.setRole(convertTRoleToDTO(tPermission.getRole()));
         return permissionDto;
     }
 

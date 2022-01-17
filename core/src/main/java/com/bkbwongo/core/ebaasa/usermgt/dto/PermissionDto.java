@@ -19,11 +19,11 @@ public class PermissionDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private RoleDto roleDto;
+    private RoleDto role;
     private String name;
 
     public void validate(){
-        Validate.notNull(roleDto, "role is required");
+        Validate.notNull(role, "role is required");
         Validate.notEmpty(name, "permission name is required");
     }
 }

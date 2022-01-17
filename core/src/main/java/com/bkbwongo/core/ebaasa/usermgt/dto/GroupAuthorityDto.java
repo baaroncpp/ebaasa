@@ -15,7 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class GroupAuthorityDto {
+public class GroupAuthorityDto{
     private Long id;
     private Date createdOn;
     private Date modifiedOn;

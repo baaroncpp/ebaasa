@@ -20,6 +20,7 @@ import com.bkbwongo.core.ebaasa.usermgt.service.UserRolePermissionGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ import java.util.Optional;
  * @created on 14/05/2021
  * @project ebaasa-sms
  */
+@Transactional
 @Service
 public class UserRolePermissionGroupServiceImp implements UserRolePermissionGroupService {
 
@@ -95,7 +97,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
 
         permission.validate();
 
-        var tRole = roleRepository.findById(permission.getId())
+        var tRole = roleRepository.findById(permission.getRole().getId())
                 .orElseThrow(() -> new BadRequestException("User role not found"));
 
         Optional<TPermission> tPermission = permissionRepository.findByName(permission.getName());
@@ -104,6 +106,8 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         }
 
         var tp = userManagementDTOMapperService.convertDTOToTPermission(permission);
+        tp.setRole(tRole);
+        System.out.println("test role"+tp.toString());
         auditService.stampLongEntity(tp);
 
         return Optional.of(permissionRepository.save(tp));
@@ -124,6 +128,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         return Optional.of(permissionRepository.save(result));
     }
 
+    @Transactional
     @Override
     public List<TPermission> getAllPermissions() {
         return permissionRepository.findAll();

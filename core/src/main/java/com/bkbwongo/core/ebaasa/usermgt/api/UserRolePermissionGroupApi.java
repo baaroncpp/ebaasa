@@ -43,7 +43,7 @@ public class UserRolePermissionGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/role", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/roles", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllUserRoles(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllRoles());
     }
@@ -61,7 +61,7 @@ public class UserRolePermissionGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/permission", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/permissions", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllPermissions(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllPermissions());
     }
@@ -79,7 +79,7 @@ public class UserRolePermissionGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/group", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/groups", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getAllUserGroups(){
         return ResponseEntity.ok(userRolePermissionGroupService.getAllUserGroups());
     }
@@ -97,7 +97,7 @@ public class UserRolePermissionGroupApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @PostMapping(value = "/group/authorities/{id}", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/group/authorities/{id}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getGroupAuthorities(@PathVariable("id") Long id){
         return ResponseEntity.ok(userRolePermissionGroupService.getGroupAuthorities(id));
     }

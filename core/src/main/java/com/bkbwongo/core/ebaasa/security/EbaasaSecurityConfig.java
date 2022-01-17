@@ -26,10 +26,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)  //enable resource authentication instead of antMatchers
 public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*private final EbaasaUserDetailsService ebaasaUserDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final EbaasaAuthenticationEntryPoint ebaasaAuthenticationEntryPoint;
-*/
+    //private final EbaasaUserDetailsService ebaasaUserDetailsService;
+    //private final PasswordEncoder passwordEncoder;
+    //private final EbaasaAuthenticationEntryPoint ebaasaAuthenticationEntryPoint;
+
     private static final String[] SWAGGER_URL_PATHS = new String[] {
             "**/termsofuse",
             "/v3/api-docs/**",
@@ -80,6 +80,6 @@ public class EbaasaSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return provider;
     }
-        */
+       */
 
 }

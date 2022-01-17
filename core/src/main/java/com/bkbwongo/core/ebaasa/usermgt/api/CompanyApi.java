@@ -2,9 +2,7 @@ package com.bkbwongo.core.ebaasa.usermgt.api;
 
 import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
 import com.bkbwongo.core.ebaasa.usermgt.dto.CompanyDto;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.bkbwongo.core.ebaasa.usermgt.service.CompanyService;
-import com.bkbwongo.core.ebaasa.usermgt.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.Optional;
 
 /**
  * @author bkaaron

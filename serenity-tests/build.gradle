@@ -32,11 +32,11 @@ dependencies {
     testImplementation 'io.rest-assured:json-path:4.2.0'
     testImplementation 'io.rest-assured:xml-path:4.2.0'
 
-    testCompile "net.serenity-bdd:serenity-core:${serenityVersion}"
-    testCompile "net.serenity-bdd:serenity-junit:${serenityVersion}"
-    testCompile('junit:junit:4.12')
-    testCompile('org.assertj:assertj-core:1.7.0')
-    testCompile('org.slf4j:slf4j-simple:1.7.7')
+    testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    testImplementation('junit:junit:4.12')
+    testImplementation('org.assertj:assertj-core:1.7.0')
+    testImplementation('org.slf4j:slf4j-simple:1.7.7')
     testImplementation group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
 
     testImplementation project(':commons')

@@ -19,6 +19,9 @@ spring:
         format_sql: true
 
   flyway:
+    url: jdbc:postgresql://${EB_DB_HOST}:${EB_DB_PORT}/${EB_DB}
+    user: ${EB_DB_USERNAME}
+    password: ${EB_DB_PASSWORD}
     schemas: core
     locations: classpath:db/migration
 

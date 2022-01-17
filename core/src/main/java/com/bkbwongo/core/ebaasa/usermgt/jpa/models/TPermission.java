@@ -15,8 +15,8 @@ public class TPermission extends BaseEntity {
     private TRole role;
     private String name;
 
-    @JoinColumn(name = "role_name", referencedColumnName = "name", insertable = false, updatable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     public TRole getRole() {
         return role;
     }

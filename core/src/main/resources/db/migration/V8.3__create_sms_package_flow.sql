@@ -31,7 +31,7 @@ CREATE TABLE t_sms_package_flow(
 	note1 text,
 	note2 text,
 	rejected_by integer references t_user(id),
-	rejected_on boolean not null default false,
+	is_rejected boolean not null default false,
 	flow_type varchar(50) not null,
 	first_approved boolean not null default false,
 	second_approved boolean not null default false,
