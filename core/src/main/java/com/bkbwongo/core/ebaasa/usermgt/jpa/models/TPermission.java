@@ -15,8 +15,8 @@ public class TPermission extends BaseEntity {
     private TRole role;
     private String name;
 
-    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = true, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)//MANY PERMISSIONS TO ONE ROLE
     public TRole getRole() {
         return role;
     }

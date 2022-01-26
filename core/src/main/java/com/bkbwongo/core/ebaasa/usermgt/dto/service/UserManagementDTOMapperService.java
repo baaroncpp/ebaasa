@@ -53,27 +53,27 @@ public class UserManagementDTOMapperService {
 
     public TGroupAuthority convertDTOToTGroupAuthority(GroupAuthorityDto groupAuthorityDto){
         var tGroupAuthority = modelMapper.map(groupAuthorityDto, TGroupAuthority.class);
-        tGroupAuthority.setUserGroup(convertDTOToTUserGroup(groupAuthorityDto.getUserGroupDto()));
-        tGroupAuthority.setPermission(convertDTOToTPermission(groupAuthorityDto.getPermissionDto()));
+        tGroupAuthority.setUserGroup(convertDTOToTUserGroup(groupAuthorityDto.getUserGroup()));
+        tGroupAuthority.setPermission(convertDTOToTPermission(groupAuthorityDto.getPermission()));
         return tGroupAuthority;
     }
 
     public GroupAuthorityDto convertTGroupAuthorityToDTO(TGroupAuthority tGroupAuthority){
         var groupAuthorityDto = modelMapper.map(tGroupAuthority, GroupAuthorityDto.class);
-        groupAuthorityDto.setUserGroupDto(convertTUserGroupToDTO(tGroupAuthority.getUserGroup()));
-        groupAuthorityDto.setPermissionDto(convertTPermissionToDTO(tGroupAuthority.getPermission()));
+        groupAuthorityDto.setUserGroup(convertTUserGroupToDTO(tGroupAuthority.getUserGroup()));
+        groupAuthorityDto.setPermission(convertTPermissionToDTO(tGroupAuthority.getPermission()));
         return groupAuthorityDto;
     }
 
     public TUser convertDTOToTUser(UserDto userDto){
         var tUser = modelMapper.map(userDto, TUser.class);
-        tUser.setUserGroup(convertDTOToTUserGroup(userDto.getUserGroupDto()));
+        tUser.setUserGroup(convertDTOToTUserGroup(userDto.getUserGroup()));
         return tUser;
     }
 
     public UserDto convertTUserToDTO(TUser tUser){
         var userDto = modelMapper.map(tUser, UserDto.class);
-        userDto.setUserGroupDto(convertTUserGroupToDTO(tUser.getUserGroup()));
+        userDto.setUserGroup(convertTUserGroupToDTO(tUser.getUserGroup()));
         userDto.setPassword(PASSWORD_MASK);
         return userDto;
     }

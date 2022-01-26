@@ -13,7 +13,7 @@ create table t_user(
     account_locked BOOLEAN NOT NULL DEFAULT TRUE,
     account_expired BOOLEAN NOT NULL DEFAULT TRUE,
     cred_expired BOOLEAN NOT NULL DEFAULT TRUE,
-    user_group_id INTEGER NOT NULL REFERENCES t_user_group(id),
+    user_group_id BIGINT NOT NULL REFERENCES t_user_group(id),
     approved BOOLEAN NOT NULL DEFAULT TRUE,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     approved_by INTEGER REFERENCES t_user(id),
@@ -33,7 +33,7 @@ create table t_role(
 
 create table t_permission(
     id BIGSERIAL PRIMARY KEY,
-    role_id INTEGER NOT NULL REFERENCES t_role(id),
+    role_id BIGINT NOT NULL REFERENCES t_role(id),
     permission_name VARCHAR(20) UNIQUE,
     created_on TIMESTAMP NOT NULL DEFAULT now(),
     modified_on TIMESTAMP
@@ -41,18 +41,18 @@ create table t_permission(
 
 create table t_user_approval(
     id BIGSERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES t_user(id),
+    user_id BIGINT NOT NULL REFERENCES t_user(id),
     status INTEGER NOT NULL,
     created_on TIMESTAMP NOT NULL DEFAULT now(),
     modified_on TIMESTAMP,
-    created_by INTEGER NOT NULL REFERENCES t_user(id),
-    modified_by INTEGER REFERENCES t_user(id)
+    created_by BIGINT NOT NULL REFERENCES t_user(id),
+    modified_by BIGINT REFERENCES t_user(id)
 );
 
 create table t_group_authority(
     id BIGSERIAL PRIMARY KEY,
-    user_group_id INTEGER NOT NULL REFERENCES t_user_group(id),
-    permission_id INTEGER NOT NULL REFERENCES t_permission(id),
+    user_group_id BIGINT NOT NULL REFERENCES t_user_group(id),
+    permission_id BIGINT NOT NULL REFERENCES t_permission(id),
     created_on TIMESTAMP NOT NULL DEFAULT now(),
     modified_on TIMESTAMP
 );

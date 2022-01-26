@@ -27,7 +27,7 @@ public class UserDto {
     private boolean credentialExpired;
     private boolean approved;
     private boolean initialPasswordReset;
-    private UserGroupDto userGroupDto;
+    private UserGroupDto userGroup;
     private Boolean isDeleted;
     private String approvedBy;
     private UserTypeEnum userType;
@@ -35,6 +35,6 @@ public class UserDto {
     public void validate(){
         Validate.notEmpty(username, "username is required");
         Validate.notEmpty(password, "password is required");
-        Validate.notNull(userGroupDto, "user group is required");
+        Validate.notNull(userGroup, "user group is required");
     }
 }

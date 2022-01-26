@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author bkaaron
@@ -56,7 +57,7 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
     }
 
     @Override
-    public Optional<TRole> createUserRole(RoleDto role) {
+    public Optional<RoleDto> createUserRole(RoleDto role) {
 
         role.validate();
 
@@ -69,11 +70,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         var tr = userManagementDTOMapperService.convertDTOToTRole(role);
         auditService.stampLongEntity(tr);
 
-        return Optional.of(roleRepository.save(tr));
+        return Optional.of(userManagementDTOMapperService.convertTRoleToDTO(roleRepository.save(tr)));
     }
 
     @Override
-    public Optional<TRole> updateUserRole(RoleDto role) {
+    public Optional<RoleDto> updateUserRole(RoleDto role) {
 
         role.validate();
 
@@ -84,16 +85,18 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         var result = userManagementDTOMapperService.convertDTOToTRole(role);
         auditService.stampLongEntity(result);
 
-        return Optional.of(roleRepository.save(result));
+        return Optional.of(userManagementDTOMapperService.convertTRoleToDTO(roleRepository.save(result)));
     }
 
     @Override
-    public List<TRole> getAllRoles() {
-        return roleRepository.findAll();
+    public List<RoleDto> getAllRoles() {
+        return roleRepository.findAll().stream()
+                .map(role -> userManagementDTOMapperService.convertTRoleToDTO(role))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<TPermission> addNewPermission(PermissionDto permission) {
+    public Optional<PermissionDto> addNewPermission(PermissionDto permission) {
 
         permission.validate();
 
@@ -110,11 +113,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         System.out.println("test role"+tp.toString());
         auditService.stampLongEntity(tp);
 
-        return Optional.of(permissionRepository.save(tp));
+        return Optional.of(userManagementDTOMapperService.convertTPermissionToDTO(permissionRepository.save(tp)));
     }
 
     @Override
-    public Optional<TPermission> updatePermission(PermissionDto permission) {
+    public Optional<PermissionDto> updatePermission(PermissionDto permission) {
 
         permission.validate();
 
@@ -125,17 +128,19 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
 
         var result = userManagementDTOMapperService.convertDTOToTPermission(permission);
         auditService.stampLongEntity(result);
-        return Optional.of(permissionRepository.save(result));
+        return Optional.of(userManagementDTOMapperService.convertTPermissionToDTO(permissionRepository.save(result)));
     }
 
     @Transactional
     @Override
-    public List<TPermission> getAllPermissions() {
-        return permissionRepository.findAll();
+    public List<PermissionDto> getAllPermissions() {
+        return permissionRepository.findAll().stream()
+                .map(permission -> userManagementDTOMapperService.convertTPermissionToDTO(permission))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<TUserGroup> createUserGroup(UserGroupDto userGroup) {
+    public Optional<UserGroupDto> createUserGroup(UserGroupDto userGroup) {
 
         userGroup.validate();
 
@@ -147,11 +152,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
         var tup = userManagementDTOMapperService.convertDTOToTUserGroup(userGroup);
         auditService.stampLongEntity(tup);
 
-        return Optional.of(userGroupRepository.save(tup));
+        return Optional.of(userManagementDTOMapperService.convertTUserGroupToDTO(userGroupRepository.save(tup)));
     }
 
     @Override
-    public Optional<TUserGroup> updateUserGroup(UserGroupDto userGroup) {
+    public Optional<UserGroupDto> updateUserGroup(UserGroupDto userGroup) {
 
         userGroup.validate();
 
@@ -162,27 +167,29 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
 
         var result = userManagementDTOMapperService.convertDTOToTUserGroup(userGroup);
         auditService.stampLongEntity(result);
-        return Optional.of(userGroupRepository.save(result));
+        return Optional.of(userManagementDTOMapperService.convertTUserGroupToDTO(userGroupRepository.save(result)));
     }
 
     @Override
-    public List<TUserGroup> getAllUserGroups() {
-        return userGroupRepository.findAll();
+    public List<UserGroupDto> getAllUserGroups() {
+        return userGroupRepository.findAll().stream()
+                .map(userGroup -> userManagementDTOMapperService.convertTUserGroupToDTO(userGroup))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<TGroupAuthority> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto) {
+    public Optional<GroupAuthorityDto> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto) {
 
         groupAuthorityDto.validate();
 
-        var tUserGroup = userGroupRepository.findById(groupAuthorityDto.getUserGroupDto().getId())
+        var tUserGroup = userGroupRepository.findById(groupAuthorityDto.getUserGroup().getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupAuthorityDto.getUserGroupDto().getId()))
+                        () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupAuthorityDto.getUserGroup().getId()))
                 );
 
-        var tPermission = permissionRepository.findById(groupAuthorityDto.getPermissionDto().getId())
+        var tPermission = permissionRepository.findById(groupAuthorityDto.getPermission().getId())
                 .orElseThrow(
-                        () -> new BadRequestException(String.format("Permission with ID %s does not exist", groupAuthorityDto.getPermissionDto().getId()))
+                        () -> new BadRequestException(String.format("Permission with ID %s does not exist", groupAuthorityDto.getPermission().getId()))
                 );
 
         Optional<TGroupAuthority> tGroupAuthority = groupAuthorityRepository.findByUserGroupAndPermission(tUserGroup, tPermission);
@@ -192,11 +199,12 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
 
         var tga = userManagementDTOMapperService.convertDTOToTGroupAuthority(groupAuthorityDto);
         auditService.stampLongEntity(tga);
-        return Optional.of(tga);
+
+        return Optional.of(userManagementDTOMapperService.convertTGroupAuthorityToDTO(tga));
     }
 
     @Override
-    public Optional<TGroupAuthority> removePermissionToUserGroup(Long id) {
+    public Optional<GroupAuthorityDto> removePermissionToUserGroup(Long id) {
 
         Validate.notNull(id, "GroupAuthority ID not defined");
 
@@ -205,11 +213,11 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                         () -> new BadRequestException(String.format("GroupAuthority with ID %s does not exist", id))
                 );
         groupAuthorityRepository.delete(tGroupAuthority);
-        return Optional.of(tGroupAuthority);
+        return Optional.of(userManagementDTOMapperService.convertTGroupAuthorityToDTO(tGroupAuthority));
     }
 
     @Override
-    public List<TGroupAuthority> getGroupAuthorities(Long groupId) {
+    public List<GroupAuthorityDto> getGroupAuthorities(Long groupId) {
 
         Validate.notNull(groupId, "Group ID is not defined");
 
@@ -217,6 +225,9 @@ public class UserRolePermissionGroupServiceImp implements UserRolePermissionGrou
                 .orElseThrow(
                         () -> new BadRequestException(String.format("UserGroup with ID %s does not exist", groupId))
                 );
-        return groupAuthorityRepository.findByUserGroup(userGroup);
+
+        return groupAuthorityRepository.findByUserGroup(userGroup).stream()
+                .map(groupAuthority -> userManagementDTOMapperService.convertTGroupAuthorityToDTO(groupAuthority))
+                .collect(Collectors.toList());
     }
 }

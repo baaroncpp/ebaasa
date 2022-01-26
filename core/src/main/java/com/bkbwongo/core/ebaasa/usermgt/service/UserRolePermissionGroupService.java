@@ -18,20 +18,20 @@ import java.util.Optional;
  * @project ebaasa-sms
  */
 public interface UserRolePermissionGroupService {
-    Optional<TRole> createUserRole(RoleDto role);
-    Optional<TRole> updateUserRole(RoleDto role);
-    List<TRole> getAllRoles();
+    Optional<RoleDto> createUserRole(RoleDto role);
+    Optional<RoleDto> updateUserRole(RoleDto role);
+    List<RoleDto> getAllRoles();
 
-    Optional<TPermission> addNewPermission(PermissionDto permission);
-    Optional<TPermission> updatePermission(PermissionDto permission);
-    List<TPermission> getAllPermissions();
+    Optional<PermissionDto> addNewPermission(PermissionDto permission);
+    Optional<PermissionDto> updatePermission(PermissionDto permission);
+    List<PermissionDto> getAllPermissions();
 
-    Optional<TUserGroup> createUserGroup(UserGroupDto userGroup);
-    Optional<TUserGroup> updateUserGroup(UserGroupDto userGroup);
-    List<TUserGroup> getAllUserGroups();
+    Optional<UserGroupDto> createUserGroup(UserGroupDto userGroup);
+    Optional<UserGroupDto> updateUserGroup(UserGroupDto userGroup);
+    List<UserGroupDto> getAllUserGroups();
 
-    Optional<TGroupAuthority> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto);
-    Optional<TGroupAuthority> removePermissionToUserGroup(Long id);
-    List<TGroupAuthority> getGroupAuthorities(Long groupId);
+    Optional<GroupAuthorityDto> addPermissionToUserGroup(GroupAuthorityDto groupAuthorityDto);
+    Optional<GroupAuthorityDto> removePermissionToUserGroup(Long id);
+    List<GroupAuthorityDto> getGroupAuthorities(Long groupId);
 
 }

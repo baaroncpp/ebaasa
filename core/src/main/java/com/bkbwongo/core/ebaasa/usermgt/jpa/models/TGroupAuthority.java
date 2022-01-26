@@ -15,8 +15,8 @@ public class TGroupAuthority extends BaseEntity {
     private TUserGroup userGroup;
     private TPermission permission;
 
-    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = true, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     public TUserGroup getUserGroup() {
         return userGroup;
     }
@@ -25,7 +25,7 @@ public class TGroupAuthority extends BaseEntity {
         this.userGroup = userGroup;
     }
 
-    @JoinColumn(name = "permission_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "permission_id", referencedColumnName = "id", insertable = true, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     public TPermission getPermission() {
         return permission;

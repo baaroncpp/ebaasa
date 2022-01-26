@@ -19,11 +19,11 @@ public class GroupAuthorityDto{
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private UserGroupDto userGroupDto;
-    private PermissionDto permissionDto;
+    private UserGroupDto userGroup;
+    private PermissionDto permission;
 
     public void validate(){
-        Validate.notNull(userGroupDto, "user group is required");
-        Validate.notNull(permissionDto, "user permission is not defined");
+        Validate.notNull(userGroup, "user group is required");
+        Validate.notNull(permission, "user permission is not defined");
     }
 }
