@@ -1,7 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.dto.service;
 
 import com.bkbwongo.core.ebaasa.base.dto.service.CoreDTOService;
-import com.bkbwongo.core.ebaasa.usermgt.dto.*;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.*;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +140,22 @@ public class UserManagementDTOMapperService {
             companyDto.setModifiedBy(convertTUserToDTO(tCompany.getModifiedBy()));
         }
         return companyDto;
+    }
+
+    public TUserPreviousPassword convertDTOToTUserPreviousPassword(UserPreviousPasswordDto userPreviousPasswordDto){
+        var tUserPreviousPassword = modelMapper.map(userPreviousPasswordDto, TUserPreviousPassword.class);
+        tUserPreviousPassword.setUser(convertDTOToTUser(userPreviousPasswordDto.getUser()));
+        tUserPreviousPassword.setModifiedBy(convertDTOToTUser(userPreviousPasswordDto.getModifiedBy()));
+
+        return tUserPreviousPassword;
+    }
+
+    public UserPreviousPasswordDto convertTUserPreviousPasswordToDTO(TUserPreviousPassword tUserPreviousPassword){
+        var userPreviousPasswordDto = modelMapper.map(tUserPreviousPassword, UserPreviousPasswordDto.class);
+        userPreviousPasswordDto.setUser(convertTUserToDTO(tUserPreviousPassword.getUser()));
+        userPreviousPasswordDto.setModifiedBy(convertTUserToDTO(tUserPreviousPassword.getModifiedBy()));
+
+        return userPreviousPasswordDto;
     }
 
 }

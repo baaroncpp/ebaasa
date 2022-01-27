@@ -4,7 +4,7 @@ import com.bkbwongo.common.constants.ErrorMessageConstants;
 import com.bkbwongo.common.exceptions.BadRequestException;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.utils.AuditService;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserMetaDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserMetaDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserMeta;
 import com.bkbwongo.core.ebaasa.usermgt.repository.TUserMetaRepository;

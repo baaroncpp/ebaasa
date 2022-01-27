@@ -2,7 +2,7 @@ package com.bkbwongo.core.ebaasa.walletmgt.dto;
 
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.AccountTypeEnum;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -1,9 +1,8 @@
-package com.bkbwongo.core.ebaasa.usermgt.dto;
+package com.bkbwongo.core.ebaasa.usermgt.dto.models;
 
 import com.bkbwongo.common.utils.Validate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,15 +15,15 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class PermissionDto {
+public class UserGroupDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private RoleDto role;
     private String name;
+    private String note;
 
     public void validate(){
-        Validate.notNull(role, "role is required");
-        Validate.notEmpty(name, "permission name is required");
+        Validate.notEmpty(name, "user group name is required");
+        Validate.notEmpty(note, "note is required");
     }
 }

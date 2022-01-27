@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.usermgt.service;
 
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserMetaDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserMetaDto;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserMeta;
 
 import java.util.Optional;

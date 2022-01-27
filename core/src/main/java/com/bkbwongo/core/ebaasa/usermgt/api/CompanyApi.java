@@ -1,7 +1,7 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
 import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
-import com.bkbwongo.core.ebaasa.usermgt.dto.CompanyDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.CompanyDto;
 import com.bkbwongo.core.ebaasa.usermgt.service.CompanyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

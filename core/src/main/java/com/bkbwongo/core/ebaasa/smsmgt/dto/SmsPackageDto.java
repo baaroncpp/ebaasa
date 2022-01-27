@@ -1,6 +1,6 @@
 package com.bkbwongo.core.ebaasa.smsmgt.dto;
 
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

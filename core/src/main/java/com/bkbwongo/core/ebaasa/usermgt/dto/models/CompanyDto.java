@@ -1,4 +1,4 @@
-package com.bkbwongo.core.ebaasa.usermgt.dto;
+package com.bkbwongo.core.ebaasa.usermgt.dto.models;
 
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.dto.CountryDto;

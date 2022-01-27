@@ -1,10 +1,10 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
 import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
-import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.GroupAuthorityDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.PermissionDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.RoleDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserGroupDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserRolePermissionGroupService;
 import io.swagger.v3.oas.annotations.tags.Tag;

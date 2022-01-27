@@ -1,13 +1,9 @@
 package com.bkbwongo.core.ebaasa.usermgt.service;
 
-import com.bkbwongo.core.ebaasa.usermgt.dto.GroupAuthorityDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.PermissionDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.RoleDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserGroupDto;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TGroupAuthority;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TPermission;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TRole;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserGroup;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.GroupAuthorityDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.PermissionDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.RoleDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserGroupDto;
 
 import java.util.List;
 import java.util.Optional;

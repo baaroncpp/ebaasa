@@ -1,8 +1,8 @@
 package com.bkbwongo.core.ebaasa.usermgt.api;
 
 import com.bkbwongo.core.ebaasa.base.api.BaseAPI;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserApprovalDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserDto;
 import com.bkbwongo.core.ebaasa.usermgt.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,13 +60,13 @@ public class UserApi {
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/user/{id}", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/user/id/{id}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getUserById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @RolesAllowed("ROLE_ADMIN.READ")
-    @GetMapping(value = "/user/{username}", produces = BaseAPI.APPLICATION_JSON)
+    @GetMapping(value = "/user/username/{username}", produces = BaseAPI.APPLICATION_JSON)
     public ResponseEntity<Object> getUserByUsername(@PathVariable("username") String username){
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }

@@ -6,8 +6,9 @@ import com.bkbwongo.common.utils.DateTimeUtil;
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.bkbwongo.core.ebaasa.base.utils.AuditService;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserApprovalDto;
-import com.bkbwongo.core.ebaasa.usermgt.dto.UserDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserApprovalDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserDto;
+import com.bkbwongo.core.ebaasa.usermgt.dto.models.UserPreviousPasswordDto;
 import com.bkbwongo.core.ebaasa.usermgt.dto.service.UserManagementDTOMapperService;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUser;
 import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserPreviousPassword;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author bkaaron
@@ -58,7 +60,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Optional<TUser> addUser(UserDto userDto) {
+    public Optional<UserDto> addUser(UserDto userDto) {
 
         userDto.validate();
 
@@ -73,11 +75,11 @@ public class UserServiceImp implements UserService {
         var result = tUserRepository.save(user);
         result.setPassword(PASSWORD_MASK);
 
-        return Optional.of(result);
+        return Optional.of(userManagementDTOMapperService.convertTUserToDTO(result));
     }
 
     @Override
-    public Optional<TUser> updateUser(UserDto userDto) {
+    public Optional<UserDto> updateUser(UserDto userDto) {
 
         userDto.validate();
 
@@ -102,31 +104,31 @@ public class UserServiceImp implements UserService {
         var result = tUserRepository.save(updatedUser);
         result.setPassword(PASSWORD_MASK);
 
-        return Optional.of(result);
+        return Optional.of(userManagementDTOMapperService.convertTUserToDTO(result));
     }
 
     @Override
-    public Optional<TUser> getUserById(Long id) {
+    public Optional<UserDto> getUserById(Long id) {
         Validate.notNull(id, "NULL ID value");
         var user = tUserRepository.findById(id).orElseThrow(
                 () -> new BadRequestException(String.format(ErrorMessageConstants.ID_NOT_FOUND, id))
         );
         user.setPassword(PASSWORD_MASK);
-        return Optional.of(user);
+        return Optional.of(userManagementDTOMapperService.convertTUserToDTO(user));
     }
 
     @Override
-    public Optional<TUser> getUserByUsername(String username) {
+    public Optional<UserDto> getUserByUsername(String username) {
         Validate.notEmpty(username, "Username not defined");
         var user = tUserRepository.findByUsername(username).orElseThrow(
                 () -> new BadRequestException("User with USERNAME: %s not found")
         );
         user.setPassword(PASSWORD_MASK);
-        return Optional.of(user);
+        return Optional.of(userManagementDTOMapperService.convertTUserToDTO(user));
     }
 
     @Override
-    public Optional<TUser> approveUser(UserApprovalDto userApprovalDto) {
+    public Optional<UserDto> approveUser(UserApprovalDto userApprovalDto) {
 
         userApprovalDto.validate();
 
@@ -142,15 +144,15 @@ public class UserServiceImp implements UserService {
         var result = changeUserStatus(user, tUserApproval.getCreatedBy(), tUserApproval.getStatus()).get();
         result.setPassword(PASSWORD_MASK);
 
-        return Optional.of(tUserRepository.save(result));
+        return Optional.of(userManagementDTOMapperService.convertTUserToDTO(tUserRepository.save(result)));
     }
 
     @Override
-    public Optional<TUserPreviousPassword> changePassword(String username,
-                                          String oldPassword,
-                                          String newPassword,
-                                          Long userId,
-                                          String note) {
+    public Optional<UserPreviousPasswordDto> changePassword(String username,
+                                                            String oldPassword,
+                                                            String newPassword,
+                                                            Long userId,
+                                                            String note) {
         Validate.notEmpty(username, USERNAME_NOT_FOUND);
         Validate.notEmpty(oldPassword, "Old Password is not defined");
         Validate.notEmpty(newPassword, "new Password is not defined");
@@ -187,12 +189,14 @@ public class UserServiceImp implements UserService {
 
         var result = tUserPreviousPasswordRepository.save(tUserPreviousPassword);
 
-        return Optional.of(result);
+        return Optional.of(userManagementDTOMapperService.convertTUserPreviousPasswordToDTO(result));
     }
 
     @Override
-    public List<TUser> getAllUsers(Pageable pageable) {
-        return tUserRepository.findAll(pageable).getContent();
+    public List<UserDto> getAllUsers(Pageable pageable) {
+        return tUserRepository.findAll(pageable).getContent().stream()
+                .map(user -> userManagementDTOMapperService.convertTUserToDTO(user))
+                .collect(Collectors.toList());
     }
 
     Optional<TUser> changeUserStatus(TUser user, TUser approvingUser, ApprovalEnum status){

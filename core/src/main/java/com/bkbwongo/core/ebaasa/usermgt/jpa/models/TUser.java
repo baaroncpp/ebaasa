@@ -73,7 +73,7 @@ public class TUser extends BaseEntity implements Serializable {
         this.credentialExpired = credentialExpired;
     }
 
-    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_group_id", referencedColumnName = "id", insertable = true, updatable = false)
     @OneToOne(fetch = FetchType.LAZY)
     public TUserGroup getUserGroup() {
         return userGroup;

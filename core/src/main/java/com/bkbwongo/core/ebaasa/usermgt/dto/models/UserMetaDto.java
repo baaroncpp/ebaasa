@@ -1,15 +1,13 @@
-package com.bkbwongo.core.ebaasa.usermgt.dto;
+package com.bkbwongo.core.ebaasa.usermgt.dto.models;
 
 import com.bkbwongo.common.utils.Validate;
 import com.bkbwongo.core.ebaasa.base.enums.GenderEnum;
 import com.bkbwongo.core.ebaasa.base.jpa.models.TCountry;
-import com.bkbwongo.core.ebaasa.usermgt.jpa.models.TUserMeta;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * @author bkaaron

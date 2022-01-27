@@ -1,6 +1,7 @@
-package com.bkbwongo.core.ebaasa.usermgt.dto;
+package com.bkbwongo.core.ebaasa.usermgt.dto.models;
 
 import com.bkbwongo.common.utils.Validate;
+import com.bkbwongo.core.ebaasa.base.enums.ApprovalEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -9,21 +10,23 @@ import java.util.Date;
 
 /**
  * @author bkaaron
- * @created on 15/05/2021
+ * @created on 19/05/2021
  * @project ebaasa-sms
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class UserGroupDto {
+public class UserApprovalDto {
     private Long id;
     private Date createdOn;
     private Date modifiedOn;
-    private String name;
-    private String note;
+    private UserDto createdBy;
+    private UserDto modifiedBy;
+    private Long userId;
+    private ApprovalEnum status;
 
     public void validate(){
-        Validate.notEmpty(name, "user group name is required");
-        Validate.notEmpty(note, "note is required");
+        Validate.notNull(userId, "user ID is missing");
+        Validate.notNull(status, "Approval status is missing");
     }
 }
