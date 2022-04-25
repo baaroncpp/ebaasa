@@ -1,0 +1,7 @@
+EB_DB_HOST=localhost;
+EB_DB_PORT=5432;
+EB_DB=ebaasa_db;
+EB_DB_USERNAME=aaron;
+EB_DB_PASSWORD=aaron;
+KEYSTORE_LOCATION=key/ebaasa.jks;
+KEYSTORE_PASSWORD=oliviatyra
